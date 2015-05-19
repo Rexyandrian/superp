@@ -1,0 +1,208 @@
+/*----------ajaxGrid----------*/
+.sortHeader
+{
+	cursor : pointer;
+	color : blue;
+}
+.sortedHeader
+{
+	cursor : pointer;
+        color : red;
+}
+.ajaxgrid_mainTable
+{
+	width:100%;
+	font-family: tahoma, Tahoma ;
+	border-collapse: collapse;
+	-webkit-border-radius: 7px;
+    	-moz-border-radius: 7px;
+   	border-radius: 7px;
+}
+.ajaxgrid_mainTable th
+{
+	padding: 10px 10px 10px 10px;
+	text-align:center;
+	color: #000;
+	border:1px solid #999;
+	background-color:#c3e5ef;
+ 	background-repeat: repeat-x;
+  	font-size: 12px;
+  /* Safari 4-5, Chrome 1-9 */
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#c3e5ef), to(#fff));
+  
+  /* Safari 5.1, Chrome 10+ */
+	background: -webkit-linear-gradient(top, #c3e5ef, #fff);
+  
+  /* Firefox 3.6+ */
+	background: -moz-linear-gradient(top, #c3e5ef, #fff);
+  
+  /* IE 10 */
+	background: -ms-linear-gradient(top, #c3e5ef, #fff);
+  
+  /* Opera 11.10+ */
+	background: -o-linear-gradient(top, #c3e5ef, #fff);
+}
+/*
+.ajaxgrid_mainTable tr:hover
+{
+	background: #fff5d4;
+}
+*/
+.ajaxgrid_mainTable td
+{
+	padding: 10px 0px 10px 0px;
+	text-align:center;
+	color: #444;
+	font-weight: normal;
+	border:1px solid #999;
+	font-size: 12px;
+}
+.ajaxgrid_mainTable input[type="text"]
+{
+	width:150px;height:25px;margin:0px 0px 0px 5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;-khtml-border-radius:5px;-moz-box-shadow:inset 0 10px 10px#C1E5EF;-webkit-box-shadow:inset 0 10px 10px #C1E5EF;box-shadow:inset 0 10px 10px #C1E5EF;border:1px solid #ccc;color:#000;font-family:tahoma;font-size:12px;
+}
+
+/*------------------buttom table ---------------*/
+.ajaxgrid_bottomTable
+{
+	width:100%;
+	border-collapse: collapse;
+}
+.ajaxgrid_bottomTable td:first-child
+{
+	text-align:right;
+}
+.ajaxgrid_bottomTable td:last-child
+{
+	text-align:left;
+}
+.ajaxgrid_bottomTable button {
+   font-family: "b Yekan",tahoma, Tahoma ;
+   border-top: 1px solid #96d1f8;
+   background: #65a9d7;
+   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+   background: -o-linear-gradient(top, #3e779d, #65a9d7);
+   padding: 7px 14px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 12px;
+   font-family: tahoma,Tahoma;
+   text-decoration: none;
+   vertical-align: middle;
+}
+.ajaxgrid_bottomTable button:hover {
+   border-top-color: #28597a;
+   background: #28597a;
+   color: #ccc;
+}
+.ajaxgrid_bottomTable button:active {
+   border-top-color: #1b435e;
+   background: #1b435e;
+}
+.ajaxgrid_bottomTable select
+{
+	width:90px;height:auto;margin:5px 0px 0px 5px ;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;-khtml-border-radius:5px;-moz-box-shadow:inset 0 10px 10px#C1E5EF;-webkit-box-shadow:inset 0 10px 10px #C1E5EF;box-shadow:inset 0 10px 10px #C1E5EF;border:1px solid #ccc;color:#000;font-family:tahoma;font-size:12px;
+}
+/*------------------ajaxgrid_addDiv-------------------------*/
+.ajaxgrid_addDiv
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:90%;
+	text-align: center;
+	background: #fff;
+	-webkit-border-radius: 7px;
+    	-moz-border-radius: 7px;
+   	border-radius: 7px;
+}
+.ajaxgrid_addDiv table
+{
+	width:100%;
+	border-collapse: collapse;
+}
+.ajaxgrid_addDiv table td
+{
+	padding: 7px 7px 7px 7px;
+	color: #444;
+	font-weight: normal;
+	border:1px solid #999;
+}
+.ajaxgrid_addDiv input[type="text"]
+{
+	width:100%;height:25px;margin:0px 0px 0px 5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;-khtml-border-radius:5px;-moz-box-shadow:inset 0 10px 10px#C1E5EF;-webkit-box-shadow:inset 0 10px 10px #C1E5EF;box-shadow:inset 0 10px 10px #C1E5EF;border:1px solid #ccc;color:#000;font-family:tahoma;font-size:12px;
+}
+.ajaxgrid_addDiv button {
+   border-top: 1px solid #96d1f8;
+   background: #65a9d7;
+   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+   background: -o-linear-gradient(top, #3e779d, #65a9d7);
+   padding: 7px 14px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 12px;
+   font-family: tahoma,Tahoma;
+   text-decoration: none;
+   vertical-align: middle;
+}
+.ajaxgrid_addDiv button:hover {
+   border-top-color: #28597a;
+   background: #28597a;
+   color: #ccc;
+}
+.ajaxgrid_addDiv button:active {
+   border-top-color: #1b435e;
+   background: #1b435e;
+}
+/*------------------ajaxgrid_mainDiv-------------------------*/
+.ajaxgrid_mainDiv
+{
+	overflow:auto;
+}
+/*-------------------odd && even rows -----------------------*/
+.ajaxgrid_even
+{
+	background:#ccc;
+}
+.ajaxgrid_odd
+{
+	background:#eee;
+}
+/*----------------------darkDiv------------------------------*/
+.darkDiv
+{
+	width:100%;
+	height:100%;
+	background: #333;
+	position:absolute;
+	filter: alpha(opacity=30);
+	-moz-opacity: 0.8;
+	-khtml-opacity: 0.8;
+	opacity: 0.8;
+	rgba(0,0,0,0.8);
+	 display:block;
+	top:0;
+	left:0;
+}
+/*-------------------select value --------------------------*/
+.ajaxgrid_selectValue
+{
+	width:80%;height:auto;margin:5px 0px 0px 5px ;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;-khtml-border-radius:5px;-moz-box-shadow:inset 0 10px 10px#C1E5EF;-webkit-box-shadow:inset 0 10px 10px #C1E5EF;box-shadow:inset 0 10px 10px #C1E5EF;border:1px solid #ccc;color:#000;font-family:tahoma;font-size:12px;
+}

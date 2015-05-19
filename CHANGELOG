@@ -1,0 +1,165 @@
+FILE = class/user_class.php*
+USER = M.Mirsamie
+DATE = 1392-10-15
+added is_authonticated method
+-----------------------------------------------------------------------------
+FILE = class/encrypt_class.php*
+USER = M.Mirsamie
+DATE = 1392-10-15
+added but is f(x) = x;
+-----------------------------------------------------------------------------
+FILE = class/xml_class.php*
+USER = M.Mirsamie
+DATE = 1392-10-15
+added but is f(x) = x;
+-----------------------------------------------------------------------------
+FILE = main/mywsdl.php*
+USER = M.Mirsamie
+DATE = 1392-10-15
+added that autoloads from web_service
+-----------------------------------------------------------------------------
+FILE = class/nusoap.php*
+USER = M.Mirsamie
+DATE = 1392-10-15
+added and edited(bug fixed)
+-----------------------------------------------------------------------------
+FILE = web_service/search.php*
+USER = M.Mirsamie
+DATE = 1392-10-15
+added
+-----------------------------------------------------------------------------
+FILE = main/sync.php
+USER = M.Mirsamie
+DATE = 1392-11-23
+added
+-----------------------------------------------------------------------------
+FILE = class/c_class.php
+USER = M.Mirsamie
+DATE = 1392-11-23
+added
+-----------------------------------------------------------------------------
+FILE = class/havapeima_class.php
+USER = M.Mirsamie
+DATE = 1392-11-23
+added
+-----------------------------------------------------------------------------
+DB = superparvaz/
+USER = SHakery
+DATE = 1392-11-23
+CREATE TABLE IF NOT EXISTS `sites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) COLLATE utf8_persian_ci NOT NULL,
+  `url_addr` varchar(1000) COLLATE utf8_persian_ci NOT NULL,
+  `add_ghimat` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `sites`
+--
+
+INSERT INTO `sites` (`id`, `name`, `url_addr`, `add_ghimat`) VALUES
+(1, 'ره‌بال', 'http://www.rahbal.ir/', 50000);
+-----------------------------------------------------------------------------
+FILE = class/parvaz_class.php
+USER = M.Mirsamie
+DATE = 1392-11-23
+add method add()
+-----------------------------------------------------------------------------
+DB = superparvaz/
+USER = SHakery
+DATE = 1392-11-23
+CREATE TABLE IF NOT EXISTS `parvaz_det_sites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parvaz_det_id` int(11) NOT NULL DEFAULT '-1',
+  `sites_id` int(11) NOT NULL DEFAULT '-1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci AUTO_INCREMENT=1 ;
+-----------------------------------------------------------------------------
+FILE = class/mysql_class.php
+USER = M.Mirsamie
+DATE = 1392-11-23
+added arabicToPersian
+-----------------------------------------------------------------------------
+FILE = class/shahr_class.php
+USER = SHakery
+DATE = 1392-11-23
+shahr_class
+Created
+-----------------------------------------------------------------------------
+DB = superparvaz/
+USER = SHakery
+DATE = 1392-11-23
+CREATE TABLE IF NOT EXISTS `parvaz_det_tmp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parvaz_id` int(11) NOT NULL,
+  `tarikh` date NOT NULL,
+  `saat` time NOT NULL,
+  `zarfiat` int(11) NOT NULL,
+  `ghimat` int(11) NOT NULL,
+  `typ` int(11) NOT NULL COMMENT 'صفریعنی عمومی یک یعنی خصوصی ۲ یعنی صندوق',
+  `zakhire` int(11) NOT NULL,
+  `j_id` int(11) NOT NULL,
+  `poor_def` int(11) NOT NULL,
+  `mablagh_kharid` int(11) NOT NULL DEFAULT '0',
+  `saat_kh` time NOT NULL COMMENT 'ساعت ورود به مقصد',
+  `can_esterdad` int(11) NOT NULL COMMENT 'یک یعنی قابل استرداد و صفر یعنی غیر قابل استرداد',
+  `en` int(11) NOT NULL DEFAULT '1',
+  `customer_id` int(11) NOT NULL DEFAULT '-1' COMMENT 'آژانس فروشنده',
+  `tour_mablagh` int(11) NOT NULL DEFAULT '0',
+  `toz` varchar(2000) COLLATE utf8_persian_ci NOT NULL,
+  `sites_id` int(11) NOT NULL DEFAULT '-1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci AUTO_INCREMENT=1 ;
+-----------------------------------------------------------------------------
+FILE = class/parvaz_det_tmp_class.php
+USER = Shakery
+DATE = 1392-11-23
+Created
+-----------------------------------------------------------------------------
+FILE = class/sites_class.php
+USER = Shakery
+DATE = 1392-11-23
+Created
+-----------------------------------------------------------------------------
+FILE = main/site1.php
+USER = Shakery
+DATE = 1392-11-26
+Created
+-----------------------------------------------------------------------------
+FILE = main/home_admin.php
+USER = Shakery
+DATE = 1392-11-26
+change query 
+-----------------------------------------------------------------------------
+FILE = css/style.css
+USER = Shakery
+DATE = 1392-11-26
+add pointer class
+-----------------------------------------------------------------------------
+FILE = main/index.js.php
+USER = Shakery
+DATE = 1392-11-26
+-----------------------------------------------------------------------------
+FILE = main/home.php
+USER = Shakery
+DATE = 1392-11-28
+edited for new query
+-----------------------------------------------------------------------------
+DB = superparvaz/
+USER = SHakery
+DATE = 1392-11-28
+ALTER TABLE  `ticket` ADD  `is_sent_ticket` INT NOT NULL DEFAULT  '0'
+-----------------------------------------------------------------------------
+FILE = main/parvaz_forookhte.php
+USER = Shakery
+DATE = 1392-11-28
+edited for new query
+-----------------------------------------------------------------------------
+FILE = main/checkflight.php , checkflight2.php ,manifest2.php
+class/parvaz_det_class.php , sites_class.php
+
+USER = Shakery
+DATE = 1392-11-28
+-----------------------------------------------------------------------------
+
