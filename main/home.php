@@ -95,7 +95,7 @@
         }
 	function hamed_pdate_day($str)
 	{
-		$out=jdate('l',strtotime($str));
+		$out=jdate('l d / m / Y',strtotime($str));
                 return enToPerNums($out);
 	}
 	function poorsant($inp)
@@ -204,108 +204,45 @@
 		$pageRows =(int) $l[0]['co'];
 */
 	$gname = 'parvaz_det';
-	$input =array($gname=>array('table'=>'parvaz_det','div'=>'parvaz_det_div','query'=>"select parvaz_det.id,ghimat,zarfiat,shahr.name mabda,shahr1.name maghsad,parvaz.shomare,
-havapeima.name havapeima, parvaz_det.tarikh,parvaz_det.saat,parvaz_det.poor_def,parvaz_det.toz,
-parvaz.id parvaz_id
- from parvaz_det left join parvaz on (parvaz_det.parvaz_id=parvaz.id) 
-left join shahr on (parvaz.mabda_id=shahr.id) 
-left join shahr shahr1 on (parvaz.maghsad_id=shahr1.id) 
-left join  havapeima on (parvaz.havapiema_id=havapeima.id) 
-where parvaz_det.en=1 and $shart order by parvaz_det.tarikh,parvaz_det.saat"));
+	$input =array($gname=>array('table'=>'parvaz_det','div'=>'parvaz_det_div'));
 	
 	$xgrid = new xgrid($input);
 	if(isset($_REQUEST['saztarikh']))
 		$xgrid->eRequest[$gname]=array('saztarikh'=>$_REQUEST['saztarikh'],'statarikh'=>$_REQUEST['statarikh'],'smabda_id'=>$_REQUEST['smabda_id'],'smaghsad_id'=>$_REQUEST['smaghsad_id']);
 	$xgrid->disableRowColor[$gname] = TRUE;
-	$xgrid->afterCreateFunction[$gname] = 'colorFunc';
+	//$xgrid->afterCreateFunction[$gname] = 'colorFunc';
+        $xgrid->whereClause[$gname] = ' 1=1 order by tarikh,saat,ghimat';
+        $xgrid->pageRows[$gname]= $pageRows;
 	$id = $xgrid->column[$gname][0];
 	$xgrid->column[$gname][0]['name'] = 'انتخاب';
 	$xgrid->column[$gname][0]['cfunction']=array('loadCheckBox');
-	$xgrid->column[$gname][1]['name'] = 'قیمت';
-	$xgrid->column[$gname][1]['cfunction'] = array('loadGhimat');
-	$xgrid->column[$gname][2]['name'] = 'ظرفیت';
-	$xgrid->column[$gname][3]['name'] = 'مبدأ'; 
-	$xgrid->column[$gname][4]['name'] = 'مقصد';
-	$xgrid->column[$gname][5]['name'] = 'شماره';
-	$xgrid->column[$gname][6]['name'] = 'هواپیما';
-	$xgrid->column[$gname][7]['name'] = 'تاریخ';
-	$xgrid->column[$gname][7]['cfunction'] =array('hamed_pdate');
-	$xgrid->column[$gname][8]['name'] = 'ساعت';
-	$xgrid->column[$gname][8]['cfunction'] =array('saat');
-	$xgrid->column[$gname][9]['name'] = 'کمیسیون';
-	$xgrid->column[$gname][10]['name'] = 'توضیحات';
-	$xgrid->column[$gname][11]['name']='';
-	/*
-	$input =array($gname=>array('table'=>'parvaz_det','div'=>'parvaz_det_div'));
-	$xgrid = new xgrid($input);
-	$xgrid->disableRowColor[$gname] = TRUE;
-	$xgrid->afterCreateFunction[$gname] = 'colorFunc';
-	//$xgrid->echoQuery = TRUE;
-	//$xgrid->alert = TRUE;
-	$xgrid->whereClause[$gname] = " ((`tarikh`='".date("Y-m-d")."' and `saat`>='".date("H:i:s")."') or (`tarikh`>'".date("Y-m-d")."')) order by `tarikh`,`saat`";
-	//$xgrid->whereClause[$gname] = " 1=1 order by `tarikh`,`saat`";
-	$xgrid->pageRows[$gname]= 500;
-	//$xgrid->pageCount[$gname]= 1000;
-	$id = $xgrid->column[$gname][0];
-	$parvaz_id = $xgrid->column[$gname][1];
-	$tarikh = $xgrid->column[$gname][2];
-	$saat = $xgrid->column[$gname][3];
-	$zarfiat = $xgrid->column[$gname][4];
-	$ghimat = $xgrid->column[$gname][5];
-	$typ = $xgrid->column[$gname][6];
-	$zakhire = $xgrid->column[$gname][7];
-	$j_id = $xgrid->column[$gname][8];
-	$poor_def =  $xgrid->column[$gname][9];
-	$mablagh_kharid = $xgrid->column[$gname][10];
-	$saat_kh = $xgrid->column[$gname][11];
-	$can_esterdad = $xgrid->column[$gname][12];
-	$en = $xgrid->column[$gname][13];
-	$customer_id = $xgrid->column[$gname][14];
-	$tour_mablagh =  $xgrid->column[$gname][15];
-	$toz = $xgrid->column[$gname][16];
-
-	$xgrid->column[$gname][0]['name'] = 'انتخاب';
-	$xgrid->column[$gname][0]['cfunction'] = array('loadCheckBox');
-	$xgrid->column[$gname][1] = $ghimat;
-	$xgrid->column[$gname][1]['name'] = 'قیمت';
-	$xgrid->column[$gname][1]['cfunction'] = array('loadGhimat');
-
-	$xgrid->column[$gname][2] =$id;
-	$xgrid->column[$gname][2]['name'] = 'ظرفیت';
-	$xgrid->column[$gname][2]['cfunction'] = array('zarfiat');
-
-	$xgrid->column[$gname][3] = array('name'=>'مبدأ','fieldname'=>'parvaz_id','css'=>'','typ'=>'int','access'=>'a','cfunction'=>array('loadCityMab'));
-	$xgrid->column[$gname][4] = array('name'=>'مقصد','fieldname'=>'parvaz_id','css'=>'','typ'=>'int','access'=>'a','cfunction'=>array('loadCityMagh'));
-	$xgrid->column[$gname][5] = $parvaz_id;
-	$xgrid->column[$gname][5]['name'] = 'شماره';
-	$xgrid->column[$gname][5]['cfunction'] = array('loadShomare');
-
-	$xgrid->column[$gname][6] = array('name'=>'هواپیما','fieldname'=>'parvaz_id','css'=>'','typ'=>'int','access'=>'a','cfunction'=>array('loadPlane'));
-	$xgrid->column[$gname][7] = $tarikh;
-	$xgrid->column[$gname][7]['name'] = 'تاریخ';
-	$xgrid->column[$gname][7]['cfunction'] = array('hamed_pdate');
-
-	$xgrid->column[$gname][8] = $saat;
-	$xgrid->column[$gname][8]['name'] = 'خروج';
-	$xgrid->column[$gname][8]['cfunction'] = array('saat');
-
-	$xgrid->column[$gname][9] = $saat_kh;
-	$xgrid->column[$gname][9]['name'] = 'ورود';
-	$xgrid->column[$gname][9]['cfunction'] = array('saat');
-
-	$xgrid->column[$gname][10] = $id;
-	$xgrid->column[$gname][10]['name'] = 'کمیسیون';
-	$xgrid->column[$gname][10]['cfunction'] = array('poorsant');
-
-	$xgrid->column[$gname][11] = $toz;
-	$xgrid->column[$gname][11]['name']='توضیحات';
-	$xgrid->column[$gname][12]['name']='';
-	$xgrid->column[$gname][13]['name']='';
-	$xgrid->column[$gname][14]['name']='';
-	$xgrid->column[$gname][15]['name']='';
-	$xgrid->column[$gname][16] =$parvaz_id;
-	$xgrid->column[$gname][16]['name'] = '';
-	*/
+        $xgrid->column[$gname][1]['name'] = '';
+        $xgrid->column[$gname][2]['name'] = 'تاریخ';
+        $xgrid->column[$gname][2]['cfunction'] = array('hamed_pdate_day');
+        $xgrid->column[$gname][3]['name'] = 'ساعت';
+        $xgrid->column[$gname][3]['cfunction'] = array('saat');
+        $xgrid->column[$gname][4]['name'] = 'ظرفیت';
+        $xgrid->column[$gname][4]['cfunction'] = array('enToPerNums');
+        $xgrid->column[$gname][5]['name'] = 'قیمت';
+        $xgrid->column[$gname][5]['cfunction'] = array('monize');
+        $xgrid->column[$gname][6]['name'] = 'شماره';
+        $xgrid->column[$gname][7]['name'] = '';
+        $xgrid->column[$gname][8]['name'] = 'مبدأ';
+        $xgrid->column[$gname][9]['name'] = 'مقصد';
+        $xgrid->column[$gname][10]['name'] = 'ایرلاین';
+        $xgrid->column[$gname][11]['name'] = 'کلاس';
+        $xgrid->column[$gname][12]['name'] = '';
+        $xgrid->column[$gname][13]['name'] = '';
+        $xgrid->column[$gname][14]['name'] = '';
+        $xgrid->column[$gname][15]['name'] = '';
+        $xgrid->column[$gname][16]['name'] = '';
+        $xgrid->column[$gname][17]['name'] = '';
+        $xgrid->column[$gname][18]['name'] = '';
+        $xgrid->column[$gname][19]['name'] = '';
+        $xgrid->column[$gname][20]['name'] = '';
+        $xgrid->column[$gname][21]['name'] = '';
+        $xgrid->column[$gname][22]['name'] = '';
+        $xgrid->column[$gname][23]['name'] = '';
 	$out =$xgrid->getOut($_REQUEST);
 	//var_dump($xgrid);
 	
@@ -326,33 +263,6 @@ where parvaz_det.en=1 and $shart order by parvaz_det.tarikh,parvaz_det.saat"));
                 initReserve();
                 $(".ajaxgrid_bottomTable tr:first").remove();
         }	
-	/*function searchFlight()
-	{
-		var werc ='';
-		var ser ='ser';
-		$.each($('.'+ser),function(id,field)
-		{
-			var fi = $("#"+field.id).val();
-			if(field.id=='saztarikh' && fi!='' )
-			{
-				tmpTr = jToM(fi);
-				werc +=((werc=='')?' where ':' and ')+" (date(`tarikh`) >= '"+tmpTr+"') ";
-			}
-			else if(field.id=='statarikh' && fi!='')
-			{
-				tmpTr = jToM(fi);
-				werc +=((werc=='')?' where ':' and ')+" (date(`tarikh`) <= '"+tmpTr+"') ";
-			}
-			else if(field.id=='smabda_id' && parseInt(fi,10)!=-1)
-				werc +=((werc=='')?' where ':' and ')+" ( `parvaz_id` in(select `id` from `parvaz` WHERE `mabda_id`='"+fi+"' ))  ";
-			else if(field.id=='smaghsad_id' && parseInt(fi,10)!=-1)
-				werc +=((werc=='')?' where ':' and ')+" ( `parvaz_id` in(select `id` from `parvaz` WHERE `maghsad_id`='"+fi+"' ))  ";
-		});
-		//alert(werc);
-		var ggname ='<?php echo $gname; ?>';
-		whereClause[ggname] = encodeURIComponent(werc);
-		grid[ggname].init(gArgs[ggname]);
-	}*/
 	function searchFlight()
 	{
 		var werc ='';

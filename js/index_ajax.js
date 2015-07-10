@@ -270,5 +270,5 @@ function init()
                 addMoshaverTimeFunc();
         });
 	getJalaseTyps();
-	refreshVar = startRefresh();
+	//refreshVar = startRefresh();
 }

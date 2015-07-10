@@ -60,8 +60,8 @@
 	<body dir="rtl">
 		<div id="gcom" style="padding-right:4%;">
 			<div style="color:#ffffff;">
-				<?php echo $conf->gcom_link; ?>
-				<br/><br/>
+				<?php //echo $conf->gcom_link; ?>
+				<br/>
 				<?php echo $conf->kharidar_link; ?>
 			</div>
 		</div>

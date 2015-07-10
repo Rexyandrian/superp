@@ -1,8 +1,15 @@
 @CHARSET "UTF-8";
+@font-face {
+    font-family: 'DroidNaskh';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../fonts/DroidNaskh-Regular.eot);
+    src: url(../fonts/DroidNaskh-Regular.eot?#iefix) format('embedded-opentype'), url(../fonts/DroidNaskh-Regular.woff2) format('woff2'), url(../fonts/DroidNaskh-Regular.woff) format('woff'), url(../fonts/DroidNaskh-Regular.ttf) format('truetype');
+}
 body {
 	direction:rtl;
-	font-size:12px;
-	font-family : tahoma,Tahoma,Arial;
+	font-size:14px;
+	font-family : 'DroidNaskh',Tahoma,Arial;
 	color: #444444;
 	background: #fefefe url('../img/watter.png');
 	background-position: top;
@@ -11,12 +18,12 @@ body {
 h2
 {
 	font-size:120%;
-	font-family : tahoma,Tahoma,Arial;
+	font-family : 'DroidNaskh',Tahoma,Arial;
 	font-weight: bold;
 }
 p
 {
-	font-family : tahoma,Tahoma,Arial;
+	font-family : 'DroidNaskh',Tahoma,Arial;
 }
 #headerContent
 {
@@ -33,7 +40,7 @@ p
 }
 .msg
 {
-	font-family: "b Yekan",tahoma;
+	font-family: "b Yekan",'DroidNaskh';
 	margin: 5px 0px 5px 0px;
 	padding: 5px 5px 5px 5px;
 	border:2px solid #36a936 ;
@@ -48,7 +55,7 @@ p
 }
 .notice
 {
-	font-family: "b Yekan",tahoma;
+	font-family: "b Yekan",'DroidNaskh';
 	margin: 5px 0px 5px 0px;
 	padding: 5px 5px 5px 5px;
 	border:2px solid #f66969 ;
@@ -142,7 +149,6 @@ table.sample th {
 	border-style: dashed;
 	border-color: gray;
 	background-color: white;
-	-moz-border-radius: ;
 }
 table.sample td {
 	border-width: 1px;
@@ -150,7 +156,6 @@ table.sample td {
 	border-style: dashed;
 	border-color: gray;
 	background-color: white;
-	-moz-border-radius: ;
 	text-align: right;
 }
 #gcom
@@ -168,9 +173,9 @@ table.sample td {
 }
 input , button , select
 {
-	font-family:tahoma;
-	font-size:12px;
-	height: 25px;
+	font-family:'DroidNaskh';
+	font-size:14px;
+	height: 30px;
 }
 .pointer{cursor:pointer}
 #gcom a:link {color:#f3ea59;}

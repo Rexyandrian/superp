@@ -95,7 +95,7 @@
         }
 	function hamed_pdate_day($str)
 	{
-		$out=jdate('y/m/d',strtotime($str));
+		$out=jdate('l d / m / Y',strtotime($str));
                 return ($out);
 	}
 	function saat($inp)
@@ -261,139 +261,45 @@
 	if(isset($l[0]))
 		$pageRows =(int) $l[0]['co'];
 	$gname = 'grid_parvaz_det';
-	$input =array($gname=>array('table'=>'parvaz_det','div'=>'parvaz_det_div','query'=>"select parvaz_det.id,ghimat,zarfiat,shahr.name mabda,shahr1.name maghsad,parvaz.shomare,
-havapeima.name havapeima, parvaz_det.tarikh,parvaz_det.saat,parvaz_det.poor_def,
-(parvaz_det.zakhire-(if((select sum(customer_parvaz.zakhire) from customer_parvaz where customer_parvaz.parvaz_det_id=parvaz_det.id ) is null,0,(select sum(customer_parvaz.zakhire) from customer_parvaz where customer_parvaz.parvaz_det_id=parvaz_det.id)))) zakhire,parvaz_det.typ,parvaz.id parvaz_id,sites.name site_name,parvaz_det.en
- from parvaz_det left join parvaz on (parvaz_det.parvaz_id=parvaz.id) 
-left join shahr on (parvaz.mabda_id=shahr.id) 
-left join shahr shahr1 on (parvaz.maghsad_id=shahr1.id) 
-left join  havapeima on (parvaz.havapiema_id=havapeima.id) 
-left join parvaz_det_sites on (parvaz_det.id=parvaz_det_sites.parvaz_det_id)
-left join sites on (parvaz_det_sites.sites_id=sites.id)
-where parvaz_det.en>=1 and $shart  order by parvaz_det.tarikh,parvaz_det.saat"));
+	$input =array($gname=>array('table'=>'parvaz_det','div'=>'parvaz_det_div'));
 	
 	$xgrid = new xgrid($input);
 	if(isset($_REQUEST['saztarikh']))
                 $xgrid->eRequest[$gname]=array('saztarikh'=>$_REQUEST['saztarikh'],'statarikh'=>$_REQUEST['statarikh'],'smabda_id'=>$_REQUEST['smabda_id'],'smaghsad_id'=>$_REQUEST['smaghsad_id']);	
 	$xgrid->disableRowColor[$gname] = TRUE;
-	$xgrid->afterCreateFunction[$gname] = 'colorFunc';
+	//$xgrid->afterCreateFunction[$gname] = 'colorFunc';
 	$id = $xgrid->column[$gname][0];
+        $xgrid->whereClause[$gname] = ' 1=1 order by tarikh,saat,ghimat';
+        $xgrid->pageRows[$gname]= $pageRows;
 	$xgrid->column[$gname][0]['name'] = 'انتخاب';
 	$xgrid->column[$gname][0]['cfunction']=array('loadCheckBox');
-	$xgrid->column[$gname][1]['name'] = 'قیمت';
-	$xgrid->column[$gname][2]['name'] = 'ظرفیت';
-	$xgrid->column[$gname][3]['name'] = 'مبدأ'; 
-	$xgrid->column[$gname][4]['name'] = 'مقصد';
-	$xgrid->column[$gname][5]['name'] = 'شماره';
-	$xgrid->column[$gname][6]['name'] = 'هواپیما';
-	$xgrid->column[$gname][7]['name'] = 'تاریخ';
-	$xgrid->column[$gname][7]['cfunction'] =array('hamed_pdate_day');
-	$xgrid->column[$gname][8]['name'] = 'ساعت';
-	$xgrid->column[$gname][8]['cfunction'] =array('saat');
-	$xgrid->column[$gname][9]['name'] = 'کمیسیون';
-	$xgrid->column[$gname][10]['name'] = 'ذخیره';
-	$xgrid->column[$gname][11]['name'] = 'نوع';
-	$xgrid->column[$gname][11]['cfunction'] = array('sh_type');
-	$xgrid->column[$gname][12]['name']='';
-	$xgrid->column[$gname][13]['name']='سایت';	
-	$xgrid->column[$gname][14]['name']='نمایش';
-	$xgrid->column[$gname][14]['cfunction'] = array('loadEN');
-	$xgrid->column[$gname][15] = $id;
-	$xgrid->column[$gname][16] = $id;
-	$xgrid->column[$gname][15]['name'] = 'ویرایش';
-	$xgrid->column[$gname][15]['cfunction'] = array('loadDet');
-	$xgrid->column[$gname][16]['name'] = 'جزئیات فروش';
-	$xgrid->column[$gname][16]['cfunction'] = array('parvaz_detail'); 
-	/*
-	//$xgrid->whereClause[$gname] = " `tarikh`>='$now'";
-	$xgrid->whereClause[$gname] = " en>=1 order by `tarikh`,`saat`";
-	$xgrid->canEdit[$gname] = TRUE;
-	$xgrid->canDelete[$gname] = TRUE;
-	$xgrid->deleteFunction[$gname] = 'delete_item';
-	$xgrid->pageRows[$gname]= $pageRows;
-	//$xgrid->alert = TRUE;
-	//$xgrid->echoQuery = TRUE;
-	$id = $xgrid->column[$gname][0];
-	$parvaz_id = $xgrid->column[$gname][1];
-	$tarikh = $xgrid->column[$gname][2];
-	$saat = $xgrid->column[$gname][3];
-	$zarfiat = $xgrid->column[$gname][4];
-	$ghimat = $xgrid->column[$gname][5];
-	$typ = $xgrid->column[$gname][6];
-	$zakhire = $xgrid->column[$gname][7];
-	$j_id = $xgrid->column[$gname][8];
-	$poor_def =  $xgrid->column[$gname][9];
-	$mablagh_kharid = $xgrid->column[$gname][10];
-	$saat_kh = $xgrid->column[$gname][11];
-	$can_esterdad = $xgrid->column[$gname][12];
-	$en = $xgrid->column[$gname][13];
-	$customer_id = $xgrid->column[$gname][14];
-	$tour_mablagh =  $xgrid->column[$gname][15];
-	$toz = $xgrid->column[$gname][16];
-
-	$xgrid->column[$gname][0]['name'] = '';
-
-	$xgrid->column[$gname][1] = $id;
-	$xgrid->column[$gname][1]['name'] = 'انتخاب';
-	$xgrid->column[$gname][1]['cfunction'] = array();
-	$xgrid->column[$gname][1]['access']  = 'a';
-
-	$xgrid->column[$gname][2] = $ghimat;
-	$xgrid->column[$gname][2]['name'] = 'قیمت';
-	$xgrid->column[$gname][2]['cfunction'] = array('loadGhimat','umonizeGh');
-
-	$xgrid->column[$gname][3] =$id;
-	$xgrid->column[$gname][3]['name'] = 'ظرفیت';
-	$xgrid->column[$gname][3]['cfunction'] = array('loadZarfiat');
-	$xgrid->column[$gname][3]['access']  = 'a';
-
-	$xgrid->column[$gname][4] = array('name'=>'مبدأ','fieldname'=>'parvaz_id','css'=>'','typ'=>'int','access'=>'a','cfunction'=>array('loadCityMab'));
-	$xgrid->column[$gname][5] = array('name'=>'مقصد','fieldname'=>'parvaz_id','css'=>'','typ'=>'int','access'=>'a','cfunction'=>array('loadCityMagh'));
-	$xgrid->column[$gname][6] = $parvaz_id;
-	$xgrid->column[$gname][6]['name'] = 'شماره';
-	$xgrid->column[$gname][6]['cfunction'] = array('loadShomare');
-	$xgrid->column[$gname][6]['access']  = 'a';
-
-	$xgrid->column[$gname][7] = array('name'=>'هواپیما','fieldname'=>'parvaz_id','css'=>'','typ'=>'int','access'=>'a','cfunction'=>array('loadPlane'));
-	$xgrid->column[$gname][8] = $tarikh;
-	$xgrid->column[$gname][8]['name'] = 'تاریخ';
-	$xgrid->column[$gname][8]['cfunction'] = array('hamed_pdate');
-	$xgrid->column[$gname][8]['access']  = 'a';
-
-	$xgrid->column[$gname][9] = $saat;
-	$xgrid->column[$gname][9]['name'] = 'خروج';
-	$xgrid->column[$gname][9]['cfunction'] = array('saat');
-
-	$xgrid->column[$gname][10] = $saat_kh;
-	$xgrid->column[$gname][10]['name'] = '';
-	//$xgrid->column[$gname][10]['cfunction'] = array('saat');
-
-	$xgrid->column[$gname][11] = $id;
-	$xgrid->column[$gname][11]['name'] = 'کمیسیون';
-	$xgrid->column[$gname][11]['cfunction'] = array('poorsant');
-
-	$xgrid->column[$gname][12] = $id;
-	$xgrid->column[$gname][12]['name'] = 'ذخیره';
-	$xgrid->column[$gname][12]['cfunction'] = array('loadCustomerZakhire');
-	$xgrid->column[$gname][12]['access']  = 'a';
-
-	$xgrid->column[$gname][13] = $typ;
-	$xgrid->column[$gname][13]['name']='نوع';
-	//$xgrid->column[$gname][12]['access']  = 'a';
-	$xgrid->column[$gname][13]['clist']  = loadType();
-
-	$xgrid->column[$gname][14] = $id;
-	$xgrid->column[$gname][14]['name']='موارد دیگر';
-	$xgrid->column[$gname][14]['access']  = 'a';
-	$xgrid->column[$gname][14]['cfunction'] = array('loadDet');
-
-	$xgrid->column[$gname][15] = $id;
-	$xgrid->column[$gname][15]['name']='جزئیات فروش';
-	$xgrid->column[$gname][15]['access']  = 'a';
-	$xgrid->column[$gname][15]['cfunction'] = array('parvaz_detail');	
-	$xgrid->column[$gname][16] =$parvaz_id;
-	$xgrid->column[$gname][16]['name'] = '';
-	*/
+        $xgrid->column[$gname][1]['name'] = '';
+        $xgrid->column[$gname][2]['name'] = 'تاریخ';
+        $xgrid->column[$gname][2]['cfunction'] = array('hamed_pdate_day');
+        $xgrid->column[$gname][3]['name'] = 'ساعت';
+        $xgrid->column[$gname][3]['cfunction'] = array('saat');
+        $xgrid->column[$gname][4]['name'] = 'ظرفیت';
+        $xgrid->column[$gname][4]['cfunction'] = array('enToPerNums');
+        $xgrid->column[$gname][5]['name'] = 'قیمت';
+        $xgrid->column[$gname][5]['cfunction'] = array('monize');
+        $xgrid->column[$gname][6]['name'] = 'شماره';
+        $xgrid->column[$gname][7]['name'] = '';
+        $xgrid->column[$gname][8]['name'] = 'مبدأ';
+        $xgrid->column[$gname][9]['name'] = 'مقصد';
+        $xgrid->column[$gname][10]['name'] = 'ایرلاین';
+        $xgrid->column[$gname][11]['name'] = 'کلاس';
+        $xgrid->column[$gname][12]['name'] = '';
+        $xgrid->column[$gname][13]['name'] = '';
+        $xgrid->column[$gname][14]['name'] = '';
+        $xgrid->column[$gname][15]['name'] = '';
+        $xgrid->column[$gname][16]['name'] = '';
+        $xgrid->column[$gname][17]['name'] = '';
+        $xgrid->column[$gname][18]['name'] = '';
+        $xgrid->column[$gname][19]['name'] = '';
+        $xgrid->column[$gname][20]['name'] = '';
+        $xgrid->column[$gname][21]['name'] = '';
+        $xgrid->column[$gname][22]['name'] = '';
+        $xgrid->column[$gname][23]['name'] = '';
 	$out =$xgrid->getOut($_REQUEST);
 	if($xgrid->done)
 		die($out);
