@@ -162,11 +162,13 @@
 	$domasire_ok = TRUE;
 	if(count($tmp) == 1 && (int)$tmp[0] <=0)
 		$paravaz_tedad = FALSE;
+        /*
 	foreach($selectedParvaz as $tmp)
 	{
-		$bar = bargashtHast($selectedParvaz,$tmp);
-		$domasire_ok = $bar && $domasire_ok;
+            $bar = bargashtHast($selectedParvaz,$tmp);
+            $domasire_ok = $bar && $domasire_ok;
 	}
+        */
 	$customer_etebar_ok = TRUE;
 	$customer_tedad_ok = TRUE;
 	$customer_shomare_ok = TRUE;
@@ -212,35 +214,48 @@
 				if($kharid_typ=='naghdi')
 					$timeout = 15;
 				
-				$alaki = ticket_class::addTmp($tmp->getId(),$tedad,$timeout);
-				$tmp->setZarfiat($tedad);
-				$tmp_id[] = $alaki;
-				$adl_ghimat += $tmp->ghimat;
-				$chd_ghimat += $tmp->ghimat;
-				$inf_ghimat += ($tmp->ghimat/10);
-				$poorsant += $tmp->ghimat * ($customer->getPoorsant($tmp->getId())/100);
-				$k++;
+                                $moghim_res =  moghim_class::checkselection((int)$tmp->subflid, (int)$tmp->customer_id, $adl, $chd, $inf);
+                                //echo "$tmp->subflid, $tmp->customer_id, $adl, $chd, $inf";
+                                //var_dump($moghim_res);
+                                if($moghim_res->checkselectionResult)
+                                {    
+                                    $alaki = ticket_class::addTmp($tmp->getId(),$tedad,$timeout,$moghim_res->netlog,$moghim_res->rwaitlog);
+                                    $tmp->setZarfiat($tedad);
+                                    $tmp_id[] = $alaki;
+                                    $adl_ghimat += $moghim_res->adlprice;
+                                    $chd_ghimat += $moghim_res->chdprice;
+                                    $inf_ghimat += $moghim_res->chdprice;
+                                    //$poorsant += $tmp->ghimat * ($customer->getPoorsant($tmp->getId())/100);
+                                    $poorsant=0;
+                                    $k++;
+                                }
 			}
-			$res_tmp = new reserve_tmp_class($alaki);
-			$time_out = strtotime($res_tmp->tarikh .' + 5 minute ') - strtotime(date("Y-m-d H:i:s"));
- 			$time_out = audit_class::secondToMinute($time_out);
-			$adl_ghimat = enToPerNums(monize($adl_ghimat));
-			$chd_ghimat = enToPerNums(monize($chd_ghimat));
-			$inf_ghimat = enToPerNums(monize($inf_ghimat));
-			$poorsant = enToPerNums(monize($poorsant));
+                        if(isset($alaki))
+                        {    
+                            $res_tmp = new reserve_tmp_class($alaki);
+                            $time_out = strtotime($res_tmp->tarikh .' + 5 minute ') - strtotime(date("Y-m-d H:i:s"));
+                            $time_out = audit_class::secondToMinute($time_out);
+                            $adl_ghimat = enToPerNums(monize($adl_ghimat));
+                            $chd_ghimat = enToPerNums(monize($chd_ghimat));
+                            $inf_ghimat = enToPerNums(monize($inf_ghimat));
+                            $poorsant = enToPerNums(monize($poorsant));
+                        }
 			if ($ticket_type==1)
 				$e_ticket="<th colspan='1' >شماره تیکت</th>";
 			else	
-				$e_ticket="<th colspan='1'></th>";
+				$e_ticket="";
 			$adults = <<<adul
 				<tr class="showgrid_row_odd">
                                         <th class="showgrid_row_td_reserve_reserve">ردیف</th>
-					<th colspan='2' class="showgrid_row_td_reserve_reserve">بزرگسال</th>
-					<th colspan='1' class="showgrid_row_td_reserve_reserve">جنسیت</th>
+					<th colspan='2' class="showgrid_row_td_reserve_reserve">بزرگسال
+                                        (<span style="color:red" >*</span>)   
+                                        </th>
+                                        <th class="showgrid_row_td_reserve_reserve">
+                                        کد ملی یا شماره پاسپورت    
+                                        (<span style="color:red" >*</span>)
+                                        </th>
+					<th class="showgrid_row_td_reserve_reserve">جنسیت</th>
 					$e_ticket
-					<th class="showgrid_row_td_reserve_reserve">بهای فروش</th>
-                                        <th class="showgrid_row_td_reserve_reserve">کمیسیون</th>
-                                        <th class="showgrid_row_td_reserve_reserve">بهای خالص</th>
 				</tr>
 adul;
 			for($i = 0;$i < $adl;$i++)
@@ -266,18 +281,11 @@ tmp0;
 	                                $adults .= <<<tmp0
                                 <tr class="showgrid_row_even" >
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-					<td>نام‌و‌نام‌خانوادگی</td>
-                                        <td colspan="1" style="width:auto;"><input type='text' name='adl_lname_$i' id='adl_lname_$i' class='inp' style="width:400px;"/></td>
+                                        <td style="width:auto;"><input type='text' name='adl_fname_$i' id='adl_fname_$i' class='inp' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='adl_lname_$i' id='adl_lname_$i' class='inp' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='adl_codemelli_$i' id='adl_codemelli_$i' class='inp' placeholder="کد ملی یا شماره پاسپورت" /></td>
 					<td><select class='inp' name='adl_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
-<!--
-	
-                                        <td class="showgrid_row_td_reserve" >شماره تماس:</td>
-                                        <td class="showgrid_row_td_reserve" ><input type='text' name='adl_tel_$i' id='adl_tel$i' class='inp'  /></td>
--->
 					$e_ticket
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$adl_ghimat</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$poorsant</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$khal</td>
                                 </tr>
 tmp0;
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
@@ -302,9 +310,6 @@ chil;
 					<td  colspan='1'  class="showgrid_row_td_reserve" style='width:auto;text-align:right;' ><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp'  style="width:400px;"/></td>
 					<td><select class='inp' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
                                         <td class="showgrid_row_td_reserve" ><input type='text' name='chd_shomare_$i' id='chd_shomare_$i' class='inp'  /></td>
-					<td class="showgrid_row_td_reserve" readonly="readonly">$chd_ghimat</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$poorsant</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$khal</td>
 				</tr>
 tmp1;
 					}
@@ -313,13 +318,12 @@ tmp1;
                                                 $childs .= <<<tmp1
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td>نام و نام‌خانوادگی:</td>
-					<td  colspan='1'  class="showgrid_row_td_reserve" style='width:auto;text-align:right;' ><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp'  style="width:400px;"/></td>
-					<td><select class='inp' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
+                                        <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
+                                        <td><select class='inp' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
 					$e_ticket
-					<td class="showgrid_row_td_reserve" readonly="readonly">$chd_ghimat</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$poorsant</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$khal</td>
+	
                                 </tr>
 tmp1;
 
@@ -342,13 +346,11 @@ infa;
 						$infants .= <<<tmp2
 				<tr class="showgrid_row_even">
 					<td class="showgrid_row_td_reserve" >$radif</td>
-					<td >نام و نام‌خانوادگی:</td>
-					<td  colspan='1'  class="showgrid_row_td_reserve" style='width:autp;text-align:right;' ><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp'  style="width:400px;"/></td>
+                                        <td colspan="1" style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp' placeholder="نام" /></td>
+                                        <td colspan="1" style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp' placeholder="نام خانوادگی" /></td>
+        
 					<td><select class='inp' name='inf_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
                                         <td class="showgrid_row_td_reserve" ><input type='text' name='inf_shomare_$i' id='inf_shomare_$i' class='inp'  /></td>
-					<td class="showgrid_row_td_reserve" readonly="readonly">$inf_ghimat</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$poorsant</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$khal</td>
 				</tr>
 tmp2;
 					}
@@ -357,16 +359,13 @@ tmp2;
                                                 $infants .= <<<tmp2
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td>نام و نام‌خانوادگی:</td>
-                                        <td  colspan='1'  class="showgrid_row_td_reserve" style='width:auto;text-align:right;' ><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp'  style="width:400px;"/></td>
+                                        <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
 					<td><select class='inp' name='inf_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
 					$e_ticket
-					<td class="showgrid_row_td_reserve" readonly="readonly">$inf_ghimat</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$poorsant</td>
-                                        <td class="showgrid_row_td_reserve" readonly="readonly">$khal</td>
                                 </tr>
 tmp2;
-
 					}
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
 				}
@@ -407,7 +406,7 @@ tmp2;
 				tim.value = m+":"+s;
 			}
 		</script>
-	        <table style="border-style:solid;border-width:1px;border-color:Black;width:80%" border='1'>
+	        <table style="border-style:solid;border-width:1px;border-color:Black;width:80;font-size:12px;" border='1'>
 $adults
 $childs
 $infants
@@ -420,13 +419,13 @@ $infants
                                 <td class="showgrid_row_td_reserve" colspan="6" ><input type='text' name='email_addr' id='email_addr' class='inp'  style="width:99%;" /></td>
                         </tr>
 			<tr class="showgrid_row_even">
-                                <td class="showgrid_row_td_reserve" colspan="8" ><a href="http://www.superparvaz.com/rules" target="_blank" >شرایط و ضوابط را قبول دارم</a>
+                                <td class="showgrid_row_td_reserve" colspan="8" ><a href="http://www.superparvaz.com/terms-and-guideline/terms-of-booking" target="_blank" >شرایط و ضوابط را قبول دارم</a>
 				<input type='checkbox' name='zavabet' id='zavabet'  /></td>
                         </tr>
 			<tr class="showgrid_row_odd">
 				<td colspan = "8" class="showgrid_row_td_reserve" >
 				<br/>
-				<button onclick="sendTickets();">ثبت جهت رزرو موقت</button>
+				<button onclick="sendTickets();">ثبت و پرداخت</button>
 	                        <button onclick="rejectTickets();">انصراف</button>
 
 			</tr>		
@@ -446,6 +445,19 @@ OOUT;
 	}
 	
 ?>
+<div align="center" >
+    <?php
+        if ($msg != "")
+            echo "<script>alert('$msg');window.location='index.php';</script>";
+        else
+        {    
+            if(isset($moghim_res->checkselectionResult) && $moghim_res->checkselectionResult)
+                echo $out;
+            else
+                echo "خطا در ثبت موفق بلیت لطفا مجددا تلاش فرمایید";
+        }
+    ?>
+</div>
 <script type="text/javascript" >
 var adl=<?php echo $adl; ?>;
 var chd=<?php echo $chd; ?>;
@@ -506,13 +518,3 @@ var mod;
 		closeDialog();
 	}
 </script>
-
-	<div align="center" >
-		<?php
-			
-			if ($msg != "")
-				echo "<script>alert('$msg');window.location='index.php';</script>";
-			else
-				echo $out;
-		?>
-	</div>

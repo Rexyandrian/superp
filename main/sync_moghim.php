@@ -1,18 +1,7 @@
 <?php
 include('../kernel.php');
 require_once('../class/nusoap.php');
-/*
-$client = new soapclient_nu("http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl");
-$param = array(
-    'fd'=>'94/04/15',
-    'ld'=>'94/05/10',
-    'cust'=>'1005',
-    'pass'=>'123'
-);
-$res = $client->call("openTempfllist",$param);
-var_dump($res);
- * 
- */
+
 $today =substr(perToEnNums(jdate('Y/m/d',strtotime(date("Y-m-d H:i:s")))),2);// 
 $onem =substr(perToEnNums(jdate('Y/m/d',strtotime(date("Y-m-d H:i:s",time()+ 30*24*60*60)))),2);// date("Y-m-d H:i:s",time()+ 30*24*60*60);
 $cl = new SoapClient("http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl");

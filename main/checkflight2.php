@@ -174,8 +174,9 @@
 			for($i = 0;$i < $adl;$i++)
 			{
 				$ticket = new ticket_class;
-				//$ticket->fname = $_REQUEST["adl_fname_$i"];
+				$ticket->fname = $_REQUEST["adl_fname_$i"];
 				$ticket->lname = $_REQUEST["adl_lname_$i"];
+                                $ticket->code_melli = $_REQUEST["adl_codemelli_$i"];
 				$ticket->tel = ((isset($_REQUEST["adl_tel_$i"]))?$_REQUEST["adl_tel_$i"]:'');
 				$ticket->adult = 0;						
 				$ticket->parvaz_det_id = $parvaz->getId();
@@ -234,8 +235,9 @@
 			for($i = 0;$i < $chd;$i++)
                         {
 				$ticket = new ticket_class;
-                                //$ticket->fname = $_REQUEST["chd_fname_$i"];
+                                $ticket->fname = $_REQUEST["chd_fname_$i"];
                                 $ticket->lname = $_REQUEST["chd_lname_$i"];
+                                $ticket->code_melli = $_REQUEST["chd_codemelli_$i"];
                                 $ticket->tel = "";
                                 $ticket->adult = 1;
                                 $ticket->parvaz_det_id = $parvaz->getId();
@@ -287,8 +289,9 @@
                         for($i = 0;$i < $inf;$i++)
                         {
 				$ticket = new ticket_class;
-                                //$ticket->fname = $_REQUEST["inf_fname_$i"];
+                                $ticket->fname = $_REQUEST["inf_fname_$i"];
                                 $ticket->lname = $_REQUEST["inf_lname_$i"];
+                                $ticket->code_melli = $_REQUEST["inf_codemelli_$i"];
                                 $ticket->tel = "";
                                 $ticket->adult = 2;
                                 $ticket->parvaz_det_id = $parvaz->getId();

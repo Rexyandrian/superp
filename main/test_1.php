@@ -11,17 +11,21 @@ $param = array(
     'chdprice'=>&$chdprice,
     'infprice'=>&$infprice,
     'selrate'=>&$selrate,
-    'subflid'=>13941,
-    'AgencyCode'=>120,
+    'subflid'=>5923,
+    'AgencyCode'=>126,
     'adl'=>1,
     'chd'=>0,
     'inf'=>0,
     'cust'=>'1005',
     'pass'=>'123'
 );
-$res = moghim_class::checkselection(53027, 131, 1, 0, 0);
+$res = moghim_class::Flightlastdata(14594, 120);
+//$pattern = '/<xs:schema.*<\/xs:schema>/';
+//$xml = preg_replace($pattern, '', $res->FlightlastdataResult->any);
+
+//$response = simplexml_load_string($xml);
 //$res = $cl->checkselection($param);
-//var_dump($res);
+var_dump($res);
 //var_dump($res->adlprice);
 //var_dump($cl->__getFunctions());
-var_dump($res->checkselectionResult);
+//var_dump($response->NewDataSet->publicselectsp);

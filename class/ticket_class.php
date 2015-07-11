@@ -46,6 +46,7 @@
 				$this->gender = (int)$q[0]["gender"];
 				$this->email_addr = trim($q[0]["email_addr"]);
 				$this->sites_id = (int)$q[0]["sites_id"];
+                                $this->code_melli = $q[0]["code_melli"];
 			}
 		}
 		public function getId()
@@ -58,7 +59,7 @@
 			$conf = new conf;
 			$tmp_id= (int)$tmp_id;
 			$out = FALSE;
-			$mysql->ex_sql("select `id` from `ticket` where `fname`='".$this->fname."' and `lname`='".$this->lname."' and `tel`='".$this->tel."' and `parvaz_det_id`='".$this->parvaz_det_id."' and `en`='".$this->en."' and `mablagh` = '".$this->mablagh."' and `poorsant` = '".$this->poorsant."' and `shomare` = '".$this->shomare."' and `gender` = ".$this->gender." and email_addr = ".$this->email_addr." and sites_id=".$this->sites_id,$q);
+			$mysql->ex_sql("select `id` from `ticket` where `fname`='".$this->fname."' and `lname`='".$this->lname."' and `tel`='".$this->tel."' and `parvaz_det_id`='".$this->parvaz_det_id."' and `en`='".$this->en."' and `mablagh` = '".$this->mablagh."' and `poorsant` = '".$this->poorsant."' and `shomare` = '".$this->shomare."' and `gender` = ".$this->gender." and email_addr = '".$this->email_addr."' and sites_id='".$this->sites_id."' and code_melli='".$this->code_melli."'",$q);
 			if(count($q)==0 && $this->lname!="")
 			{
 				$mablagh = $this->mablagh;
@@ -71,7 +72,7 @@
 				$arg["typ"]=3;
 		                log_class::add($arg);
 				$hala = date("Y-m-d H:i:s");
-				$con = $mysql->ex_sqlx("insert into ticket (`fname`,`lname`,`tel`,`adult`,`sanad_record_id`,`parvaz_det_id`,`customer_id`,`user_id`,`shomare`,`typ`,`en`,`mablagh`,`poorsant`,`gender`,`regtime`,email_addr,sites_id) values ('".$this->fname."','".$this->lname."','".$this->tel."','".$this->adult."','".$this->sanad_record_id."','".$this->parvaz_det_id."','".$this->customer_id."','".$this->user_id."','".$this->shomare."','".$this->typ."','".$this->en."','$mablagh','".$this->poorsant."',".$this->gender.",'$hala','".$this->email_addr."','".$this->sites_id."')",FALSE);
+				$con = $mysql->ex_sqlx("insert into ticket (`fname`,`lname`,`tel`,`adult`,`sanad_record_id`,`parvaz_det_id`,`customer_id`,`user_id`,`shomare`,`typ`,`en`,`mablagh`,`poorsant`,`gender`,`regtime`,email_addr,sites_id,code_melli) values ('".$this->fname."','".$this->lname."','".$this->tel."','".$this->adult."','".$this->sanad_record_id."','".$this->parvaz_det_id."','".$this->customer_id."','".$this->user_id."','".$this->shomare."','".$this->typ."','".$this->en."','$mablagh','".$this->poorsant."',".$this->gender.",'$hala','".$this->email_addr."','".$this->sites_id."','".$this->code_melli."')",FALSE);
 				$ticket_id = $mysql->insert_id($con);
 				$mysql->close($con);
 				$out = TRUE;
@@ -127,7 +128,7 @@
 			}
 			return($out);
 		}
-		public function addTmp($parvaz_det_id,$tedad,$timeout,$customer_id = -1)
+		public function addTmp($parvaz_det_id,$tedad,$timeout,$netlog,$rwaitlog,$customer_id = -1)
 		{
 			$mysql = new mysql_class;
 			$conf = new conf;
@@ -155,7 +156,7 @@
 			$arg["typ"]=4;
                         log_class::add($arg);
 			$tarikh = date("Y-m-d H:i:s");
-			$con = $mysql->ex_sqlx("insert into `reserve_tmp` (`parvaz_det_id`,`tedad`,`customer_id`,`zakhire`,`zarfiat`,`tarikh`,`timeout`) values ('$parvaz_det_id','$tedad','$customer_id','$zakhire','$zarfiat','$tarikh','$timeout') ",FALSE);
+			$con = $mysql->ex_sqlx("insert into `reserve_tmp` (`parvaz_det_id`,`tedad`,`customer_id`,`zakhire`,`zarfiat`,`tarikh`,`timeout`,`netlog`,`rwaitlog`) values ('$parvaz_det_id','$tedad','$customer_id','$zakhire','$zarfiat','$tarikh','$timeout','$netlog','$rwaitlog') ",FALSE);
 			$out =$mysql->insert_id($con);
 			$mysql->close($con);
 			return $out;

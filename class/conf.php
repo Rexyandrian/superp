@@ -9,8 +9,10 @@
                 public $date_off = "0:00";
 		public $access_deny = "error";
 		public $enableSms = FALSE;
-		
-		/*
+		public $moghim_wsdl = "http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl";
+                public $moghim_cust = 1005;
+                public $moghim_pass = 123;
+                /*
 		public $title = "سامانه مشاوره و هدایت تحصیلی گروه اعصاب و روان آرن";//"Consult Management Software";
 		public $mellat_wsdl='https://pgws.bpm.bankmellat.ir/pgwchannel/services/pgw?wsdl';
                 public $mellat_namespace='http://interfaces.core.sw.bps.com/';

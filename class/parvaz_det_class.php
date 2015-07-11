@@ -34,32 +34,11 @@
 		{
 			$id = (int)$id;
 			$mysql = new mysql_class;
-			$mysql->ex_sql("select * from `parvaz_det` where `id` ='$id'",$q);
-			if(isset($q[0]))
-			{
-				$this->id = $id;
-				$this->parvaz_id = (int)$q[0]["parvaz_id"];
-				$this->tarikh = $q[0]["tarikh"];
-				$this->saat = $this->miniTime($q[0]["saat"]);
-				$this->zarfiat = (int)$q[0]["zarfiat"];
-				$this->ghimat = (int)$q[0]["ghimat"];
-				$this->typ = (int)$q[0]["typ"];
-				$this->zakhire = (int)$q[0]["zakhire"];
-				$this->j_id = (int)$q[0]["j_id"];
-				$this->poor_def = (int)$q[0]["poor_def"];
-				$parvaz = new parvaz_class((int)$q[0]["parvaz_id"]);
-				$this->mablagh_kharid = (int)$q[0]["mablagh_kharid"];
-				$this->customer_id = (int)$q[0]["customer_id"];
-				$this->tour_mablagh=(int)$q[0]["tour_mablagh"];
-				$this->toz = $q[0]["toz"];
-				$this->mabda_id = $parvaz->mabda_id;
-				$this->maghsad_id = $parvaz->maghsad_id;
-                                $this->shomare = $parvaz->shomare;
-				$this->havapeima_id = $parvaz->havapiema_id;
-				$this->sherkat_id = $parvaz->sherkat_id;
-				$this->can_esterdad = (int)$q[0]["can_esterdad"];
-				$this->is_shenavar = $parvaz->is_shenavar;
-			}
+			$mysql->ex_sql("select * from `parvaz_det` where `id` = '$id'",$q);
+			foreach($q[0] as $fi=>$val)
+                        {    
+                            $this->$fi=$val;
+                        }
 		}
 		public function getId()
 		{
