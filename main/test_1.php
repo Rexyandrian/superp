@@ -19,13 +19,17 @@ $param = array(
     'cust'=>'1005',
     'pass'=>'123'
 );
-$res = moghim_class::Flightlastdata(14594, 120);
+try {
+    $res = moghim_class::Flightlastdata(23392, 146);
+    var_dump($res);
+} catch (Exception $ex) {
+    var_dump($ex);
+}
 //$pattern = '/<xs:schema.*<\/xs:schema>/';
 //$xml = preg_replace($pattern, '', $res->FlightlastdataResult->any);
 
 //$response = simplexml_load_string($xml);
 //$res = $cl->checkselection($param);
-var_dump($res);
 //var_dump($res->adlprice);
 //var_dump($cl->__getFunctions());
 //var_dump($response->NewDataSet->publicselectsp);

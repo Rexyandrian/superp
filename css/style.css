@@ -171,12 +171,6 @@ table.sample td {
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
 }
-input , button , select
-{
-	font-family:'DroidNaskh';
-	font-size:14px;
-	height: 30px;
-}
 .pointer{cursor:pointer}
 #gcom a:link {color:#f3ea59;}
 #gcom a:visited {color:#f3ea59;}

@@ -34,7 +34,10 @@
         <script type="text/javascript" src="../js/cal/lang/calendar-fa.js"></script>
 -->
 		<script type="text/javascript" src="../main/index.js.php"></script>
-                <script src="../js/jquery.js"></script>
+                <script src="../js/jquery-1.11.1.min.js"></script>
+                <script src="../js/select2.min.js"></script>
+                <script src="../js/bootstrap-select.min.js"></script>
+                
                 <script type="text/javascript" src="../js/date.js"></script>
 		<script type="text/javascript" src="../js/tavanir.js"></script>
                 <script src="../js/grid.js"></script>
@@ -44,6 +47,9 @@
                 <script type="text/javascript" src="../js/cal/calendar.js"></script>
                 <script type="text/javascript" src="../js/cal/calendar-setup.js"></script>
                 <script type="text/javascript" src="../js/cal/lang/calendar-fa.js"></script>
+                <link rel="stylesheet" href="../css/bootstrap.min.css" >
+                <link rel="stylesheet" href="../css/bootstrap-rtl.min.css" >
+                    <link rel="stylesheet" href="../css/select2.css" >
                 <link rel="stylesheet" type="text/css" media="all" href="../js/cal/skins/aqua/theme.css" title="Aqua" />
                 <link rel="stylesheet" href="../css/jquery-ui.css">
                 <link rel="stylesheet" href="../css/style.css">

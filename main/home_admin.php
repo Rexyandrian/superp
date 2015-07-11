@@ -10,15 +10,14 @@
         ticket_class::clearTickets();
 	$GLOBALS['parvaz_id'] = -1;
 	$GLOBALS['obj'] = array();
-	function loadCities($smabda_id = -1)
+	function loadCities($smabda = '')
 	{
-		$smabda_id = (int)$smabda_id;
-		$out ="<option value=\"-1\">\nهمه\n</option>\n";
+		$out ="<option value=\"\">\nهمه\n</option>\n";
 		$mysql = new mysql_class;
 		$mysql->ex_sql("select * from `shahr` order by `name`",$q);
 		foreach($q as $r)
 		{
-			$out .= "<option value=\"".(int)$r["id"]."\" ".(((int)$r["id"]==$smabda_id)?"selected=\"selected\"":"")." >\n";
+			$out .= "<option value=\"".$r["name"]."\" ".(($r["name"]==$smabda)?"selected=\"selected\"":"")." >\n";
 			$out .= $r["name"]."\n";
 			$out .= '</option>\n';
 		}
@@ -319,6 +318,9 @@
                 		});
 		});
 		intialGrid(args);
+                $('select').select2({
+                    dir: "rtl"
+                });
 	});
 	function afterLoadGrid()
 	{
@@ -393,9 +395,18 @@
 	{
 		openDialog("parvaz_forookhte.php?parvaz_det_id="+id+"&","جزئیات فروش پرواز",{'minWidth':750,'minHeight':550},false);
 	}
+        function loadMaghsad(inp)
+        {
+            $.get();
+        }
 </script>
+<style>
+    .se_table td{
+        padding: 5px;
+    }
+</style>
 <form id="frm_2" >
-<table style="width:22cm;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;">
+<table class="se_table" style="width:22cm;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;" >
 	<tr  style="background-color:#EEEEEE;">
 		<th>
 			مبدأ :
@@ -418,28 +429,28 @@
 		</td>
 	</tr>
 	<tr >
-		<td>
-			<select id="smabda_id" name="smabda_id" class="ser" >
+		<td style="width:20%" >
+                        <select id="smabda" name="smabda" class="ser" onchange="loadMaghsad(this)" style="width:100%" >
 			<?php
-				echo loadCities(isset($_REQUEST['smabda_id'])?(int)$_REQUEST['smabda_id']:-1);
+				echo loadCities(isset($_REQUEST['smabda'])?(int)$_REQUEST['smabda']:-1);
 			?>
 			</select>
 		</td>
-		<td>
-			<select id="smaghsad_id" name="smaghsad_id" class="ser" >
+		<td style="width:20%" >
+			<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >
 			<?php
-				echo loadCities(isset($_REQUEST['smaghsad_id'])?(int)$_REQUEST['smaghsad_id']:-1);
+				echo loadCities(isset($_REQUEST['smaghsad'])?(int)$_REQUEST['smaghsad']:-1);
 			?>
 			</select>
 		</td>	
 		<td>
-			<input onblur="correctDate(this);" autocomplete="off" class="ser dateValue" style="direction:ltr;" type="text" id="saztarikh" name="saztarikh" value="<?php echo isset($_REQUEST['saztarikh'])?trim($_REQUEST['saztarikh']):(jdate('Y/m/d',strtotime(date("Y-m-d")))); ?>" />
+			<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="saztarikh" name="saztarikh" value="<?php echo isset($_REQUEST['saztarikh'])?trim($_REQUEST['saztarikh']):(jdate('Y/m/d',strtotime(date("Y-m-d")))); ?>" />
 		</td>
 		<td>
-			<input onblur="correctDate(this);" autocomplete="off" class="ser dateValue" style="direction:ltr;" type="text" id="statarikh" name="statarikh" value="<?php echo isset($_REQUEST['statarikh'])?trim($_REQUEST['statarikh']):jdate('Y/m/d',strtotime(date("Y-m-d")." +15 day ")); ?>"  />
+			<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="statarikh" name="statarikh" value="<?php echo isset($_REQUEST['statarikh'])?trim($_REQUEST['statarikh']):jdate('Y/m/d',strtotime(date("Y-m-d")." +15 day ")); ?>"  />
 		</td>
 		<td>
-			<input type="button" value="نمایش و بروز رسانی" onclick="submitForm();" id="searchButton">
+			<input type="button" class="btn btn-default" value="نمایش و بروز رسانی" onclick="submitForm();" id="searchButton">
 		</td>
 	</tr>
 </table>
@@ -466,10 +477,7 @@
 			<td align="center" colspan="6" >
 				بلیط الکترونیکی-Eticket
 				<input style="display:none"  type="checkbox" id="ticket_checkbox"  name="ticket_checkbox" checked="checked" onclick="checkEticket(this,document.getElementById('ticket_type'));" >
-				<select class="inp"  id="ticket_type" name="ticket_type" style="display:none;" >
-					<option value="0" selected="selected">بلیط الکترونیکی<br>Eticket</option>
-					<option value="1">بلیط چاپ شده</option>
-				</select> 
+				<input class="inp"  id="ticket_type" name="ticket_type" style="display:none;" value="0" >
 			</td>
 		</tr>
 		<tr>

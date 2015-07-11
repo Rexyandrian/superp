@@ -19,9 +19,15 @@ $param = array(
     'cust'=>'1005',
     'pass'=>'123'
 );
-$res = moghim_class::checkselection(53027, 131, 1, 0, 0);
+try {
+    $res = moghim_class::checkselection(23392, 146, 1, 0, 0);
 //$res = $cl->checkselection($param);
 //var_dump($res);
 //var_dump($res->adlprice);
 //var_dump($cl->__getFunctions());
-var_dump($res->checkselectionResult);
+    var_dump($res);
+} catch (Exception $exc) {
+    echo $exc->getTraceAsString();
+}
+
+
