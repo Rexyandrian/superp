@@ -34,7 +34,7 @@
         <script type="text/javascript" src="../js/cal/lang/calendar-fa.js"></script>
 -->
 		<script type="text/javascript" src="../main/index.js.php"></script>
-                <script src="../js/jquery-1.11.1.min.js"></script>
+                <script src="../js/jquery-1.8.3.min.js"></script>
                 <script src="../js/select2.min.js"></script>
                 <script src="../js/bootstrap-select.min.js"></script>
                 

@@ -248,9 +248,13 @@
 		$xgrid->column[$gname][0]['name'] = '';
                 $xgrid->column[$gname][1]['name'] = '';
                 $xgrid->column[$gname][2]['name'] = 'تاریخ';
+                $xgrid->column[$gname][2]['cfunction'] = array('hamed_pdate');
                 $xgrid->column[$gname][3]['name'] = 'ساعت';
+                $xgrid->column[$gname][3]['cfunction'] = array('saat');
                 $xgrid->column[$gname][4]['name'] = 'ظرفیت';
+                $xgrid->column[$gname][4]['cfunction'] = array('monize');
                 $xgrid->column[$gname][5]['name'] = 'قیمت';
+                $xgrid->column[$gname][5]['cfunction'] = array('monize');
                 $xgrid->column[$gname][6]['name'] = 'شماره';
                 $xgrid->column[$gname][7]['name'] = '';
                 $xgrid->column[$gname][8]['name'] = 'مبدأ';
@@ -456,25 +460,25 @@
 				تعدادبزرگسال:
 			</td>
 			<td  style="width:60px;"  >
-				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:30px;font-family:tahoma,Tahoma;' value='".enToPerNums($adl)."'" ?>
+				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:30px;' value='".enToPerNums($adl)."'" ?>
 			</td>
 			<td style="width:60px;" align="left" >
 				تعدادکودک:
 			</td  >
 			<td style="width:60px;" >
-				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:30px;font-family:tahoma,Tahoma;' value='".monize($chd)."'" ?>
+				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:30px;' value='".monize($chd)."'" ?>
 			</td>
 			<td style="width:60px;" align="left" >
 				تعدادنوزاد:
 			</td>
 			<td style="width:60px;" >
-				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:30px;font-family:tahoma,Tahoma;' value='".monize($inf)."'" ?>
+				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:30px;' value='".monize($inf)."'" ?>
 			</td>
 			<td style="width:60px;" align="left" >
 				تعدادکل:
 			</td>
 			<td style="width:60px;" >
-				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:30px;font-family:tahoma,Tahoma;' value='".monize($chd+$adl)."'" ?>
+				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:30px;' value='".monize($chd+$adl)."'" ?>
 			</td>
 		</tr>
 		<tr>
@@ -491,19 +495,19 @@
 				کمیسیون:
 			</td>
 			<td  style="width:100px;"  >
-				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:150px;font-family:tahoma,Tahoma;' value='".monize($jam_kom)." ریال '" ?>
+				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:150px;' value='".monize($jam_kom)." ریال '" ?>
 			</td>
 			<td style="width:100px;" align="left" >
 				مبلغ کل بلیت:
 			</td  >
 			<td style="width:100px;" >
-				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:150px;font-family:tahoma,Tahoma;' value='".monize($jam_kol)." ریال'" ?>
+				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:150px;' value='".monize($jam_kol)." ریال'" ?>
 			</td>
 			<td style="width:100px;" align="left" >
 				مبلغ قابل پرداخت:
 			</td>
 			<td style="width:200px;" colspan='3' >
-				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:150px;font-family:tahoma,Tahoma;' value='".monize($jam_pardakhti)." ریال '" ?>
+				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:150px;' value='".monize($jam_pardakhti)." ریال '" ?>
 			</td>
 		</tr>
 		<tr>

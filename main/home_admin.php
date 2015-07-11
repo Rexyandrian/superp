@@ -276,8 +276,9 @@
 	$input =array($gname=>array('table'=>'parvaz_det','div'=>'parvaz_det_div'));
 	
 	$xgrid = new xgrid($input);
+        $xgrid->start = FALSE;
 	if(isset($_REQUEST['saztarikh']))
-                $xgrid->eRequest[$gname]=array('saztarikh'=>$_REQUEST['saztarikh'],'statarikh'=>$_REQUEST['statarikh'],'smabda_id'=>$_REQUEST['smabda_id'],'smaghsad_id'=>$_REQUEST['smaghsad_id']);	
+                $xgrid->eRequest[$gname]=array('saztarikh'=>$_REQUEST['saztarikh'],'statarikh'=>$_REQUEST['statarikh'],'smabda'=>$_REQUEST['smabda'],'smaghsad'=>$_REQUEST['smaghsad']);	
 	$xgrid->disableRowColor[$gname] = TRUE;
 	//$xgrid->afterCreateFunction[$gname] = 'colorFunc';
 	$id = $xgrid->column[$gname][0];
@@ -330,7 +331,7 @@
 		                weekNumbers    : false
                 		});
 		});
-		intialGrid(args);
+                intialGrid(args);
                 $('select').select2({
                     dir: "rtl"
                 });
@@ -374,31 +375,17 @@
 	{
 		var werc ='';
 		var ser ='ser';
-		$.each($('.'+ser),function(id,field)
-		{
-			var fi = $("#"+field.id).val();
-			if(field.id=='saztarikh' && fi!='' )
-			{
-				tmpTr = jToM(fi);
-				werc +=((werc=='')?' where ':' and ')+" (date(`tarikh`) >= '"+tmpTr+"') ";
-			}
-			else if(field.id=='statarikh' && fi!='')
-			{
-				tmpTr = jToM(fi);
-				werc +=((werc=='')?' where ':' and ')+" (date(`tarikh`) <= '"+tmpTr+"') ";
-			}
-			else if(field.id=='smabda_id' && parseInt(fi,10)!=-1)
-				werc +=((werc=='')?' where ':' and ')+" ( `parvaz_id` in(select `id` from `parvaz` WHERE `mabda_id`='"+fi+"' ))  ";
-			else if(field.id=='smaghsad_id' && parseInt(fi,10)!=-1)
-				werc +=((werc=='')?' where ':' and ')+" ( `parvaz_id` in(select `id` from `parvaz` WHERE `maghsad_id`='"+fi+"' ))  ";
-		});
+                werc = "where ( date(`tarikh`) ='"+jToM($("#saztarikh").val())+"' and  strsource='"+$("#smabda").val()+"' and strdest='"+$("#smaghsad").val()+"')";
+                if($("#do_tarafe_2").prop("checked"))
+                    werc+=" or ( date(`tarikh`) ='"+jToM($("#statarikh").val())+"' and  strsource='"+$("#smaghsad").val()+"' and strdest='"+$("#smabda").val()+"')";
 		var ggname ='<?php echo $gname; ?>';
 		whereClause[ggname] = encodeURIComponent(werc);
 		grid[ggname].init(gArgs[ggname]);
 	}
 	function submitForm()
         {
-                loadPage('home_admin.php?'+$("#frm_2").serialize());
+            searchFlight();
+            //loadPage('home_admin.php?'+$("#frm_2").serialize());
         }
 	function loadDet(inp)
 	{
@@ -491,7 +478,7 @@
 	</tr>
 </table>
 </form>
-<div id="parvaz_det_div" style="overflow:auto;border:1px dotted #bbb;paddin:5px;" >
+<div id="parvaz_det_div" style="overflow:auto;paddin:5px;width: 90%;margin-left: auto;margin-right: auto;margin-top: 5px;" >
 </div>
 <div id="reserve_div" class="show_div" >
 	<table width="99%">

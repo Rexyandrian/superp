@@ -46,7 +46,8 @@ foreach($tt as $val)
             $ghimat = (string) $flight->adlprice1;
             $strsource =arabicToPersian((string)$flight->strsource);
             $strdest =arabicToPersian((string)$flight->strdest);
-            $alname =str_replace(array("_"),"",(string)$flight->alname);
+            $alname =str_replace("_","",(string)$flight->alname);
+            $alname =str_replace("هواپیمایی","",$alname);
             $tmp.=($tmp==''?'':',') .'('.(string)$flight->ID.",-1,'$tarikh','$saat',$zarfiat,$ghimat,'".(string)$flight->flnum."',".(string)$flight->subflid.",'$strsource','$strdest','$alname','".(string)$flight->flclass."',0,'00:00:00',1,'".(string)$flight->AgencyCode."',".(string)$flight->selrate.')';
             if($i%500==0)
             {
