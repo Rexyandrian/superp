@@ -218,6 +218,19 @@
 			$out = '<img src="../img/'.$name.'" >';
 		return($out);
 	}
+        if(isset($_REQUEST['s_mabda']))
+        {
+            $out = '<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >';
+            $strsource = trim($_REQUEST['s_mabda']);
+            $my = new mysql_class;
+            $my->ex_sql("select strdest from parvaz_det where strsource='$strsource' group by strdest order by strdest", $q);
+            foreach($q as $r)
+            {
+               $out.='<option value="'.$r['strdest'].'" >'.$r['strdest'].'</option>'; 
+            } 
+            $out.='</select>';
+            die($out);
+        }
 	if(isset($_POST['change_parvaz']))
 	{
 		$parvaz_ids='';
@@ -397,7 +410,24 @@
 	}
         function loadMaghsad(inp)
         {
-            $.get();
+            ab = {'s_mabda':$(inp).val()};
+            $("#div_maaghsad").html('<img src="../img/status_fb.gif" >');
+            $.get("home_admin.php",ab,function(res){
+                $("#div_maaghsad").html(res);
+                $('select').select2({
+                    dir: "rtl"
+                });
+            }).fail(function(){
+                alert('خطا در ارتباط با سرور');
+                $("#div_maaghsad").html('');
+            });
+        }
+        function show_hide_back(inp)
+        {
+            if($(inp).prop('checked'))
+            {
+                $(".tarikh_back_td").toggle('slow');
+            }
         }
 </script>
 <style>
@@ -406,26 +436,30 @@
     }
 </style>
 <form id="frm_2" >
-<table class="se_table" style="width:22cm;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;" >
+<table class="se_table" style="width:70%;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;" >
 	<tr  style="background-color:#EEEEEE;">
 		<th>
-			مبدأ :
+			مبدأ 
 		</th>
 		
 		<th>
-			مقصد :
+			مقصد 
 		</th>
 									
 		<th>
-			از تاریخ :
+                        تاریخ
+                        
 		</th>
 		
-		<th>
-			تا تاریخ :
+                <th style="display: none;" class="tarikh_back_td" >
+                    تاریخ بازگشت
 		</th>
 		
 		<td>
-			&nbsp;
+                    <input type="radio" id="do_tarafe_1" name="do_tarafe" onchange="show_hide_back(this)" checked >
+                        یک طرفه
+                    <input type="radio" id="do_tarafe_2" name="do_tarafe" onchange="show_hide_back(this)" >
+                        رفت و برگشت
 		</td>
 	</tr>
 	<tr >
@@ -437,17 +471,19 @@
 			</select>
 		</td>
 		<td style="width:20%" >
+                    <div id="div_maaghsad" >
 			<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >
 			<?php
 				echo loadCities(isset($_REQUEST['smaghsad'])?(int)$_REQUEST['smaghsad']:-1);
 			?>
 			</select>
+                    </div>    
 		</td>	
 		<td>
 			<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="saztarikh" name="saztarikh" value="<?php echo isset($_REQUEST['saztarikh'])?trim($_REQUEST['saztarikh']):(jdate('Y/m/d',strtotime(date("Y-m-d")))); ?>" />
 		</td>
-		<td>
-			<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="statarikh" name="statarikh" value="<?php echo isset($_REQUEST['statarikh'])?trim($_REQUEST['statarikh']):jdate('Y/m/d',strtotime(date("Y-m-d")." +15 day ")); ?>"  />
+		<td style="display: none;" class="tarikh_back_td" >
+		 	<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="statarikh" name="statarikh" value="<?php echo isset($_REQUEST['statarikh'])?trim($_REQUEST['statarikh']):jdate('Y/m/d',strtotime(date("Y-m-d")." +15 day ")); ?>"  />
 		</td>
 		<td>
 			<input type="button" class="btn btn-default" value="نمایش و بروز رسانی" onclick="submitForm();" id="searchButton">
@@ -466,11 +502,11 @@
 			<td align="center"  >نوزاد</td>
 		</tr>
 		<tr>
-			<td align="center"><input style="width:50px;"  id="reserve_adl" name="reserve_adl" class="textbox"/>
+			<td align="center"><input style="width:50px;"  id="reserve_adl" name="reserve_adl" class="form-control" />
 			</td>
-			<td align="center"><input style="width:50px;"  id="reserve_chd" name="reserve_chd" class="textbox"/>
+			<td align="center"><input style="width:50px;"  id="reserve_chd" name="reserve_chd" class="form-control" />
 			</td>
-			<td align="center"><input style="width:50px;"  id="reserve_inf" name="reserve_inf" class="textbox"/>
+			<td align="center"><input style="width:50px;"  id="reserve_inf" name="reserve_inf" class="form-control" />
 			</td>
 		</tr>
 		<tr>
