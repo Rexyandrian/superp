@@ -278,16 +278,16 @@ tmp0;
 				}
 				else
 				{
-	                                $adults .= <<<tmp0
+	                                $adults .= '
                                 <tr class="showgrid_row_even" >
-                                        <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td style="width:auto;"><input type='text' name='adl_fname_$i' id='adl_fname_$i' class='inp' placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type='text' name='adl_lname_$i' id='adl_lname_$i' class='inp' placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type='text' name='adl_codemelli_$i' id='adl_codemelli_$i' class='inp' placeholder="کد ملی یا شماره پاسپورت" /></td>
-					<td><select class='inp' name='adl_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
-					$e_ticket
+                                        <td class="showgrid_row_td_reserve" >'.$radif.'</td>
+                                        <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control" placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control '.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control" placeholder="کد ملی یا شماره پاسپورت" /></td>
+					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >مذکر</option><option value="" >مؤنث</option></select></td>
+					'.$e_ticket.'
                                 </tr>
-tmp0;
+';
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
 				}
 			}
@@ -318,10 +318,10 @@ tmp1;
                                                 $childs .= <<<tmp1
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp' placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp' placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
-                                        <td><select class='inp' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
+                                        <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp form-control' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp form-control slave' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp form-control' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
+                                        <td><select class='inp form-control' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
 					$e_ticket
 	
                                 </tr>
@@ -359,10 +359,10 @@ tmp2;
                                                 $infants .= <<<tmp2
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp' placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp' placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
-					<td><select class='inp' name='inf_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
+                                        <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp form-control' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp form-control slave' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp form-control' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
+					<td><select class='inp form-control' name='inf_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
 					$e_ticket
                                 </tr>
 tmp2;
@@ -374,8 +374,10 @@ tmp2;
 			$out = <<<OOUT
 	<span style="color:firebrick;font-size:15px;" >
 		دقت فرمایید رزرو موقت شما تنها ۵ دقیقه معتبر است
+                 <br/>
+                 لطفا کلیه اسامی را به حروف لاتین وارد کنید
 	</span>
-		<input id="tim" style="color:#000000;width:70px;font-size:25px;" readonly="readonly" value="$time_out" />
+		<input id="tim" style="color:#000000;width:70px;font-size:25px;border:none;" readonly="readonly" value="$time_out" />
 		<script>
 			var t = setTimeout("dec();",1000);
 			function dec()
@@ -406,17 +408,30 @@ tmp2;
 				tim.value = m+":"+s;
 			}
 		</script>
-	        <table style="border-style:solid;border-width:1px;border-color:Black;width:80;font-size:12px;" border='1'>
+                <style>
+                    #sale_table{
+                        border-style:solid;
+                        border-width:1px;
+                        border-color:Black;
+                        width:90;
+                        font-size:12px;
+                    }
+                    #sale_table td,th {
+                       border: solid 1px #666666;
+                       padding: 5px;
+                    }
+                </style>
+	        <table id="sale_table" >
 $adults
 $childs
 $infants
 			<tr class="showgrid_row_even">
 				<td class="showgrid_row_td_reserve" colspan="2" >شماره تماس :</td>
-                                <td class="showgrid_row_td_reserve" colspan="6" ><input type='text' name='adl_tel_0' id='adl_tel0' class='inp'  style="width:99%;" /></td>
+                                <td class="showgrid_row_td_reserve" colspan="6" ><input type='text' name='adl_tel_0' id='adl_tel0' class='inp form-control'  placeholder="شماره تماس" /></td>
 			</tr>
 			<tr class="showgrid_row_odd">
                                 <td class="showgrid_row_td_reserve" colspan="2" >نشانی ایمیل:</td>
-                                <td class="showgrid_row_td_reserve" colspan="6" ><input type='text' name='email_addr' id='email_addr' class='inp'  style="width:99%;" /></td>
+                                <td class="showgrid_row_td_reserve" colspan="6" ><input type='text' name='email_addr' id='email_addr' class='inp form-control'  placeholder="نشانی ایمیل" /></td>
                         </tr>
 			<tr class="showgrid_row_even">
                                 <td class="showgrid_row_td_reserve" colspan="8" ><a href="http://www.superparvaz.com/terms-and-guideline/terms-of-booking" target="_blank" >شرایط و ضوابط را قبول دارم</a>
@@ -425,8 +440,8 @@ $infants
 			<tr class="showgrid_row_odd">
 				<td colspan = "8" class="showgrid_row_td_reserve" >
 				<br/>
-				<button onclick="sendTickets();">ثبت و پرداخت</button>
-	                        <button onclick="rejectTickets();">انصراف</button>
+				<button class="btn btn-default" onclick="sendTickets();">ثبت و پرداخت</button>
+	                        <button class="btn btn-default" onclick="rejectTickets();">انصراف</button>
 
 			</tr>		
 		</table>
@@ -468,6 +483,17 @@ var tmp_id = '<?php echo implode(",",$tmp_id); ?>';
 var kharid_typ='<?php echo $kharid_typ; ?>';
 var sites_id = '<?php echo $sites_id; ?>';
 var mod;
+        $(document).ready(function(){
+            $(".inp").keypress(function(event) {
+                if(!((event.which >= 65 && event.which  <= 90) ||
+                   (event.which >= 97 && event.which <= 122))) {
+                    event.preventDefault();
+                }
+            });
+            $(".master").blur(function(event){
+                $(".slave").val($(".master").val());
+            });
+        });
 	function sendTickets()
 	{
 		var inputs = document.getElementsByTagName('input');

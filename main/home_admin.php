@@ -425,22 +425,22 @@
 <form id="frm_2" >
 <table class="se_table" style="width:70%;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;" >
 	<tr  style="background-color:#EEEEEE;">
-		<th>
+		<td>
 			مبدأ 
-		</th>
+		</td>
 		
-		<th>
+		<td>
 			مقصد 
-		</th>
+		</td>
 									
-		<th>
+		<td>
                         تاریخ
                         
-		</th>
+		</td>
 		
-                <th style="display: none;" class="tarikh_back_td" >
+                <td style="display: none;" class="tarikh_back_td" >
                     تاریخ بازگشت
-		</th>
+		</td>
 		
 		<td>
                     <input type="radio" id="do_tarafe_1" name="do_tarafe" onchange="show_hide_back(this)" checked >
