@@ -1,7 +1,7 @@
 <?php
 	class ticket_class
 	{
-		private $id = -1;
+		public $id = -1;
 		public $fname = "";
                 public $lname = "";
 		public $tel = "";
@@ -128,7 +128,7 @@
 			}
 			return($out);
 		}
-		public function addTmp($parvaz_det_id,$tedad,$timeout,$netlog,$rwaitlog,$customer_id = -1)
+		public function addTmp($parvaz_det_id,$tedad,$timeout,$netlog,$rwaitlog,$adlprice,$chdprice,$infprice,$adl,$chd,$inf,$customer_id = -1)
 		{
 			$mysql = new mysql_class;
 			$conf = new conf;
@@ -136,7 +136,6 @@
 				if(isset($_SESSION[$conf->app."_customer_id"]))
 					$customer_id = (int)$_SESSION[$conf->app."_customer_id"];
 			$cust = new customer_class($customer_id);
-			$out = -1;
 			$parvaz_det = new parvaz_det_class((int)$parvaz_det_id);
 			$free_zarfiat = $parvaz_det->getZarfiat(-1);
 			$zakhire = 0;
@@ -156,7 +155,7 @@
 			$arg["typ"]=4;
                         log_class::add($arg);
 			$tarikh = date("Y-m-d H:i:s");
-			$con = $mysql->ex_sqlx("insert into `reserve_tmp` (`parvaz_det_id`,`tedad`,`customer_id`,`zakhire`,`zarfiat`,`tarikh`,`timeout`,`netlog`,`rwaitlog`) values ('$parvaz_det_id','$tedad','$customer_id','$zakhire','$zarfiat','$tarikh','$timeout','$netlog','$rwaitlog') ",FALSE);
+			$con = $mysql->ex_sqlx("insert into `reserve_tmp` (`parvaz_det_id`,`tedad`,`customer_id`,`zakhire`,`zarfiat`,`tarikh`,`timeout`,`netlog`,`rwaitlog`,`adlprice`,`chdprice`,`infprice`,`adltedad`, `chdtedad`, `inftedad`) values ('$parvaz_det_id','$tedad','$customer_id','$zakhire','$zarfiat','$tarikh','$timeout','$netlog','$rwaitlog',$adlprice,$chdprice,$infprice,$adl,$chd,$inf) ",FALSE);
 			$out =$mysql->insert_id($con);
 			$mysql->close($con);
 			return $out;

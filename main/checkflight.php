@@ -219,12 +219,12 @@
                                 //var_dump($moghim_res);
                                 if($moghim_res->checkselectionResult)
                                 {    
-                                    $alaki = ticket_class::addTmp($tmp->getId(),$tedad,$timeout,$moghim_res->netlog,$moghim_res->rwaitlog);
+                                    $alaki = ticket_class::addTmp($tmp->getId(),$tedad,$timeout,$moghim_res->netlog,$moghim_res->rwaitlog,$moghim_res->adlprice,$moghim_res->chdprice,$moghim_res->infprice,$adl,$chd,$inf);
                                     $tmp->setZarfiat($tedad);
                                     $tmp_id[] = $alaki;
                                     $adl_ghimat += $moghim_res->adlprice;
                                     $chd_ghimat += $moghim_res->chdprice;
-                                    $inf_ghimat += $moghim_res->chdprice;
+                                    $inf_ghimat += $moghim_res->infprice;
                                     //$poorsant += $tmp->ghimat * ($customer->getPoorsant($tmp->getId())/100);
                                     $poorsant=0;
                                     $k++;
@@ -281,8 +281,8 @@ tmp0;
 	                                $adults .= '
                                 <tr class="showgrid_row_even" >
                                         <td class="showgrid_row_td_reserve" >'.$radif.'</td>
-                                        <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control" placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control '.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control latin" placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin '.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control" placeholder="کد ملی یا شماره پاسپورت" /></td>
 					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >مذکر</option><option value="" >مؤنث</option></select></td>
 					'.$e_ticket.'
@@ -318,8 +318,8 @@ tmp1;
                                                 $childs .= <<<tmp1
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp form-control' placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp form-control slave' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp form-control latin' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp form-control slave latin' placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp form-control' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
                                         <td><select class='inp form-control' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
 					$e_ticket
@@ -359,8 +359,8 @@ tmp2;
                                                 $infants .= <<<tmp2
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp form-control' placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp form-control slave' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp form-control latin' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp form-control slave latin' placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp form-control' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
 					<td><select class='inp form-control' name='inf_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
 					$e_ticket
@@ -484,7 +484,7 @@ var kharid_typ='<?php echo $kharid_typ; ?>';
 var sites_id = '<?php echo $sites_id; ?>';
 var mod;
         $(document).ready(function(){
-            $(".inp").keypress(function(event) {
+            $(".latin").keypress(function(event) {
                 if(!((event.which >= 65 && event.which  <= 90) ||
                    (event.which >= 97 && event.which <= 122))) {
                     event.preventDefault();
@@ -501,6 +501,7 @@ var mod;
 		var telfound = false;
 		var tmp = Array();
 		var email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+                var contin = true;
 		if(!$("#zavabet").prop('checked'))
 		{
 			alert("لطفا شرایط و ضوابط را قبول فرمایید");
@@ -510,8 +511,18 @@ var mod;
 		{
 			alert('نشانی ایمیل درست وارد نشده است');
 			$("#email_addr").val('');
+                        $("#email_addr").css("border","1px solid red");
 			return (false);
 		}
+                $(".form-control").css("border","1px solid rgb(204, 204, 204)");
+                $.each($(".form-control"),function(id,field){
+                    if($(field).val()==='')
+                    {
+                        $(field).css("border","1px solid red");
+                        contin = false;
+                    }    
+                });
+                /*
 		for(var i = 0;i < inputs.length;i++)
 		{
 			tmp = String(inputs[i].name).split('_');
@@ -520,7 +531,8 @@ var mod;
 			if(tmp[1] && tmp[1] == 'tel' && inputs[i].value != '')
 				telfound = true;
 		}
-		if(ok && telfound)
+                */
+		if(contin)
 		{
 			var req = {};
 			$.each($(".inp"),function(id,field){
@@ -537,7 +549,7 @@ var mod;
 			openDialog("checkflight2.php?"+re,"مشاهده بلیت‌ها",{'minWidth':300,'minHeight':200},false);
 		}
 		else
-			alert('نام خانوادگی و حداقل یک تلفن باید وارد شود');
+			alert('موارد مشخص شده را وارد نمایید');
 	}
 	function rejectTickets()
 	{

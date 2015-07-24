@@ -14,6 +14,18 @@ function arabicToPersian($inp)
         $out = 'خرم‌آباد';
     return($out);
  }
+function loadghimatArr()
+{
+    $out = array();
+    $my = new mysql_class;
+    $my->ex_sql("select `moghim_code`, `upghimat` from agency", $q);
+    foreach ($q as $r)
+    {
+        $out[$r['moghim_code']] = $r['upghimat'];
+    }
+    return($out);
+}
+$upghimatArr = loadghimatArr();
 $today =substr(perToEnNums(jdate('Y/m/d',strtotime(date("Y-m-d H:i:s")))),2);// 
 $onem =substr(perToEnNums(jdate('Y/m/d',strtotime(date("Y-m-d H:i:s",time()+ 30*24*60*60)))),2);// date("Y-m-d H:i:s",time()+ 30*24*60*60);
 $cl = new SoapClient("http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl");
@@ -29,7 +41,7 @@ $xml = preg_replace($pattern, '', $res->openTempfllistResult->any);
 
 $response = simplexml_load_string($xml);
 $tt = $response->NewDataSet;
-$qu = "insert into parvaz_det (`id`, `parvaz_id`, `tarikh`, `saat`, `zarfiat`, `ghimat`, `flnum`, `subflid`, `strsource`, `strdest`, `alname`, `flclass`, `typ`, `saat_kh`, `en`, `customer_id`,selrate) values ";
+$qu = "insert into parvaz_det (`id`, `parvaz_id`, `tarikh`, `saat`, `zarfiat`, `ghimat`, `flnum`, `subflid`, `strsource`, `strdest`, `alname`, `flclass`, `typ`, `saat_kh`, `en`, `customer_id`,selrate,ghimat_origin) values ";
 $tmp = '';
 $i=0;
 $my->ex_sqlx("truncate table parvaz_det");
@@ -43,12 +55,12 @@ foreach($tt as $val)
             $tarikh =hamed_pdateBack((string)$flight->fldate);
             $saat = (string) $flight->outtime;
             $zarfiat =(string) $flight->showcapnet;
-            $ghimat = (string) $flight->adlprice1;
+            $ghimat = (string) $flight->adlprice1+ (isset($upghimatArr[(string)$flight->AgencyCode])?$upghimatArr[(string)$flight->AgencyCode]:100000);
             $strsource =arabicToPersian((string)$flight->strsource);
             $strdest =arabicToPersian((string)$flight->strdest);
             $alname =str_replace("_","",(string)$flight->alname);
             $alname =str_replace("هواپیمایی","",$alname);
-            $tmp.=($tmp==''?'':',') .'('.(string)$flight->ID.",-1,'$tarikh','$saat',$zarfiat,$ghimat,'".(string)$flight->flnum."',".(string)$flight->subflid.",'$strsource','$strdest','$alname','".(string)$flight->flclass."',0,'00:00:00',1,'".(string)$flight->AgencyCode."',".(string)$flight->selrate.')';
+            $tmp.=($tmp==''?'':',') .'('.(string)$flight->ID.",-1,'$tarikh','$saat',$zarfiat,$ghimat,'".(string)$flight->flnum."',".(string)$flight->subflid.",'$strsource','$strdest','$alname','".(string)$flight->flclass."',0,'00:00:00',1,'".(string)$flight->AgencyCode."',".(string)$flight->selrate.",'".(string) $flight->adlprice1."')";
             if($i%500==0)
             {
                 $my->ex_sqlx($qu.$tmp);

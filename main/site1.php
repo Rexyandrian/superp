@@ -23,19 +23,13 @@
 		return($out);
 	}
 	$gname = 'grid_customer_daryaft';
-	$input =array($gname=>array('table'=>'sites','div'=>'main_div_customer_daryaft'));
+	$input =array($gname=>array('table'=>'agency','div'=>'main_div_customer_daryaft'));
 	$xgrid = new xgrid($input);
 	$xgrid->column[$gname][0]['name'] ='';
-	$xgrid->column[$gname][1]['name'] ='نام';
-	$xgrid->column[$gname][1]['access'] = 'a';
-	$xgrid->column[$gname][2]['name'] ='ادرس';
-	$xgrid->column[$gname][2]['access'] = 'a';
-	$xgrid->column[$gname][3]['name'] ='افزایش قیمت';
-	$xgrid->column[$gname][4]['name'] ='وضعیت';
-	$xgrid->column[$gname][4]['clist'] = loadVazTyp();
-	$xgrid->column[$gname][5]['name'] ='نوع';
-	$xgrid->column[$gname][5]['clist'] = loadVazTyp2();
-	
+	$xgrid->column[$gname][1]['name'] ='کد مقیم';
+        $xgrid->column[$gname][2]['name'] ='نام';
+        $xgrid->column[$gname][3]['name'] ='سایت';
+	$xgrid->column[$gname][4]['name'] ='روکشی';
 	$xgrid->canEdit[$gname] = TRUE;
 	$xgrid->canAdd[$gname] = FALSE;
 	$xgrid->canDelete[$gname] = FALSE;

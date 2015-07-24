@@ -218,6 +218,21 @@
 			$out = '<img src="../img/'.$name.'" >';
 		return($out);
 	}
+        function loadghimatArr()
+        {
+            $out = array();
+            $my = new mysql_class;
+            $my->ex_sql("select `moghim_code`, `name` from agency", $q);
+            foreach ($q as $r)
+            {
+                $out[$r['moghim_code']] = $r['name'];
+            }
+            return($out);
+        }
+        function loadAgency($inp)
+        {
+            return($GLOBALS['agencyArr'][$inp]);
+        }
         if(isset($_REQUEST['s_mabda']))
         {
             $out = '<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >';
@@ -249,6 +264,7 @@
 			die($my->ex_sqlx($sql));
 		}
 	}
+        $GLOBALS['agencyArr'] = loadghimatArr();
 	$aztarikh = date("Y-m-d");
         $tatarikh = strtotime(date("Y-m-d H:i:s").' + 1 month');
         $tatarikh = date("Y-m-d",$tatarikh);
@@ -309,10 +325,12 @@
         $xgrid->column[$gname][17]['name'] = '';
         $xgrid->column[$gname][18]['name'] = '';
         $xgrid->column[$gname][19]['name'] = '';
-        $xgrid->column[$gname][20]['name'] = '';
+        $xgrid->column[$gname][20]['name'] = 'آژانس';
+        $xgrid->column[$gname][20]['cfunction'] = array('loadAgency');
         $xgrid->column[$gname][21]['name'] = '';
         $xgrid->column[$gname][22]['name'] = '';
         $xgrid->column[$gname][23]['name'] = '';
+        $xgrid->column[$gname][24]['name'] = '';
 	$out =$xgrid->getOut($_REQUEST);
 	if($xgrid->done)
 		die($out);
@@ -335,16 +353,20 @@
                 $('select').select2({
                     dir: "rtl"
                 });
+                changeColor();
 	});
 	function afterLoadGrid()
 	{
 		initReserve();
+                changeColor();
+                /*
 		var del_btn="<button onclick=\"changeParvaz('del_parvaz');\" >حذف</button>";
 		del_btn+="<button onclick=\"changeParvaz('show_parvaz');\" >نمایش</button>";
 		del_btn+="<button onclick=\"changeParvaz('hide_parvaz');\" >عدم نمایش</button>";
 		del_btn+="<span id='del_khoon' ></span>";
 		$(".ajaxgrid_bottomTable tr:first td:first ").html(del_btn);
 		$(".ajaxgrid_bottomTable tr:first td:nth-child(2)").remove();
+                */
 	}
 	function changeParvaz(mod)
 	{
@@ -415,6 +437,21 @@
             {
                 $(".tarikh_back_td").toggle('slow');
             }
+        }
+        function changeColor()
+        {
+            $('.ajaxgrid_mainTable > tbody  > tr').each(function() {
+                //console.log(this);
+                if($.trim($(this).find("td:eq(6)").text())==$("#smabda").val())
+                {    
+                    $(this).css("background","hotpink");
+                }
+                else
+                {
+                    $(this).css("background","turquoise");
+                }    
+                //console.log($(this).find("td:eq(7)").text());
+            });
         }
 </script>
 <style>

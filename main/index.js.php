@@ -291,9 +291,10 @@ function getParvazData(pid)
 		rowNum = $("#ch_"+pid).parent().prop("id").split("-")[3];
 		ghimat = trim($("#"+thisTr+" td:lt("+String(startIndx)+"):last span").html());
 		zarfiat = trim($("#"+thisTr+" td:lt("+String(startIndx+1)+"):last span").html());
-		mabda = trim($("#"+thisTr+" td:lt("+String(startIndx+2)+"):last span").html());
-		maghsad = trim($("#"+thisTr+" td:lt("+String(startIndx+3)+"):last span").html());
-		shomare = trim($("#"+thisTr+" td:lt("+String(startIndx+4)+"):last span").html());
+                shomare = trim($("#"+thisTr+" td:lt("+String(startIndx+2)+"):last span").html());
+		mabda = trim($("#"+thisTr+" td:lt("+String(startIndx+3)+"):last span").html());
+		maghsad = trim($("#"+thisTr+" td:lt("+String(startIndx+4)+"):last span").html());
+		
 		hava = trim($("#"+thisTr+" td:lt("+String(startIndx+5)+"):last span").html());
 		tarikh = trim($("#"+thisTr+" td:lt("+String(startIndx+6)+"):last span").html());
 		khorooj = trim($("#"+thisTr+" td:lt("+String(startIndx+7)+"):last span").html());
@@ -469,6 +470,8 @@ function initReserve(gname,reserveArgs)
 			pbargasht = parvaz_id[pids[1]];
 			if(praft.mabda == pbargasht.maghsad && pbargasht.mabda == praft.maghsad)
 			{
+                            continueReserve();
+                            /*
 				rjid = parvazjids(pids[0]);
 				bjid = parvazjids(pids[1]);
 				rnojid = (rjid.length == 0 || (rjid.length == 1 && rjid == ''));
@@ -492,6 +495,7 @@ function initReserve(gname,reserveArgs)
 					$(".subTr").remove();
 					parvaz_id = {};
 				}
+                            */    
 			}
 			else
 			{

@@ -126,7 +126,8 @@
         $inf = abs((int)$_REQUEST["inf"]);
 	$tedad = $adl + $chd;
         $ticket_type = (int)$_REQUEST["ticket_type"];
-	$kharid_typ = ((isset($_REQUEST['kharid_typ']))?$_REQUEST['kharid_typ']:'');
+	//$kharid_typ = ((isset($_REQUEST['kharid_typ']))?$_REQUEST['kharid_typ']:'');
+        $kharid_typ = 'naghdi';
 	$selected_parvaz = $_REQUEST["selected_parvaz"];
 	$tmp = explode(",",$selected_parvaz);
 	foreach($tmp as $parvaz_id)
@@ -339,7 +340,26 @@
                         }
 			if($kharid_typ=='etebari')
 				$mysql->ex_sqlx("delete from `reserve_tmp` where `id` = ".$tmp_id[$index]);
-			$jam_ghimat1 += $zarib*$tedad*$parvaz->ghimat+$zarib*$inf*$parvaz->ghimat/10;
+                        for($k=0;$k<count($tmp_id);$k++)
+                        {
+                            if(ticket_class::updateTmp($tmp_id[$k],$info_ticket))
+                            {        
+                                $mysql->ex_sql("select `adlprice`,`adltedad`,`chdprice`,`chdtedad`,`infprice`,`inftedad`,`info` from reserve_tmp where id=".$tmp_id[$k], $q);
+                                if(count($q)>0)
+                                {    
+                                    $info = unserialize($q[0]['info']);
+                                    $mysql->ex_sql("select upghimat from parvaz_det left join agency on (moghim_code=customer_id) where parvaz_det.id=".$info['parvaz']->id, $p);
+                                    $upghimat = (count($p)>0)?$p[0]['upghimat']:100000;
+                                    $jam_ghimat1+= ($q[0]['adlprice']+$upghimat)*$q[0]['adltedad'] + ($q[0]['chdprice']+$upghimat)*$q[0]['chdtedad'] + ($q[0]['infprice']*$q[0]['inftedad']);
+                                }
+                            }
+                            else
+                            {    
+                                $bool = FALSE;
+                            }    
+                        }
+			//$jam_ghimat1 += $zarib*$tedad*$parvaz->ghimat+$zarib*$inf*$parvaz->ghimat/10;
+                        //echo "ghimat=".$jam_ghimat1."<br>";
 			$index ++;
 			$p_i++;
 		}
@@ -347,14 +367,17 @@
 		{
 			$bool = TRUE;
 			$tarikh_now = date("Y-m-d H:i:s");
+                        /*
 			for($k=0;$k<count($tmp_id);$k++)
 				if(!ticket_class::updateTmp($tmp_id[$k],$info_ticket))
 					$bool = FALSE;
+                         * 
+                         */
 			if($bool)
 			{
+                                $mysql = new mysql_class;   
 				$pardakht_id =  pardakht_class::add(implode(',',$tmp_id),$tarikh_now,$jam_ghimat1);
 				$pardakht = new pardakht_class($pardakht_id);
-				$mysql = new mysql_class;
 				$rahgiri = $pardakht->getBarcode();
 				if($conf->ps === TRUE)
 					$pay_code = pay_class::ps_pay($pardakht_id,$jam_ghimat1);
@@ -365,6 +388,7 @@
 				}
 				else
 					$pay_code = pay_class::pay($pardakht_id,$jam_ghimat1);
+                                var_dump($pay_code);
 				$tmpo = explode(',',$pay_code);
 				if(count($tmpo)==2 && $tmpo[0]==0 && $conf->ps !== 'TRUE')
 					$redirect = "<script language=\"javascript\">alert(\"کد رهگیری خود را یادداشت نمایید \\n $rahgiri \\n سپس به بانک هدایت می شوید\");postRefId('".$tmpo[1]."');</script>";
