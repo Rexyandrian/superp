@@ -12,7 +12,7 @@
 	$GLOBALS['obj'] = array();
 	function loadCities($smabda = '')
 	{
-		$out ="<option value=\"\">\nهمه\n</option>\n";
+		$out ="<option value=\"\">انتخاب شهر</option>";
 		$mysql = new mysql_class;
 		$mysql->ex_sql("select * from `shahr` order by `name`",$q);
 		foreach($q as $r)
@@ -233,6 +233,37 @@
         {
             return($GLOBALS['agencyArr'][$inp]);
         }
+        if(isset($_POST['befor_search']))
+        {
+            $ou="no";
+            $wer = trim($_POST['befor_search']);
+            $req = $_POST['frm_field'];
+            $my = new mysql_class;
+            $my->ex_sql("select count(id) cid from parvaz_det $wer", $q);
+            if((int)$q[0]['cid']==0)
+            {
+                if($req[0]['value']==1)
+                {    
+                        $q=null;
+                        $saat = date("H:i:s");
+                        $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' and saat>'$saat' order by tarikh,saat limit 1", $q);
+                        if(count($q)>0)
+                        {
+                            $ou =jdate("Y/m/d",strtotime($q[0]['tarikh']));
+                        }
+
+                }
+                if($req[0]['value']==2)
+                {
+
+                }
+            }
+            else
+            {
+                $ou="ok";
+            }
+            die("$ou");
+        }
         if(isset($_REQUEST['s_mabda']))
         {
             $out = '<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >';
@@ -397,11 +428,28 @@
 	{
 		var werc ='';
 		var ser ='ser';
+                if($("#smabda").val()==='')
+                {
+                    $("#parvaz_det_div").html("<div class='alert alert-danger' >لطفا مبدأ را انتخاب نمایید</div>");
+                    return false;
+                }
+                if($("#smaghsad").val()==='')
+                {
+                    $("#parvaz_det_div").html("<div class='alert alert-danger' >لطفا مقصد را انتخاب نمایید</div>");
+                    return false;
+                }
                 werc = "where ( date(`tarikh`) ='"+jToM($("#saztarikh").val())+"' and  strsource='"+$("#smabda").val()+"' and strdest='"+$("#smaghsad").val()+"')";
                 if($("#do_tarafe_2").prop("checked"))
                     werc+=" or ( date(`tarikh`) ='"+jToM($("#statarikh").val())+"' and  strsource='"+$("#smaghsad").val()+"' and strdest='"+$("#smabda").val()+"')";
 		var ggname ='<?php echo $gname; ?>';
 		whereClause[ggname] = encodeURIComponent(werc);
+                ab={
+                   "befor_search":werc,
+                   "frm_field":$("#frm_2").serializeArray()
+                };
+                $.post("home_admin.php",ab,function(res){
+                    console.log(res);
+                });
 		grid[ggname].init(gArgs[ggname]);
 	}
 	function submitForm()
@@ -460,7 +508,7 @@
     }
 </style>
 <form id="frm_2" >
-<table class="se_table" style="width:70%;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;" >
+<table class="se_table" style="width:80%;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;" >
 	<tr  style="background-color:#EEEEEE;">
 		<td>
 			مبدأ 
@@ -480,17 +528,22 @@
 		</td>
 		
 		<td>
-                    <input type="radio" id="do_tarafe_1" name="do_tarafe" onchange="show_hide_back(this)" checked >
+                    <input type="radio" id="do_tarafe_1" name="do_tarafe" value="1" onchange="show_hide_back(this)" checked >
+                    <span style="font-size: 11px" onclick="$('#do_tarafe_1').click()" >
                         یک طرفه
-                    <input type="radio" id="do_tarafe_2" name="do_tarafe" onchange="show_hide_back(this)" >
+                    </span>
+                    <input type="radio" id="do_tarafe_2" name="do_tarafe" value="2" onchange="show_hide_back(this)" >
+                    <span style="font-size: 11px" onclick="$('#do_tarafe_2').click()" >
                         رفت و برگشت
+                    </span>
 		</td>
 	</tr>
 	<tr >
 		<td style="width:20%" >
                         <select id="smabda" name="smabda" class="ser" onchange="loadMaghsad(this)" style="width:100%" >
 			<?php
-				echo loadCities(isset($_REQUEST['smabda'])?(int)$_REQUEST['smabda']:-1);
+				//echo loadCities(isset($_REQUEST['smabda'])?(int)$_REQUEST['smabda']:-1);
+                                echo loadCities('تهران');
 			?>
 			</select>
 		</td>
@@ -498,7 +551,8 @@
                     <div id="div_maaghsad" >
 			<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >
 			<?php
-				echo loadCities(isset($_REQUEST['smaghsad'])?(int)$_REQUEST['smaghsad']:-1);
+				//echo loadCities(isset($_REQUEST['smaghsad'])?(int)$_REQUEST['smaghsad']:-1);
+                                echo loadCities('مشهد');
 			?>
 			</select>
                     </div>    
@@ -510,7 +564,7 @@
 		 	<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="statarikh" name="statarikh" value="<?php echo isset($_REQUEST['statarikh'])?trim($_REQUEST['statarikh']):jdate('Y/m/d',strtotime(date("Y-m-d")." +15 day ")); ?>"  />
 		</td>
 		<td>
-			<input type="button" class="btn btn-default" value="نمایش و بروز رسانی" onclick="submitForm();" id="searchButton">
+			<input type="button" class="btn btn-default btn-primary" value="نمایش و بروز رسانی" onclick="submitForm();" id="searchButton">
 		</td>
 	</tr>
 </table>

@@ -2,18 +2,37 @@
 include('../kernel.php');
 require_once('../class/nusoap.php');
 $my = new mysql_class;
-
-
+if (!function_exists('mb_str_replace')) {
+    function mb_str_replace($search, $replace, $subject, &$count = 0) {
+            if (!is_array($subject)) {
+                    // Normalize $search and $replace so they are both arrays of the same length
+                    $searches = is_array($search) ? array_values($search) : array($search);
+                    $replacements = is_array($replace) ? array_values($replace) : array($replace);
+                    $replacements = array_pad($replacements, count($searches), '');
+                    foreach ($searches as $key => $search) {
+                            $parts = mb_split(preg_quote($search), $subject);
+                            $count += count($parts) - 1;
+                            $subject = implode($replacements[$key], $parts);
+                    }
+            } else {
+                    // Call mb_str_replace for each subject in array, recursively
+                    foreach ($subject as $key => $value) {
+                            $subject[$key] = mb_str_replace($search, $replace, $value, $count);
+                    }
+            }
+            return $subject;
+    }
+}
 function arabicToPersian($inp)
 {
     $out = str_replace("ي","ی",$inp);
     $out = str_replace("ك","ک",$out);
     $out = ($out=='امام خمینی')?'تهران':$out;
-    $out = str_replace(array(" ","_"),"",$out);
+    $out = mb_str_replace(array("ـ"," "),"",$out);
     if($out =='خرمآباد' || $out =='خرماباد')
         $out = 'خرم‌آباد';
     return($out);
- }
+}
 function loadghimatArr()
 {
     $out = array();
@@ -58,8 +77,8 @@ foreach($tt as $val)
             $ghimat = (string) $flight->adlprice1+ (isset($upghimatArr[(string)$flight->AgencyCode])?$upghimatArr[(string)$flight->AgencyCode]:100000);
             $strsource =arabicToPersian((string)$flight->strsource);
             $strdest =arabicToPersian((string)$flight->strdest);
-            $alname =str_replace("_","",(string)$flight->alname);
-            $alname =str_replace("هواپیمایی","",$alname);
+            $alname =mb_str_replace(array("ـ","."),"",(string)$flight->alname);
+            $alname =mb_str_replace(array("هواپیمایی","هواپیمایی "),"",$alname);
             $tmp.=($tmp==''?'':',') .'('.(string)$flight->ID.",-1,'$tarikh','$saat',$zarfiat,$ghimat,'".(string)$flight->flnum."',".(string)$flight->subflid.",'$strsource','$strdest','$alname','".(string)$flight->flclass."',0,'00:00:00',1,'".(string)$flight->AgencyCode."',".(string)$flight->selrate.",'".(string) $flight->adlprice1."')";
             if($i%500==0)
             {
