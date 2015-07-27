@@ -235,34 +235,61 @@
         }
         if(isset($_POST['befor_search']))
         {
-            $ou="no";
+            $ou['stat'] = 'ok';
             $wer = trim($_POST['befor_search']);
             $req = $_POST['frm_field'];
             $my = new mysql_class;
             $my->ex_sql("select count(id) cid from parvaz_det $wer", $q);
+            $saat = date("H:i:s");
             if((int)$q[0]['cid']==0)
             {
                 if($req[0]['value']==1)
                 {    
+                    $q=null;
+                    $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' and saat>'$saat' order by tarikh,saat limit 1", $q);
+                    if(count($q)>0)
+                    {
+                        $ou['stat'] = 'err1';
+                        $ou['tarikh'] =jdate("Y/m/d",strtotime($q[0]['tarikh']));
+                    }
+                }
+            }
+            
+            if($req[0]['value']==2)
+            {
+                $q=null;
+                $ou['stat'] = 'ok';
+                $req[3]['value'] = audit_class::hamed_pdateBack($req[3]['value'],FALSE);
+                $req[4]['value'] = audit_class::hamed_pdateBack($req[4]['value'],FALSE);
+                $my->ex_sql("select count(id) cid from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' and saat>'$saat' and tarikh='".$req[3]['value']."'", $q);
+                if((int)$q[0]['cid']==0)
+                {    
+                    $q=null;
+                    $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' and saat>'$saat' order by tarikh,saat limit 1", $q);
+                    if(count($q)>0)
+                    {
+                        $ou['stat'] = 'err2';
+                        $ou['tarikh1'] =jdate("Y/m/d",strtotime($q[0]['tarikh']));
+                    }
+                }
+                else
+                {
+                    $q=null;
+                    $my->ex_sql("select count(id) cid from parvaz_det where strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."' and saat>'$saat' and tarikh='".$req[4]['value']."'", $q);
+                    if((int)$q[0]['cid']==0)
+                    {    
                         $q=null;
-                        $saat = date("H:i:s");
-                        $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' and saat>'$saat' order by tarikh,saat limit 1", $q);
+                        $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."' and saat>'$saat' order by tarikh,saat limit 1", $q);
                         if(count($q)>0)
                         {
-                            $ou =jdate("Y/m/d",strtotime($q[0]['tarikh']));
+                            $ou['stat'] = 'err2';
+                            $ou['tarikh2'] =jdate("Y/m/d",strtotime($q[0]['tarikh']));
                         }
-
-                }
-                if($req[0]['value']==2)
-                {
-
+                    }
                 }
             }
-            else
-            {
-                $ou="ok";
-            }
-            die("$ou");
+            
+            die(json_encode($ou));
         }
         if(isset($_REQUEST['s_mabda']))
         {
@@ -427,6 +454,7 @@
 	function searchFlight()
 	{
 		var werc ='';
+                var hstmp='';
 		var ser ='ser';
                 if($("#smabda").val()==='')
                 {
@@ -447,11 +475,53 @@
                    "befor_search":werc,
                    "frm_field":$("#frm_2").serializeArray()
                 };
+                $("#parvaz_det_div").html("<img src='../img/status_fb.gif' >");
                 $.post("home_admin.php",ab,function(res){
-                    console.log(res);
+                    res = $.parseJSON(res);
+                    if(res.stat==="ok")
+                    {
+                        grid[ggname].init(gArgs[ggname]);
+                    }
+                    else
+                    {
+                        if(res.stat==="err1")
+                        {
+                            hstmp = '<div class="alert alert-info" >\n\
+             در تاریخ جستجو شده پروازی موجود نیست اولین تاریخ موجود\n\
+             <a class="btn btn-primary" href="#" onclick="hs_search(this);" >'+res.tarikh+'</a>\n\
+                            </div>';
+                        }
+                        else if(res.stat==="err2")
+                        {
+                            if(typeof res.tarikh1!=='undefined')
+                            {
+                                hstmp = '<div class="alert alert-info" >\n\
+             در تاریخ رفت پروازی موجود نیست اولین تاریخ موجود\n\
+             <a class="btn btn-primary" href="#" onclick="hs_search(this);" >'+res.tarikh1+'</a>\n\
+                                </div>';
+                            }
+                            else if(typeof res.tarikh2!=='undefined')
+                            {
+                                hstmp += '<div class="alert alert-success" >\n\
+             در تاریخ برگشت پروازی موجود نیست اولین تاریخ موجود\n\
+             <a class="btn btn-primary" href="#" onclick="hs_search(this,true);" >'+res.tarikh2+'</a>\n\
+                                </div>';
+                            }
+                        }
+                        $("#parvaz_det_div").html(hstmp);
+                    }
+                        //console.log(res);
                 });
-		grid[ggname].init(gArgs[ggname]);
+		
 	}
+        function hs_search(inp,back)
+        {
+            if(typeof back!=='undefined' && back)
+                $("#statarikh").val($(inp).text());
+            else
+                $("#saztarikh").val($(inp).text());
+            searchFlight();
+        }
 	function submitForm()
         {
             searchFlight();
