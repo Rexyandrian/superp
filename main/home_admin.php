@@ -1,4 +1,5 @@
 <?php   include_once("../kernel.php");
+        include_once("../simplejson.php");
 	$SESSION = new session_class;
 	register_shutdown_function('session_write_close');
 	session_start();
@@ -288,8 +289,7 @@
                     }
                 }
             }
-            
-            die(json_encode($ou));
+            die(toJSON($ou));
         }
         if(isset($_REQUEST['s_mabda']))
         {
