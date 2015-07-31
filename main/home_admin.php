@@ -232,7 +232,7 @@
         }
         function loadAgency($inp)
         {
-            return($GLOBALS['agencyArr'][$inp]);
+            return(isset($GLOBALS['agencyArr'][$inp])?$GLOBALS['agencyArr'][$inp]:$inp);
         }
         if(isset($_POST['befor_search']))
         {

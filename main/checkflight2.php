@@ -335,7 +335,8 @@
                                         	$ok = $ok and $ticket->add($tmp_id[$index],$noth);
 					else
 						$info_ticket[] = $ticket;
-                                        $ghimat_kharid += 200000;$parvaz->mablagh_kharid;
+                                        $ghimat_kharid += 200000;
+                                        $parvaz->mablagh_kharid;
 				} 
                         }
 			if($kharid_typ=='etebari')

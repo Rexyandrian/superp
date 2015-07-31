@@ -234,7 +234,7 @@
                         {    
                             $res_tmp = new reserve_tmp_class($alaki);
                             $time_out = strtotime($res_tmp->tarikh .' + 5 minute ') - strtotime(date("Y-m-d H:i:s"));
-                            $time_out = audit_class::secondToMinute($time_out);
+                            $time_out = 5;//audit_class::secondToMinute($time_out);
                             $adl_ghimat = enToPerNums(monize($adl_ghimat));
                             $chd_ghimat = enToPerNums(monize($chd_ghimat));
                             $inf_ghimat = enToPerNums(monize($inf_ghimat));
