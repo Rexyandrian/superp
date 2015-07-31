@@ -247,7 +247,7 @@
                 if($req[0]['value']==1)
                 {    
                     $q=null;
-                    $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' and saat>'$saat' order by tarikh,saat limit 1", $q);
+                    $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' order by tarikh,saat limit 1", $q);
                     if(count($q)>0)
                     {
                         $ou['stat'] = 'err1';
@@ -262,11 +262,11 @@
                 $ou['stat'] = 'ok';
                 $req[3]['value'] = audit_class::hamed_pdateBack($req[3]['value'],FALSE);
                 $req[4]['value'] = audit_class::hamed_pdateBack($req[4]['value'],FALSE);
-                $my->ex_sql("select count(id) cid from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' and saat>'$saat' and tarikh='".$req[3]['value']."'", $q);
+                $my->ex_sql("select count(id) cid from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."'  and tarikh='".$req[3]['value']."'", $q);
                 if((int)$q[0]['cid']==0)
                 {    
                     $q=null;
-                    $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' and saat>'$saat' order by tarikh,saat limit 1", $q);
+                    $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."'  order by tarikh,saat limit 1", $q);
                     if(count($q)>0)
                     {
                         $ou['stat'] = 'err2';
@@ -276,11 +276,11 @@
                 else
                 {
                     $q=null;
-                    $my->ex_sql("select count(id) cid from parvaz_det where strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."' and saat>'$saat' and tarikh='".$req[4]['value']."'", $q);
+                    $my->ex_sql("select count(id) cid from parvaz_det where strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."'  and tarikh='".$req[4]['value']."'", $q);
                     if((int)$q[0]['cid']==0)
                     {    
                         $q=null;
-                        $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."' and saat>'$saat' order by tarikh,saat limit 1", $q);
+                        $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."'  order by tarikh,saat limit 1", $q);
                         if(count($q)>0)
                         {
                             $ou['stat'] = 'err2';
@@ -511,6 +511,9 @@
                         $("#parvaz_det_div").html(hstmp);
                     }
                         //console.log(res);
+                }).fail(function(){
+                    hstmp = '<div class="alert alert-danger" >خطا در برقراری ارتباط با سرور لطفا دوباره تلاش نمایید</div>';
+                    $("#parvaz_det_div").html(hstmp);
                 });
 		
 	}
@@ -538,6 +541,7 @@
         function loadMaghsad(inp)
         {
             ab = {'s_mabda':$(inp).val()};
+            $("#searchButton").hide('fast');
             $("#div_maaghsad").html('<img src="../img/status_fb.gif" >');
             $.get("home_admin.php",ab,function(res){
                 $("#div_maaghsad").html(res);
@@ -547,6 +551,8 @@
             }).fail(function(){
                 alert('خطا در ارتباط با سرور');
                 $("#div_maaghsad").html('');
+            }).always(function(){
+                $("#searchButton").show('fast');
             });
         }
         function show_hide_back(inp)

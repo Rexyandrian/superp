@@ -30,6 +30,8 @@
         $xgrid->column[$gname][2]['name'] ='نام';
         $xgrid->column[$gname][3]['name'] ='سایت';
 	$xgrid->column[$gname][4]['name'] ='روکشی';
+        $xgrid->column[$gname][5]['name'] ='وضعیت';
+        $xgrid->column[$gname][5]['clist'] =  loadVazTyp();
 	$xgrid->canEdit[$gname] = TRUE;
 	$xgrid->canAdd[$gname] = FALSE;
 	$xgrid->canDelete[$gname] = FALSE;

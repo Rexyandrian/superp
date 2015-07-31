@@ -44,7 +44,19 @@ function loadghimatArr()
     }
     return($out);
 }
+function loadActiveAgency()
+{
+    $out = array();
+    $my = new mysql_class;
+    $my->ex_sql("select `moghim_code` from agency where en=1", $q);
+    foreach ($q as $r)
+    {
+        $out[] = $r['moghim_code'];
+    }
+    return($out);
+}
 $upghimatArr = loadghimatArr();
+$activeAgency = loadActiveAgency();
 $today =substr(perToEnNums(jdate('Y/m/d',strtotime(date("Y-m-d H:i:s")))),2);// 
 $onem =substr(perToEnNums(jdate('Y/m/d',strtotime(date("Y-m-d H:i:s",time()+ 30*24*60*60)))),2);// date("Y-m-d H:i:s",time()+ 30*24*60*60);
 $cl = new SoapClient("http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl");
@@ -68,7 +80,7 @@ foreach($tt as $val)
 {
     foreach($val as $flight)
     {
-        if((string)$flight->reservable=='true' && (string)$flight->reservekind=='1')
+        if((string)$flight->reservable=='true' && (string)$flight->reservekind=='1' && in_array((string)$flight->AgencyCode, $activeAgency))
         {    
             $i++;
             $tarikh =hamed_pdateBack((string)$flight->fldate);
@@ -89,7 +101,6 @@ foreach($tt as $val)
     }    
 }
 $my->ex_sqlx($qu.$tmp);
-
 $my->ex_sql("select strdest from parvaz_det group by strdest", $q);
 $city = array();
 foreach($q as $r)
@@ -112,4 +123,14 @@ for($i=0;$i<count($city);$i++)
 $my->ex_sqlx("truncate table shahr");
 $my->ex_sqlx("insert into shahr (name) values $city_qu ");
 //echo "insert into shahr (name) values $city_qu ";
+//---------------------------------------------------------------------------------
+$q = null;
+$flnums = '-1';
+$my->ex_sql("SELECT flnum FROM parvaz_det GROUP BY flnum having COUNT(id)>1",$q);
+foreach($q as $r)
+{
+    $flnums .=','.$r['flnum'];
+}
+$q = null;
+
 echo "ok";
