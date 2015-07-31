@@ -1,41 +1,34 @@
 <?php
-    include_once("../kernel.php");
-    $reserve_tmp = new reserve_tmp_class(114);
-    $info = $reserve_tmp->info['info'];
-    $fnames='';
-    $lnames='';
-    $sexkind='';
-    $passkind='';
-    $mellicode='';
-    $passport ='';
-    $mobile ='';
-    $i=0;
-    foreach($info as $r)
-    {
-        
-        $fnames.= (($fnames=='')?'':'|').$r->fname;
-        $lnames.= (($lnames=='')?'':'|').$r->lname;
-        $sexkind.= (($sexkind=='')?'':'|'). ($r->gender==0?'MR':'MRS');
-        switch ($r->adult) {
-            case 0:
-                $tmp_passkind = 'ADL';
-                break;
-            case 1:
-                $tmp_passkind = 'CHD';
-                break;
-            case 2:
-                $tmp_passkind = 'INF';
-                break;
-            default:
-                break;
-        }
-        $passkind.= (($passkind=='')?'':'|').$tmp_passkind;
-        $mellicode.= (($mellicode=='')?'':'|').$r->code_melli;
-        $passport.= (($passport=='')?'':'|').$r->code_melli;
-        if($i==0)
-        {    
-            $mobile =$r->tel;
-        }    
-        $i++;
-    }    
-    $out = array('fname'=>$fnames,'lname'=>$lnames,'sexkind'=>$sexkind,'passkind'=>$passkind,'mellicode'=>$mellicode,'passport'=>$passport,'mobile'=>$mobile);
+include('../kernel.php');
+require_once('../class/nusoap.php');
+$cl = new SoapClient("http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl");
+$param = array(
+    'rep'=>&$rep,
+    'netlog'=>&$netlog,
+    'rwaitlog'=>&$rwaitlog,
+    'totalprice'=>&$totalprice,
+    'adlprice'=>&$adlprice,
+    'chdprice'=>&$chdprice,
+    'infprice'=>&$infprice,
+    'selrate'=>&$selrate,
+    'subflid'=>13941,
+    'AgencyCode'=>120,
+    'adl'=>1,
+    'chd'=>0,
+    'inf'=>0,
+    'cust'=>'1005',
+    'pass'=>'123'
+);
+try {
+    //$res = moghim_class::checkselection(23392, 146, 1, 0, 0);
+//$res = $cl->checkselection($param);
+//var_dump($res);
+//var_dump($res->adlprice);
+var_dump($cl->__getFunctions());
+var_dump($cl->__getTypes()); 
+    //var_dump($res);
+} catch (Exception $exc) {
+    echo $exc->getTraceAsString();
+}
+
+

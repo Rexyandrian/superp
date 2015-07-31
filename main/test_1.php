@@ -1,35 +1,21 @@
 <?php
 include('../kernel.php');
-require_once('../class/nusoap.php');
-$cl = new SoapClient("http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl");
-$param = array(
-    'rep'=>&$rep,
-    'netlog'=>&$netlog,
-    'rwaitlog'=>&$rwaitlog,
-    'totalprice'=>&$totalprice,
-    'adlprice'=>&$adlprice,
-    'chdprice'=>&$chdprice,
-    'infprice'=>&$infprice,
-    'selrate'=>&$selrate,
-    'subflid'=>5923,
-    'AgencyCode'=>126,
-    'adl'=>1,
-    'chd'=>0,
-    'inf'=>0,
-    'cust'=>'1005',
-    'pass'=>'123'
-);
-try {
-    $res = moghim_class::Flightlastdata(23392, 146);
-    var_dump($res);
-} catch (Exception $ex) {
-    var_dump($ex);
+//$reserve_tmp = new reserve_tmp_class();
+//$res = moghim_class::reservefl($reserve_tmp);
+$my = new mysql_class;
+$q = null;
+$flnums = '-1';
+$tmp=array();
+$my->ex_sql("SELECT tarikh from parvaz_det group by tarikh",$q);
+$my->ex_sql("SELECT tarikh,customer_id,flnum,id from parvaz_det ",$p);
+foreach($q as $r)
+{
+    foreach($p as $t)
+    {
+        if($r['tarikh']==$t['tarikh'])
+        {
+            $tmp[$r['tarikh']][]=array($t['customer_id'],$t['flnum'],$t['id']);
+        }
+    }    
 }
-//$pattern = '/<xs:schema.*<\/xs:schema>/';
-//$xml = preg_replace($pattern, '', $res->FlightlastdataResult->any);
-
-//$response = simplexml_load_string($xml);
-//$res = $cl->checkselection($param);
-//var_dump($res->adlprice);
-//var_dump($cl->__getFunctions());
-//var_dump($response->NewDataSet->publicselectsp);
+var_dump($tmp);

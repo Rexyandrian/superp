@@ -124,13 +124,6 @@ $my->ex_sqlx("truncate table shahr");
 $my->ex_sqlx("insert into shahr (name) values $city_qu ");
 //echo "insert into shahr (name) values $city_qu ";
 //---------------------------------------------------------------------------------
-$q = null;
-$flnums = '-1';
-$my->ex_sql("SELECT flnum FROM parvaz_det GROUP BY flnum having COUNT(id)>1",$q);
-foreach($q as $r)
-{
-    $flnums .=','.$r['flnum'];
-}
-$q = null;
+
 
 echo "ok";
