@@ -51,11 +51,11 @@ class moghim_class {
         );
         $out = new stdClass();
         $out->checkselectionResult = TRUE;
-        $out->netlog = '';
-        $out->rwaitlog = '';
-        $out->adlprice = '2000000';
-        $out->chdprice = '2000000';
-        $out->infprice = '680000';
+        $out->netlog = '222500';
+        $out->rwaitlog = '122443';
+        $out->adlprice = '500';
+        $out->chdprice = '400';
+        $out->infprice = '100';
         return($out);
     }
     public static function Flightlastdata($subflid,$customer_id)
@@ -98,17 +98,18 @@ class moghim_class {
         );
         return($cl->reservefl($param));
     }
-    public static function reservefl($reserve_tmp)
+    public static function reservefl($pardakht)
     {
         $conf = new conf;
-        $moghim_out = moghim_class::loadReserveParam($reserve_tmp);
+        $tt = json_decode($pardakht->log_text);
+        $moghim_out = moghim_class::loadReserveParam($tt);
         $cl = new SoapClient($conf->moghim_wsdl);
         $param = array(
             'rep'=>&$rep,
             'refer'=>&$refer,
             'seldate'=>&$seldate,
-            'netlog'=>$reserve_tmp->netlog,
-            'rwaitlog'=>$reserve_tmp->rwaitlog,
+            'netlog'=>$tt->netlog,
+            'rwaitlog'=>$tt->rwaitlog,
             'sexkind'=>$moghim_out['sexkind'],
             'fname'=>$moghim_out['fname'],
             'lname'=>$moghim_out['lname'],
@@ -122,15 +123,15 @@ class moghim_class {
         );
         $out = new stdClass();
         $out->reserveflResult = TRUE;
-        $out->refer = 'NYGUFD';
-        $out->seldate = '94/05/28';
+        $out->refer = 'PDYPIQ';
+        $out->seldate = '94/05/27';
         $out->rep = '';
         return($out);
         //return($cl->reservefl($param));
     }
-    public static function loadReserveParam($reserve_tmp)
+    public static function loadReserveParam($info)
     {
-        $info = $reserve_tmp->info['info'];
+        //$info = json_decode($inp);
         $fnames='';
         $lnames='';
         $sexkind='';
@@ -139,7 +140,7 @@ class moghim_class {
         $passport ='';
         $mobile ='';
         $i=0;
-        foreach($info as $r)
+        foreach($info->ticket as $r)
         {
 
             $fnames.= (($fnames=='')?'':'|').$r->fname;

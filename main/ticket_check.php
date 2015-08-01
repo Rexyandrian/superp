@@ -224,7 +224,7 @@
 		$infants = "";
 		$jam_pardakhti = 0;
 		if($msg != "")
-			die('Erro Select');
+			die($msg);
 			//Craete Verify Here
 		$where= "1=0 ";
 		

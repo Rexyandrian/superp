@@ -211,6 +211,45 @@
                     $my = new mysql_class;
                     $my->ex_sql("select  `id`,`refer`, `seldate`, `rwaitlog` from ticket where sanad_record_id=$sanad_record_id limit 1", $q);
                     return($q[0]);
-                }        
+                }
+                public static function add_new($tick,$moghim_info,$rwaitlog,$parvaz_det_info,&$ticket_id)
+		{
+			$mysql = new mysql_class;
+			$conf = new conf;
+			//$tmp_id= (int)$tmp_id;
+			$out = FALSE;
+			$mysql->ex_sql("select `id` from `ticket` where `fname`='".$tick->fname."' and `lname`='".$tick->lname."' and `tel`='".$tick->tel."' and `parvaz_det_id`='".$tick->parvaz_det_id."' and `en`='".$tick->en."' and `mablagh` = '".$tick->mablagh."' and `poorsant` = '".$tick->poorsant."' and `shomare` = '".$tick->shomare."' and `gender` = ".$tick->gender." and email_addr = '".$tick->email_addr."' and sites_id='".$tick->sites_id."' and code_melli='".$tick->code_melli."'",$q);
+			if(count($q)==0 && $tick->lname!="")
+			{
+				$mablagh = $tick->mablagh;
+				if($tick->adult == 2)
+					$mablagh = (int)$mablagh /10;
+				$arg["toz"]="ثبت بلیت به شماره ".$tick->shomare." کد رهگیری ".ticket_class::rahgiriToCode($tick->sanad_record_id,$conf->rahgiri);
+		                $arg["user_id"]=(isset($_SESSION)?$_SESSION[$conf->app."_user_id"]:-1);
+		                $arg["host"]=$_SERVER["REMOTE_ADDR"];
+		                $arg["page_address"]=$_SERVER["SCRIPT_NAME"];
+				$arg["typ"]=3;
+		                log_class::add($arg);
+				$hala = date("Y-m-d H:i:s");
+				$con = $mysql->ex_sqlx("insert into ticket (`fname`,`lname`,`tel`,`adult`,`sanad_record_id`,`parvaz_det_id`,`customer_id`,`user_id`,`shomare`,`typ`,`en`,`mablagh`,`poorsant`,`gender`,`regtime`,email_addr,sites_id,code_melli,rep,refer,seldate,rwaitlog,parvaz_det_info) values ('".$tick->fname."','".$tick->lname."','".$tick->tel."','".$tick->adult."','".$tick->sanad_record_id."','".$tick->parvaz_det_id."','".$tick->customer_id."','".$tick->user_id."','".$tick->shomare."','".$tick->typ."','".$tick->en."','$mablagh','".$tick->poorsant."',".$tick->gender.",'$hala','".$tick->email_addr."','".$tick->sites_id."','".$tick->code_melli."','".$moghim_info->rep."','".$moghim_info->refer."','".$moghim_info->seldate."','$rwaitlog','$parvaz_det_info')",FALSE);
+				$ticket_id = $mysql->insert_id($con);
+				$mysql->close($con);
+				$out = TRUE;
+				//------------sms------------------
+				/*
+				$cust_sms = new customer_class($this->customer_id);
+				
+				if(sms_class::isMobile($this->tel) && $cust_sms->can_sms)
+				{
+					$sms_parvaz = new parvaz_det_class($this->parvaz_det_id);
+					$sms_msg="ازخریدشمامتشکریم\nپرواز:".$sms_parvaz->shomare."\n".audit_class::hamed_pdate($sms_parvaz->tarikh)."\nرهگیری:".$this->rahgiriToCode($this->sanad_record_id,$conf->rahgiri)."\n".$cust_sms->name;
+					sms_class::sendSms($sms_msg,array("$this->tel"),(int)$_SESSION[$conf->app.'_user_id'],$this->sanad_record_id);
+				}*/
+				//---------------------------------
+				//$out =(($ok=="ok")?TRUE:FALSE);
+				
+			}
+			return $out;
+		}
 	}
 ?>

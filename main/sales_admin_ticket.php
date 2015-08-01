@@ -113,12 +113,15 @@
         }
         function loadParvaz_det($inp)
         {
-            $out='---';
+            $out='';
             if($inp!='')
             {
-                $parvaz_det = unserialize($inp);
+                $tmp = json_decode($inp);
+                foreach($tmp as $parvaz_det)
+                {    
                 $ag = new agency_class($parvaz_det->customer_id);
-                $out ='<span style="font-size:80%" >'. 'شماره:'.$parvaz_det->flnum.' تاریخ:'.jdate("Y/m/d",strtotime($parvaz_det->tarikh)).' آژانس:'.$ag->name.' مسیر:'.$parvaz_det->strsource.' -> '.$parvaz_det->strdest.'</span>';
+                $out .='<div style="font-size:80%" >'. 'شماره:'.(isset($parvaz_det->flnum)?$parvaz_det->flnum:'---').' تاریخ:'.jdate("Y/m/d",strtotime($parvaz_det->tarikh)).' آژانس:'.(isset($ag->name)?$ag->name:'نامعلوم').' مسیر:'.(isset($parvaz_det->strsource)?$parvaz_det->strsource:'---').' -> '.(isset($parvaz_det->strdest)?$parvaz_det->strdest:'---').'</div>';
+                }
             }
             return($out);
         }

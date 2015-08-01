@@ -34,51 +34,48 @@
 			$ticket_error = FALSE;
 			$shenavar = array();
 			$tedad = 0;
-			//var_dump($res_tmp);
-			//for($i=0;$i<count($res_tmp);$i++)
-			//{
-			//echo "befor reserve_tmp<br/>";
-				$reserve_tmp = new reserve_tmp_class($res_tmp[0]);
-			//var_dump($reserve_tmp);
-				if($reserve_tmp->info!='' && $reserve_tmp->info!=null)
-				{
-                                    $moghim_info = moghim_class::reservefl($reserve_tmp);
-//echo "moghim_rsponse<br/>";
-									//var_dump($moghim_info);
-                                    if($moghim_info->reserveflResult)
-                                    {    
-                                        $info = $reserve_tmp->info['info']; 
-                                        $parvaz =  $reserve_tmp->info['parvaz'];
-                                        if($parvaz->is_shenavar)
-                                                $shenavar[] = $parvaz;
-                                        foreach($info as $ticket)
-                                        {
-                                                $ticket->sanad_record_id = $sanad_record_id;
-                                                if(!$ticket->add($res_tmp[0],$moghim_info,$reserve_tmp->rwaitlog,$reserve_tmp->parvaz_det_info,$ticket_id))
-                                                        $ticket_error = TRUE;
-                                                $ticket_ids[] = $ticket_id;
-                                                if((int)$ticket->adult!=2)
-                                                        $tedad++;
-                                        }
-                                        $etick = moghim_class::printEticket($reserve_tmp->rwaitlog);
-                                        if(isset($etick->printEticketResult))
-                                        {
-                                            file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.98.31.190/ereports/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", 'r'));
-                                        }
-                                    }
-                                    else
-                                    {
-                                        $ticket_error = TRUE;
-                                        pay_class::revers($SaleOrderId,$SaleReferenceId);
-					die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
-                                    }    
-				}
-				else
-				{
-                                        $ticket_error = TRUE;
-					pay_class::revers($SaleOrderId,$SaleReferenceId);
-					die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
-				}
+			
+                        //$reserve_tmp = new reserve_tmp_class($res_tmp[0]);
+                        //foreach($pardakht->log_text['ticket'] as  )
+                        if($pardakht->log_text!='' && $pardakht->log_text!=null)
+                        {
+                            $moghim_info = moghim_class::reservefl($pardakht);
+                            if($moghim_info->reserveflResult)
+                            {    
+                                $tt = json_decode($pardakht->log_text);
+                                $info = $tt->ticket;
+                                //$parvaz =  $reserve_tmp->info['parvaz'];
+                                //if($parvaz->is_shenavar)
+                                        //$shenavar[] = $parvaz;
+                                foreach($info as $ticket)
+                                {
+                                        $ticket->sanad_record_id = $sanad_record_id;
+                                        if(!ticket_class::add_new($ticket, $moghim_info, $tt->rwaitlog,  json_encode($tt->parvaz), $ticket_id))
+                                                $ticket_error = TRUE;
+                                        $ticket_ids[] = $ticket_id;
+                                        if((int)$ticket->adult!=2)
+                                                $tedad++;
+                                }
+                                $pardakht->update($sanad_record_id);
+                                $etick = moghim_class::printEticket($tt->rwaitlog);
+                                if(isset($etick->printEticketResult))
+                                {
+                                    file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.98.31.190/ereports/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", 'r'));
+                                }
+                            }
+                            else
+                            {
+                                $ticket_error = TRUE;
+                                pay_class::revers($SaleOrderId,$SaleReferenceId);
+                                die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
+                            }    
+                        }
+                        else
+                        {
+                                $ticket_error = TRUE;
+                                pay_class::revers($SaleOrderId,$SaleReferenceId);
+                                die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
+                        }
 			//}
 			if($ticket_error)
 			{

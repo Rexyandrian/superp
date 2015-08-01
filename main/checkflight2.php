@@ -1,6 +1,7 @@
 <?php   
 	include_once("../kernel.php");
 	include_once("../class/nusoap.php");
+        include_once("../simplejson.php");
 	$SESSION = new session_class;
 	register_shutdown_function('session_write_close');
 	session_start();
@@ -142,14 +143,17 @@
 	$childs = "";
 	$infants = "";
 	$tmp_id = array();
+        $jam_ghimat1 = 0;
 	if($_REQUEST["mod"] == "save" )
 	{
 		$empty_tickets = 0;
 		$tmp_id = explode(",",$_REQUEST["tmp_id"]);
 		$mysql  =new mysql_class;
-		$mysql->ex_sql("select `id` from `reserve_tmp` where `id` = ".$tmp_id[0],$qqq);
+		$mysql->ex_sql("select `id`,`netlog`, `rwaitlog` from `reserve_tmp` where `id` = ".$tmp_id[0],$qqq);
 		if(!(isset($qqq[0])))
 			die('<script>alert("reserve_tmp is died");</script>');
+                $netlog = $qqq[0]['netlog'];
+                $rwaitlog = $qqq[0]['rwaitlog'];
                 $sanad_record_id = 200;
 		$mysql->ex_sql("select MAX(`sanad_record_id`) as `sss` from `customer_daryaft`",$q);
 		if(isset($q[0]))
@@ -341,35 +345,31 @@
                         }
 			if($kharid_typ=='etebari')
 				$mysql->ex_sqlx("delete from `reserve_tmp` where `id` = ".$tmp_id[$index]);
-                        
-                        $jam_ghimat1 = 0;
-                        for($k=0;$k<count($tmp_id);$k++)
-                        {
-                            if(ticket_class::updateTmp($tmp_id[$k],$info_ticket))
-                            {        
-                                $log_text_info[]=$info_ticket;
-                                $mysql->ex_sql("select `adlprice`,`adltedad`,`chdprice`,`chdtedad`,`infprice`,`inftedad`,`info` from reserve_tmp where id=".$tmp_id[$k], $q);
-                                //echo "select `adlprice`,`adltedad`,`chdprice`,`chdtedad`,`infprice`,`inftedad`,`info` from reserve_tmp where id=".$tmp_id[$k]."<br/>";
-                                if(count($q)>0)
-                                {    
-                                    $info = unserialize($q[0]['info']);
-                                    $mysql->ex_sql("select upghimat from parvaz_det left join agency on (moghim_code=customer_id) where parvaz_det.id=".$info['parvaz']->id, $p);
-                                    //echo "select upghimat from parvaz_det left join agency on (moghim_code=customer_id) where parvaz_det.id=".$info['parvaz']->id."<br/>";
-                                    $upghimat = 0;//(count($p)>0)?$p[0]['upghimat']:100000;
-                                    $jam_ghimat1+= ($q[0]['adlprice']+$upghimat)*$q[0]['adltedad'] + ($q[0]['chdprice']+$upghimat)*$q[0]['chdtedad'] + ($q[0]['infprice']*$q[0]['inftedad']);
-                                }
-                            }
-                            else
+                        $log_text_info[] = $parvaz;
+                        if(ticket_class::updateTmp($tmp_id[$index],$info_ticket))
+                        {        
+                            $mysql->ex_sql("select `adlprice`,`adltedad`,`chdprice`,`chdtedad`,`infprice`,`inftedad`,`info` from reserve_tmp where id=".$tmp_id[$index], $q);
+                            //echo "select `adlprice`,`adltedad`,`chdprice`,`chdtedad`,`infprice`,`inftedad`,`info` from reserve_tmp where id=".$tmp_id[$k]."<br/>";
+                            if(count($q)>0)
                             {    
-                                $bool = FALSE;
-                            }    
+                                $info = unserialize($q[0]['info']);
+                                $mysql->ex_sql("select upghimat from parvaz_det left join agency on (moghim_code=customer_id) where parvaz_det.id=".$info['parvaz']->id, $p);
+                                $upghimat = 0;//(count($p)>0)?$p[0]['upghimat']:100000;
+                                $jam_ghimat1+= ($q[0]['adlprice']+$upghimat)*$q[0]['adltedad'] + ($q[0]['chdprice']+$upghimat)*$q[0]['chdtedad'] + ($q[0]['infprice']*$q[0]['inftedad']);
+                            }
                         }
-                        //echo ("ghimat:".$jam_ghimat1);
-			//$jam_ghimat1 += $zarib*$tedad*$parvaz->ghimat+$zarib*$inf*$parvaz->ghimat/10;
-                        //echo "ghimat=".$jam_ghimat1."<br>";
-			$index ++;
+                        else
+                        {    
+                            $bool = FALSE;
+                        }
+                        $index ++;
 			$p_i++;
 		}
+                
+                for($k=0;$k<count($tmp_id);$k++)
+                {
+                        
+                }
 		if($kharid_typ == 'naghdi')
 		{
 			$bool = TRUE;
@@ -383,7 +383,7 @@
 			if($bool)
 			{
                                 $mysql = new mysql_class;   
-				$pardakht_id =  pardakht_class::add(implode(',',$tmp_id),$tarikh_now,$jam_ghimat1, json_encode($log_text_info));
+				$pardakht_id =  pardakht_class::add(implode(',',$tmp_id),$tarikh_now,$jam_ghimat1, toJSON(array('ticket'=>$info_ticket,'parvaz'=>$log_text_info,'netlog'=>$netlog,'rwaitlog'=>$rwaitlog)));
 				$pardakht = new pardakht_class($pardakht_id);
 				$rahgiri = $pardakht->getBarcode();
 				if($conf->ps === TRUE)

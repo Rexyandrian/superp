@@ -24,6 +24,7 @@
   	                              $this->bank_out=unserialize($r['bank_out']);
 				$this->is_hotel = ((int)$r['is_hotel']==1)?TRUE:FALSE;
 				$this->is_tmp = ((int)$r['is_tmp']==1)?TRUE:FALSE;
+                                $this->log_text=$r['log_text'];
                         }
                 }
 		public function loadPaylineByBankOut($id)

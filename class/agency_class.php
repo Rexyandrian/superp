@@ -16,9 +16,12 @@ class agency_class {
     {
             $mysql = new mysql_class;
             $mysql->ex_sql("select * from `agency` where `moghim_code` = '$moghim_code'",$q);
-            foreach($q[0] as $fi=>$val)
+            if(count($q)>0)
             {    
-                $this->$fi=$val;
+                foreach($q[0] as $fi=>$val)
+                {    
+                    $this->$fi=$val;
+                }
             }
     }
 }
