@@ -12,23 +12,31 @@
 		public $info='';
 		public function __construct($id=-1)
 		{
-			$mysql = new mysql_class;
-			$id = (int)$id;
-			$mysql->ex_sql("select * from `reserve_tmp` where `id` = $id",$q);
-			if(isset($q[0]))
-			{
-				$r = $q[0];
-				$this->id=$r['id'];
-				$this->parvaz_det_id=$q[0]['parvaz_det_id'];
-				$this->tarikh=$q[0]['tarikh'];
-				$this->tedad=$q[0]['tedad'];
-				$this->customer_id=$q[0]['customer_id'];
-				$this->zakhire=$q[0]['zakhire'];
-				$this->zarfiat=$q[0]['zarfiat'];
-				$this->timeout=$q[0]['timeout'];
-				if($q[0]['info'] != '' && $q[0]['info'] != null)
-					$this->info=unserialize($q[0]['info']);
-			}
+                    $mysql = new mysql_class;
+                    $id = (int)$id;
+                    $mysql->ex_sql("select * from `reserve_tmp` where `id` = $id",$q);
+                    if(isset($q[0]))
+                    {
+                        $r = $q[0];
+                        $this->id=$r['id'];
+                        $this->parvaz_det_id=$r['parvaz_det_id'];
+                        $this->tarikh=$r['tarikh'];
+                        $this->tedad=$r['tedad'];
+                        $this->customer_id=$r['customer_id'];
+                        $this->zakhire=$r['zakhire'];
+                        $this->zarfiat=$r['zarfiat'];
+                        $this->timeout=$r['timeout'];
+                        $this->adlprice=$r['adlprice'];
+                        $this->chdprice=$r['chdprice'];
+                        $this->infprice=$r['infprice'];
+                        $this->adltedad=$r['adltedad'];
+                        $this->chdtedad=$r['chdtedad'];
+                        $this->inftedad=$r['inftedad'];
+                        $this->netlog=$r['netlog'];
+                        $this->rwaitlog=$r['rwaitlog'];
+                        if($r['info'] != '' && $r['info'] != null)
+                                $this->info=unserialize($r['info']);
+                    }
 		}
 		public function load_reserve_tmp_times_by_ids($reserve_tmp_ids)
 		{

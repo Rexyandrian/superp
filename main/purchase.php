@@ -3,10 +3,6 @@
 	$SESSION = new session_class;
 	register_shutdown_function('session_write_close');
 	session_start();
-/*
-	if(!isset($_SESSION[$conf->app.'_user_id']))
-                die($conf->access_deny);	
-*/
 	include_once ("../class/nusoap.php");
 	$out = '';
 	if(isset($_REQUEST['RefId']) && isset($_REQUEST['ResCode']) && isset($_REQUEST['SaleOrderId']) && isset($_REQUEST['SaleReferenceId']) && isset($_REQUEST['CardHolderInfo']))
@@ -34,7 +30,6 @@
 			$ghimat_kharid = 0;
 			$ticket_ids = array();
 			$ticket_error = FALSE;
-			$ticket_ids = array();
 			$shenavar = array();
 			$tedad = 0;
 			//var_dump($res_tmp);
