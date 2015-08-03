@@ -619,7 +619,7 @@
                         <select id="smabda" name="smabda" class="ser" onchange="loadMaghsad(this)" style="width:100%" >
 			<?php
 				//echo loadCities(isset($_REQUEST['smabda'])?(int)$_REQUEST['smabda']:-1);
-                                echo loadCities('تهران');
+                                echo loadCities();
 			?>
 			</select>
 		</td>
@@ -628,7 +628,7 @@
 			<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >
 			<?php
 				//echo loadCities(isset($_REQUEST['smaghsad'])?(int)$_REQUEST['smaghsad']:-1);
-                                echo loadCities('مشهد');
+                                echo loadCities();
 			?>
 			</select>
                     </div>    

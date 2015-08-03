@@ -356,7 +356,7 @@
 	$xgrid->disableRowColor[$gname] = TRUE;
 	//$xgrid->afterCreateFunction[$gname] = 'colorFunc';
 	$id = $xgrid->column[$gname][0];
-        $xgrid->whereClause[$gname] = ' 1=1 order by tarikh,saat,ghimat';
+        $xgrid->whereClause[$gname] = ' en=1 order by tarikh,saat,ghimat';
         $xgrid->pageRows[$gname]= $pageRows;
 	$xgrid->column[$gname][0]['name'] = 'انتخاب';
 	$xgrid->column[$gname][0]['cfunction']=array('loadCheckBox');
@@ -619,7 +619,7 @@
                         <select id="smabda" name="smabda" class="ser" onchange="loadMaghsad(this)" style="width:100%" >
 			<?php
 				//echo loadCities(isset($_REQUEST['smabda'])?(int)$_REQUEST['smabda']:-1);
-                                echo loadCities('تهران');
+                                echo loadCities();
 			?>
 			</select>
 		</td>
@@ -628,7 +628,7 @@
 			<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >
 			<?php
 				//echo loadCities(isset($_REQUEST['smaghsad'])?(int)$_REQUEST['smaghsad']:-1);
-                                echo loadCities('مشهد');
+                                echo loadCities();
 			?>
 			</select>
                     </div>    
