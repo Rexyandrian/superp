@@ -281,9 +281,9 @@ tmp0;
 	                                $adults .= '
                                 <tr class="showgrid_row_even" >
                                         <td class="showgrid_row_td_reserve" >'.$radif.'</td>
-                                        <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control latin" placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin '.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control" placeholder="کد ملی یا شماره پاسپورت" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control latin zoor" placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin zoor'.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control zoor" placeholder="کد ملی یا شماره پاسپورت" /></td>
 					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >مذکر</option><option value="" >مؤنث</option></select></td>
 					'.$e_ticket.'
                                 </tr>
@@ -318,9 +318,9 @@ tmp1;
                                                 $childs .= <<<tmp1
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp form-control latin' placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp form-control slave latin' placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp form-control' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
+                                        <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp form-control latin zoor' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp form-control slave latin zoor' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp form-control zoor' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
                                         <td><select class='inp form-control' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
 					$e_ticket
 	
@@ -359,9 +359,9 @@ tmp2;
                                                 $infants .= <<<tmp2
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
-                                        <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp form-control latin' placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp form-control slave latin' placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp form-control' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
+                                        <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp form-control latin zoor' placeholder="نام" /></td>
+                                        <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp form-control slave latin zoor' placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp form-control zoor' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
 					<td><select class='inp form-control' name='inf_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
 					$e_ticket
                                 </tr>
@@ -371,6 +371,8 @@ tmp2;
 				}
 
 			}
+                        if(!isset($time_out))
+                            $time_out=5;
 			$out = <<<OOUT
 	<span style="color:firebrick;font-size:15px;" >
 		دقت فرمایید رزرو موقت شما تنها ۵ دقیقه معتبر است
@@ -469,7 +471,10 @@ OOUT;
             if(isset($moghim_res->checkselectionResult) && $moghim_res->checkselectionResult)
                 echo $out;
             else
+            {
+                echo ($moghim_res->rep)."<br/>";
                 echo "خطا در ثبت موفق بلیت لطفا مجددا تلاش فرمایید";
+            }    
         }
     ?>
 </div>
@@ -514,8 +519,8 @@ var mod;
                         $("#email_addr").css("border","1px solid red");
 			return (false);
 		}
-                $(".form-control").css("border","1px solid rgb(204, 204, 204)");
-                $.each($(".form-control"),function(id,field){
+                $(".zoor").css("border","1px solid rgb(204, 204, 204)");
+                $.each($(".zoor"),function(id,field){
                     if($(field).val()==='')
                     {
                         $(field).css("border","1px solid red");

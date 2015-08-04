@@ -53,7 +53,7 @@
 		{
 			return($this->id);
 		}
-		public function add($tmp_id,&$ticket_id)
+		public function add($tmp_id,$moghim_info,$rwaitlog,&$ticket_id)
 		{
 			$mysql = new mysql_class;
 			$conf = new conf;
@@ -72,7 +72,7 @@
 				$arg["typ"]=3;
 		                log_class::add($arg);
 				$hala = date("Y-m-d H:i:s");
-				$con = $mysql->ex_sqlx("insert into ticket (`fname`,`lname`,`tel`,`adult`,`sanad_record_id`,`parvaz_det_id`,`customer_id`,`user_id`,`shomare`,`typ`,`en`,`mablagh`,`poorsant`,`gender`,`regtime`,email_addr,sites_id,code_melli) values ('".$this->fname."','".$this->lname."','".$this->tel."','".$this->adult."','".$this->sanad_record_id."','".$this->parvaz_det_id."','".$this->customer_id."','".$this->user_id."','".$this->shomare."','".$this->typ."','".$this->en."','$mablagh','".$this->poorsant."',".$this->gender.",'$hala','".$this->email_addr."','".$this->sites_id."','".$this->code_melli."')",FALSE);
+				$con = $mysql->ex_sqlx("insert into ticket (`fname`,`lname`,`tel`,`adult`,`sanad_record_id`,`parvaz_det_id`,`customer_id`,`user_id`,`shomare`,`typ`,`en`,`mablagh`,`poorsant`,`gender`,`regtime`,email_addr,sites_id,code_melli,rep,refer,seldate,rwaitlog) values ('".$this->fname."','".$this->lname."','".$this->tel."','".$this->adult."','".$this->sanad_record_id."','".$this->parvaz_det_id."','".$this->customer_id."','".$this->user_id."','".$this->shomare."','".$this->typ."','".$this->en."','$mablagh','".$this->poorsant."',".$this->gender.",'$hala','".$this->email_addr."','".$this->sites_id."','".$this->code_melli."','".$moghim_info->rep."','".$moghim_info->refer."','".$moghim_info->seldate."','$rwaitlog')",FALSE);
 				$ticket_id = $mysql->insert_id($con);
 				$mysql->close($con);
 				$out = TRUE;

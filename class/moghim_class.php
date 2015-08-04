@@ -110,4 +110,15 @@ class moghim_class {
         $out = array('fname'=>$fnames,'lname'=>$lnames,'sexkind'=>$sexkind,'passkind'=>$passkind,'mellicode'=>$mellicode,'passport'=>$passport,'mobile'=>$mobile);
         return($out);
     }
+    public static function printEticket($rwaitlog)
+    {
+        $conf = new conf;
+        $cl = new SoapClient($conf->moghim_wsdl);
+        $param = array(
+            'rwaitlog'=>$rwaitlog,
+            'cust'=>$conf->moghim_cust,
+            'pass'=>$conf->moghim_pass
+        );
+        return($cl->printEticket($param));
+    }        
 }

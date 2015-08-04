@@ -38,19 +38,28 @@
 				$reserve_tmp = new reserve_tmp_class($res_tmp[0]);
 				if($reserve_tmp->info!='' && $reserve_tmp->info!=null)
 				{
-					$info = $reserve_tmp->info['info']; 
-					$parvaz =  $reserve_tmp->info['parvaz'];
-					if($parvaz->is_shenavar)
-						$shenavar[] = $parvaz;
-					foreach($info as $ticket)
-					{
-						$ticket->sanad_record_id = $sanad_record_id;
-						if(!$ticket->add($res_tmp[$i],$ticket_id))
-							$ticket_error = TRUE;
-						$ticket_ids[] = $ticket_id;
-						if((int)$ticket->adult!=2)
-							$tedad++;
-					}
+                                    $moghim_info = moghim_class::reservefl($reserve_tmp);
+                                    if($moghim_info->reserveflResult)
+                                    {    
+                                        $info = $reserve_tmp->info['info']; 
+                                        $parvaz =  $reserve_tmp->info['parvaz'];
+                                        if($parvaz->is_shenavar)
+                                                $shenavar[] = $parvaz;
+                                        foreach($info as $ticket)
+                                        {
+                                                $ticket->sanad_record_id = $sanad_record_id;
+                                                if(!$ticket->add($res_tmp[$i],$moghim_info,$reserve_tmp->rwaitlog,$ticket_id))
+                                                        $ticket_error = TRUE;
+                                                $ticket_ids[] = $ticket_id;
+                                                if((int)$ticket->adult!=2)
+                                                        $tedad++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        pay_class::revers($SaleOrderId,$SaleReferenceId);
+					die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
+                                    }    
 				}
 				else
 				{

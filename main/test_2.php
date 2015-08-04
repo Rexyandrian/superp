@@ -1,7 +1,6 @@
 <?php
 include('../kernel.php');
-$reserve_tmp = new reserve_tmp_class(118);
-$res = moghim_class::reservefl($reserve_tmp);
+$res = moghim_class::printEticket(112705);
 var_dump($res);
 /*
 function removeGran()
