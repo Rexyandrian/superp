@@ -372,7 +372,7 @@
 			{
 				$out_kharid .='<tr>
 							<td colspan="4" >
-								<img width="200px" src="../img/mellat.png">
+								<img width="80px" src="../img/mellat.png">
 							</td>
 						</tr>
 			';

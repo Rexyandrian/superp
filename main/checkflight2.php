@@ -335,8 +335,7 @@
                                         	$ok = $ok and $ticket->add($tmp_id[$index],$noth);
 					else
 						$info_ticket[] = $ticket;
-                                        $ghimat_kharid += 200000;
-                                        $parvaz->mablagh_kharid;
+                                        $ghimat_kharid += 200000;$parvaz->mablagh_kharid;
 				} 
                         }
 			if($kharid_typ=='etebari')
@@ -389,7 +388,7 @@
 				}
 				else
 					$pay_code = pay_class::pay($pardakht_id,$jam_ghimat1);
-                                var_dump($pay_code);
+                                //var_dump($pay_code);
 				$tmpo = explode(',',$pay_code);
 				if(count($tmpo)==2 && $tmpo[0]==0 && $conf->ps !== 'TRUE')
 					$redirect = "<script language=\"javascript\">alert(\"کد رهگیری خود را یادداشت نمایید \\n $rahgiri \\n سپس به بانک هدایت می شوید\");postRefId('".$tmpo[1]."');</script>";

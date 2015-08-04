@@ -5,6 +5,7 @@
 	session_start();
 	include_once ("../class/nusoap.php");
 	$out = '';
+//var_dump($_REQUEST);
 	if(isset($_REQUEST['RefId']) && isset($_REQUEST['ResCode']) && isset($_REQUEST['SaleOrderId']) && isset($_REQUEST['SaleReferenceId']) && isset($_REQUEST['CardHolderInfo']))
 	{
 		$RefId  = $_REQUEST['RefId'];
@@ -14,6 +15,7 @@
 		$CardHolderInfo = $_REQUEST['CardHolderInfo'];
 		$bank_out = array('RefId'=>$RefId,'ResCode'=>$ResCode,'SaleOrderId'=>$SaleOrderId,'SaleReferenceId'=>$SaleReferenceId,'CardHolderInfo'=>$CardHolderInfo);
 		$pay = pay_class::verify($SaleOrderId,$SaleReferenceId);
+		//echo "pay:$pay<br/>";
 		if(($pay == '0' || (int)$pay == 43) && (!is_array($pay)))
 		{
 			$pardakht = new pardakht_class($SaleOrderId);
@@ -35,10 +37,14 @@
 			//var_dump($res_tmp);
 			//for($i=0;$i<count($res_tmp);$i++)
 			//{
+			//echo "befor reserve_tmp<br/>";
 				$reserve_tmp = new reserve_tmp_class($res_tmp[0]);
+			//var_dump($reserve_tmp);
 				if($reserve_tmp->info!='' && $reserve_tmp->info!=null)
 				{
                                     $moghim_info = moghim_class::reservefl($reserve_tmp);
+//echo "moghim_rsponse<br/>";
+									//var_dump($moghim_info);
                                     if($moghim_info->reserveflResult)
                                     {    
                                         $info = $reserve_tmp->info['info']; 
@@ -48,7 +54,7 @@
                                         foreach($info as $ticket)
                                         {
                                                 $ticket->sanad_record_id = $sanad_record_id;
-                                                if(!$ticket->add($res_tmp[$i],$moghim_info,$reserve_tmp->rwaitlog,$ticket_id))
+                                                if(!$ticket->add($res_tmp[0],$moghim_info,$reserve_tmp->rwaitlog,$ticket_id))
                                                         $ticket_error = TRUE;
                                                 $ticket_ids[] = $ticket_id;
                                                 if((int)$ticket->adult!=2)
@@ -113,7 +119,7 @@
 </html>
 ';
 			$mail = new email_class($email,'ثبت بلیت به شماره ره‌گیری'.$rahgiri,$text);
-			$out = '<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'&SaleReferenceId='.$SaleReferenceId.'"</script>';
+			$out ='<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'&SaleReferenceId='.$SaleReferenceId.'"</script>';
 		}
 		else
 			$out = ' پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، مبلغ از حساب شما کم نشده است

@@ -268,7 +268,7 @@ adul;
 					<td class="showgrid_row_td_reserve" >$radif</td>
 					<td>نام‌و‌نام‌خانوادگی</td>
 					<td style="width:auto;"><input type='text' name='adl_lname_$i' id='adl_lname_$i' class='inp' style="width:400px;"/></td>
-					<td><select class='inp' name='adl_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
+					<td><select class='inp' name='adl_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
 					<td class="showgrid_row_td_reserve"><input type='text' name='adl_shomare_$i' id='adl_shomare_$i' class='inp'  /></td>
 					<td class="showgrid_row_td_reserve" readonly="readonly">$adl_ghimat</td>
                                         <td class="showgrid_row_td_reserve" readonly="readonly">$poorsant</td>
@@ -284,7 +284,7 @@ tmp0;
                                         <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control latin zoor" placeholder="نام" /></td>
                                         <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin zoor'.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control zoor" placeholder="کد ملی یا شماره پاسپورت" /></td>
-					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >مذکر</option><option value="" >مؤنث</option></select></td>
+					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >آقا</option><option value="" >خانم</option></select></td>
 					'.$e_ticket.'
                                 </tr>
 ';
@@ -308,7 +308,7 @@ chil;
 					<td class="showgrid_row_td_reserve" >$radif</td>
 					<td >نام و نام‌خانوادگی:</td>
 					<td  colspan='1'  class="showgrid_row_td_reserve" style='width:auto;text-align:right;' ><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp'  style="width:400px;"/></td>
-					<td><select class='inp' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
+					<td><select class='inp' name='chd_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
                                         <td class="showgrid_row_td_reserve" ><input type='text' name='chd_shomare_$i' id='chd_shomare_$i' class='inp'  /></td>
 				</tr>
 tmp1;
@@ -321,7 +321,7 @@ tmp1;
                                         <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp form-control latin zoor' placeholder="نام" /></td>
                                         <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp form-control slave latin zoor' placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp form-control zoor' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
-                                        <td><select class='inp form-control' name='chd_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
+                                        <td><select class='inp form-control' name='chd_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
 					$e_ticket
 	
                                 </tr>
@@ -349,7 +349,7 @@ infa;
                                         <td colspan="1" style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp' placeholder="نام" /></td>
                                         <td colspan="1" style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp' placeholder="نام خانوادگی" /></td>
         
-					<td><select class='inp' name='inf_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
+					<td><select class='inp' name='inf_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
                                         <td class="showgrid_row_td_reserve" ><input type='text' name='inf_shomare_$i' id='inf_shomare_$i' class='inp'  /></td>
 				</tr>
 tmp2;
@@ -362,7 +362,7 @@ tmp2;
                                         <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp form-control latin zoor' placeholder="نام" /></td>
                                         <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp form-control slave latin zoor' placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp form-control zoor' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
-					<td><select class='inp form-control' name='inf_gender_$i' ><option value='1' >مذکر</option><option value='0' >مؤنث</option></select></td>
+					<td><select class='inp form-control' name='inf_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
 					$e_ticket
                                 </tr>
 tmp2;
@@ -436,7 +436,7 @@ $infants
                                 <td class="showgrid_row_td_reserve" colspan="6" ><input type='text' name='email_addr' id='email_addr' class='inp form-control'  placeholder="نشانی ایمیل" /></td>
                         </tr>
 			<tr class="showgrid_row_even">
-                                <td class="showgrid_row_td_reserve" colspan="8" ><a href="http://www.superparvaz.com/terms-and-guideline/terms-of-booking" target="_blank" >شرایط و ضوابط را قبول دارم</a>
+                                <td class="showgrid_row_td_reserve" colspan="8" ><a href="http://www.superparvaz.com/terms-of-flight-booking-system" target="_blank" >شرایط و ضوابط را قبول دارم</a>
 				<input type='checkbox' name='zavabet' id='zavabet'  /></td>
                         </tr>
 			<tr class="showgrid_row_odd">
@@ -490,9 +490,9 @@ var sites_id = '<?php echo $sites_id; ?>';
 var mod;
         $(document).ready(function(){
             $(".latin").keypress(function(event) {
-                if(!((event.which >= 65 && event.which  <= 90) ||
-                   (event.which >= 97 && event.which <= 122))) {
+                if(!((event.which >= 65 && event.which  <= 90) || (event.which >= 97 && event.which <= 122) || event.which==8 || event.which==0)) {
                     event.preventDefault();
+                    alert('لطفا لاتین تایپ کنید');
                 }
             });
             $(".master").blur(function(event){

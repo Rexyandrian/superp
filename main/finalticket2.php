@@ -25,8 +25,7 @@
 		$out = "&nbsp;";
 		$inp = (int)$inp;
 		$parvaz = new parvaz_det_class($inp);
-		if($parvaz->getId() >0)
-			$out = $parvaz->shomare."( ".loadCity($parvaz->mabda_id)." -> ".loadCity($parvaz->maghsad_id)." )<br/>".hamed_pdate($parvaz->tarikh);
+        	$out ='<div>'. $parvaz->flnum."( ".$parvaz->strsource." -> ".$parvaz->strdest." )</div>".hamed_pdate($parvaz->tarikh);
 		return($out);
 	}
 	function loadPrint($inp)
@@ -51,7 +50,7 @@
 		if(isset($q[0]))
 		{
 			$parvaz = new parvaz_det_class((int)$r["parvaz_det_id"]);
-			$out = $parvaz->shomare."( ".loadCity($parvaz->mabda_id)." -> ".loadCity($parvaz->maghsad_id)." )<br/>".hamed_pdate($parvaz->tarikh);
+                        $out ='<div>'. $parvaz->flnum."( ".$parvaz->strsource." -> ".$parvaz->strdest." )</div>".hamed_pdate($parvaz->tarikh);
 		}
 		return($out);	
 	}
@@ -90,8 +89,8 @@
 			$xgrid->eRequest[$gname] = array('rahgiri'=>$rahgiri,'sanad_record_id'=>$sanad_recoed_id,'ticket_type'=>'0');
 			$xgrid->whereClause[$gname] ="sanad_record_id=$sanad_recoed_id and en=1 group by `shomare`";
 			$xgrid->column[$gname][0]['name'] = '';
-			$xgrid->column[$gname][1]['name'] = '';
-			$xgrid->column[$gname][2]['name'] = 'نام و نام خانوادگی';
+			$xgrid->column[$gname][1]['name'] = 'نام';
+			$xgrid->column[$gname][2]['name'] = 'نام خانوادگی';
 			$xgrid->column[$gname][3]['name'] = 'تلفن';
 			$xgrid->column[$gname][4]['name'] = 'رده سنی';
 			$xgrid->column[$gname][4]['cfunction'] = array("loadAdl");
@@ -202,9 +201,7 @@
 				intialGrid(args);
 			});
 		</script>
-		<div class="notice"  >
-			کاربر گرامی بلیط نهایی بزودی برای شما ایمیل خواهد شد
-		</div>
+		
 		<div align="center" style="margin:10px;">
 			<div style="font-size:15px;color:red;font-weight:bold;">
 				کدرهگیری پرداخت بانکی:

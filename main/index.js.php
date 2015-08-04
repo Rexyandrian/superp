@@ -456,6 +456,7 @@ function initReserve(gname,reserveArgs)
 			return(true);
 		});
 	}
+        $("#reserve").unbind("click");
 	$("#reserve").click(function(){
 		plength = 0;
 		pids = [];

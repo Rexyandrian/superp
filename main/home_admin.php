@@ -393,20 +393,150 @@
 	if($xgrid->done)
 		die($out);
 ?>
+<style>
+    .se_table td{
+        padding: 5px;
+    }
+</style>
+<form id="frm_2" >
+<table class="se_table" style="width:80%;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;" >
+	<tr  style="background-color:#EEEEEE;">
+		<td>
+			مبدأ 
+		</td>
+		
+		<td>
+			مقصد 
+		</td>
+									
+		<td>
+                        تاریخ
+                        
+		</td>
+		
+                <td style="display: none;" class="tarikh_back_td" >
+                    تاریخ بازگشت
+		</td>
+		
+		<td>
+                    <input type="radio" id="do_tarafe_1" name="do_tarafe" value="1" onchange="show_hide_back(this)" checked >
+                    <span style="font-size: 11px" onclick="$('#do_tarafe_1').click()" >
+                        یک طرفه
+                    </span>
+                    <input type="radio" id="do_tarafe_2" name="do_tarafe" value="2" onchange="show_hide_back(this)" >
+                    <span style="font-size: 11px" onclick="$('#do_tarafe_2').click()" >
+                        رفت و برگشت
+                    </span>
+		</td>
+	</tr>
+	<tr >
+		<td style="width:20%" >
+                        <select id="smabda" name="smabda" class="ser" onchange="loadMaghsad(this)" style="width:100%" >
+			<?php
+				//echo loadCities(isset($_REQUEST['smabda'])?(int)$_REQUEST['smabda']:-1);
+                                echo loadCities();
+			?>
+			</select>
+		</td>
+		<td style="width:20%" >
+                    <div id="div_maaghsad" >
+			<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >
+			<?php
+				//echo loadCities(isset($_REQUEST['smaghsad'])?(int)$_REQUEST['smaghsad']:-1);
+                                echo loadCities();
+			?>
+			</select>
+                    </div>    
+		</td>	
+		<td>
+			<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="saztarikh" name="saztarikh" value="<?php echo isset($_REQUEST['saztarikh'])?trim($_REQUEST['saztarikh']):(jdate('Y/m/d',strtotime(date("Y-m-d")))); ?>" />
+		</td>
+		<td style="display: none;" class="tarikh_back_td" >
+		 	<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="statarikh" name="statarikh" value="<?php echo isset($_REQUEST['statarikh'])?trim($_REQUEST['statarikh']):jdate('Y/m/d',strtotime(date("Y-m-d")." +15 day ")); ?>"  />
+		</td>
+		<td>
+			<input type="button" class="btn btn-default btn-primary" value="نمایش و بروز رسانی" onclick="submitForm();" id="searchButton">
+		</td>
+	</tr>
+</table>
+</form>
+<div style="width: 90%;margin-left: auto;margin-right: auto;margin-top: 5px;display: none;" class="dokme" >
+    <div class="row" >
+        <div class="col-sm-6 text-right" >
+            <a class="btn btn-primary" onclick="hs_changeDate(-1)" >
+                روز قبل
+            </a>
+        </div>
+        <div class="col-sm-6 text-left" >
+            <a class="btn btn-primary" onclick="hs_changeDate(1)" >
+                روز بعد
+            </a>
+        </div>
+    </div>
+</div>
+<div id="parvaz_det_div" style="overflow:auto;paddin:5px;width: 90%;margin-left: auto;margin-right: auto;margin-top: 5px;" >
+</div>
+<div style="width: 90%;margin-left: auto;margin-right: auto;margin-top: 5px;display: none;" class="dokme" >
+    <div class="row" >
+        <div class="col-sm-6 text-right" >
+            <a class="btn btn-primary" onclick="hs_changeDate(-1)" >
+                روز قبل
+            </a>
+        </div>
+        <div class="col-sm-6 text-left" >
+            <a class="btn btn-primary" onclick="hs_changeDate(1)" >
+                روز بعد
+            </a>
+        </div>
+    </div>
+</div>
+<div id="reserve_div" class="show_div" >
+	<table width="99%">
+		<tr >
+		
+			<td align="center"  >بزرگسال</td>
+			<td align="center"  > کودک </td>
+			<td align="center"  >نوزاد</td>
+		</tr>
+		<tr>
+			<td align="center"><input style="width:50px;"  id="reserve_adl" name="reserve_adl" class="form-control" />
+			</td>
+			<td align="center"><input style="width:50px;"  id="reserve_chd" name="reserve_chd" class="form-control" />
+			</td>
+			<td align="center"><input style="width:50px;"  id="reserve_inf" name="reserve_inf" class="form-control" />
+			</td>
+		</tr>
+		<tr>
+			<td align="center" colspan="6" >
+				بلیط الکترونیکی-Eticket
+				<input style="display:none"  type="checkbox" id="ticket_checkbox"  name="ticket_checkbox" checked="checked" onclick="checkEticket(this,document.getElementById('ticket_type'));" >
+				<input class="inp"  id="ticket_type" name="ticket_type" style="display:none;" value="0" >
+			</td>
+		</tr>
+		<tr>
+			<td colspan="6" align="center"  >
+				<!-- <input  value="رزرو پرواز" class="dokme" id="reserve" type="button" style="width:auto;font-weight:bold;"> -->
+			<img src="../img/reserve.png" id="reserve" style="cursor:pointer;" >
+			<input type="hidden" id="selected_parvaz" name="selected_parvaz" value="" />
+			</td>
+		</tr>
+	</table>
+</div>
 <script>
 	$(document).ready(function(){
 		var args=<?php echo $xgrid->arg; ?>;
 		args['<?php echo $gname; ?>']['afterLoad'] = afterLoadGrid;
                 $.each($(".dateValue"),function(id,field){
-	                if(field.id)
-        		        Calendar.setup({
-		                inputField     :    field.id,
-		                button:    field.id,
-		                ifFormat       :    "%Y/%m/%d",
-		                dateType           :    "jalali",
-		                weekNumbers    : false
-                		});
+                    if(field.id)
+                        Calendar.setup({
+                        inputField     :    field.id,
+                        button:    field.id,
+                        ifFormat       :    "%Y/%m/%d",
+                        dateType           :    "jalali",
+                        weekNumbers    : false
+                        });
 		});
+                $(".dokme").hide();
                 intialGrid(args);
                 $('select').select2({
                     dir: "rtl"
@@ -417,6 +547,7 @@
 	{
 		initReserve();
                 changeColor();
+                $(".dokme").show('slow');
                 /*
 		var del_btn="<button onclick=\"changeParvaz('del_parvaz');\" >حذف</button>";
 		del_btn+="<button onclick=\"changeParvaz('show_parvaz');\" >نمایش</button>";
@@ -577,105 +708,22 @@
                 //console.log($(this).find("td:eq(7)").text());
             });
         }
+        function hs_changeDate(inp)
+        {
+            var out;
+            var tmp = jToM($("#saztarikh").val());
+            var newD = new Date(tmp);
+            newD.setDate(newD.getDate() + inp);
+            out = GTJ(newD.getFullYear(),newD.getMonth()+1,newD.getDate());
+            $("#saztarikh").val(FixNums(out));
+            if($("#statarikh").is(":visible"))
+            {
+                tmp = jToM($("#statarikh").val());
+                newD = new Date(tmp);
+                newD.setDate(newD.getDate() + inp);
+                out = GTJ(newD.getFullYear(),newD.getMonth()+1,newD.getDate());
+                $("#statarikh").val(FixNums(out));
+            }
+            $("#searchButton").click();
+        }
 </script>
-<style>
-    .se_table td{
-        padding: 5px;
-    }
-</style>
-<form id="frm_2" >
-<table class="se_table" style="width:80%;border-width:1px;border-style:dashed;border-collapse:collapse;border-color:#BCBCBC;" >
-	<tr  style="background-color:#EEEEEE;">
-		<td>
-			مبدأ 
-		</td>
-		
-		<td>
-			مقصد 
-		</td>
-									
-		<td>
-                        تاریخ
-                        
-		</td>
-		
-                <td style="display: none;" class="tarikh_back_td" >
-                    تاریخ بازگشت
-		</td>
-		
-		<td>
-                    <input type="radio" id="do_tarafe_1" name="do_tarafe" value="1" onchange="show_hide_back(this)" checked >
-                    <span style="font-size: 11px" onclick="$('#do_tarafe_1').click()" >
-                        یک طرفه
-                    </span>
-                    <input type="radio" id="do_tarafe_2" name="do_tarafe" value="2" onchange="show_hide_back(this)" >
-                    <span style="font-size: 11px" onclick="$('#do_tarafe_2').click()" >
-                        رفت و برگشت
-                    </span>
-		</td>
-	</tr>
-	<tr >
-		<td style="width:20%" >
-                        <select id="smabda" name="smabda" class="ser" onchange="loadMaghsad(this)" style="width:100%" >
-			<?php
-				//echo loadCities(isset($_REQUEST['smabda'])?(int)$_REQUEST['smabda']:-1);
-                                echo loadCities();
-			?>
-			</select>
-		</td>
-		<td style="width:20%" >
-                    <div id="div_maaghsad" >
-			<select id="smaghsad" name="smaghsad" class="ser" style="width:100%" >
-			<?php
-				//echo loadCities(isset($_REQUEST['smaghsad'])?(int)$_REQUEST['smaghsad']:-1);
-                                echo loadCities();
-			?>
-			</select>
-                    </div>    
-		</td>	
-		<td>
-			<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="saztarikh" name="saztarikh" value="<?php echo isset($_REQUEST['saztarikh'])?trim($_REQUEST['saztarikh']):(jdate('Y/m/d',strtotime(date("Y-m-d")))); ?>" />
-		</td>
-		<td style="display: none;" class="tarikh_back_td" >
-		 	<input onblur="correctDate(this);" autocomplete="off" class="form-control ser dateValue" style="direction:ltr;" type="text" id="statarikh" name="statarikh" value="<?php echo isset($_REQUEST['statarikh'])?trim($_REQUEST['statarikh']):jdate('Y/m/d',strtotime(date("Y-m-d")." +15 day ")); ?>"  />
-		</td>
-		<td>
-			<input type="button" class="btn btn-default btn-primary" value="نمایش و بروز رسانی" onclick="submitForm();" id="searchButton">
-		</td>
-	</tr>
-</table>
-</form>
-<div id="parvaz_det_div" style="overflow:auto;paddin:5px;width: 90%;margin-left: auto;margin-right: auto;margin-top: 5px;" >
-</div>
-<div id="reserve_div" class="show_div" >
-	<table width="99%">
-		<tr >
-		
-			<td align="center"  >بزرگسال</td>
-			<td align="center"  > کودک </td>
-			<td align="center"  >نوزاد</td>
-		</tr>
-		<tr>
-			<td align="center"><input style="width:50px;"  id="reserve_adl" name="reserve_adl" class="form-control" />
-			</td>
-			<td align="center"><input style="width:50px;"  id="reserve_chd" name="reserve_chd" class="form-control" />
-			</td>
-			<td align="center"><input style="width:50px;"  id="reserve_inf" name="reserve_inf" class="form-control" />
-			</td>
-		</tr>
-		<tr>
-			<td align="center" colspan="6" >
-				بلیط الکترونیکی-Eticket
-				<input style="display:none"  type="checkbox" id="ticket_checkbox"  name="ticket_checkbox" checked="checked" onclick="checkEticket(this,document.getElementById('ticket_type'));" >
-				<input class="inp"  id="ticket_type" name="ticket_type" style="display:none;" value="0" >
-			</td>
-		</tr>
-		<tr>
-			<td colspan="6" align="center"  >
-				<!-- <input  value="رزرو پرواز" class="dokme" id="reserve" type="button" style="width:auto;font-weight:bold;"> -->
-			<img src="../img/reserve.png" id="reserve" style="cursor:pointer;" >
-			<input type="hidden" id="selected_parvaz" name="selected_parvaz" value="" />
-			</td>
-		</tr>
-	</table>
-</div>

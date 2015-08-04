@@ -240,14 +240,14 @@
             $wer = trim($_POST['befor_search']);
             $req = $_POST['frm_field'];
             $my = new mysql_class;
-            $my->ex_sql("select count(id) cid from parvaz_det $wer", $q);
+            $my->ex_sql("select count(id) cid from parvaz_det $wer and en=1", $q);
             $saat = date("H:i:s");
             if((int)$q[0]['cid']==0)
             {
                 if($req[0]['value']==1)
                 {    
                     $q=null;
-                    $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' order by tarikh,saat limit 1", $q);
+                    $my->ex_sql("select tarikh from parvaz_det where en=1 and strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."' order by tarikh,saat limit 1", $q);
                     if(count($q)>0)
                     {
                         $ou['stat'] = 'err1';
@@ -262,11 +262,11 @@
                 $ou['stat'] = 'ok';
                 $req[3]['value'] = audit_class::hamed_pdateBack($req[3]['value'],FALSE);
                 $req[4]['value'] = audit_class::hamed_pdateBack($req[4]['value'],FALSE);
-                $my->ex_sql("select count(id) cid from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."'  and tarikh='".$req[3]['value']."'", $q);
+                $my->ex_sql("select count(id) cid from parvaz_det where en=1 and strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."'  and tarikh='".$req[3]['value']."'", $q);
                 if((int)$q[0]['cid']==0)
                 {    
                     $q=null;
-                    $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."'  order by tarikh,saat limit 1", $q);
+                    $my->ex_sql("select tarikh from parvaz_det where en=1 and strsource='".$req[1]['value']."' and strdest='".$req[2]['value']."'  order by tarikh,saat limit 1", $q);
                     if(count($q)>0)
                     {
                         $ou['stat'] = 'err2';
@@ -276,11 +276,11 @@
                 else
                 {
                     $q=null;
-                    $my->ex_sql("select count(id) cid from parvaz_det where strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."'  and tarikh='".$req[4]['value']."'", $q);
+                    $my->ex_sql("select count(id) cid from parvaz_det where en=1 and strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."'  and tarikh='".$req[4]['value']."'", $q);
                     if((int)$q[0]['cid']==0)
                     {    
                         $q=null;
-                        $my->ex_sql("select tarikh from parvaz_det where strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."'  order by tarikh,saat limit 1", $q);
+                        $my->ex_sql("select tarikh from parvaz_det where en=1 and strsource='".$req[2]['value']."' and strdest='".$req[1]['value']."'  order by tarikh,saat limit 1", $q);
                         if(count($q)>0)
                         {
                             $ou['stat'] = 'err2';
@@ -417,6 +417,7 @@
 	{
 		initReserve();
                 changeColor();
+                $(".dokme").show('slow');
                 /*
 		var del_btn="<button onclick=\"changeParvaz('del_parvaz');\" >حذف</button>";
 		del_btn+="<button onclick=\"changeParvaz('show_parvaz');\" >نمایش</button>";
@@ -577,6 +578,24 @@
                 //console.log($(this).find("td:eq(7)").text());
             });
         }
+        function hs_changeDate(inp)
+        {
+            var out;
+            var tmp = jToM($("#saztarikh").val());
+            var newD = new Date(tmp);
+            newD.setDate(newD.getDate() + inp);
+            out = GTJ(newD.getFullYear(),newD.getMonth()+1,newD.getDate());
+            $("#saztarikh").val(FixNums(out));
+            if($("#statarikh").is(":visible"))
+            {
+                tmp = jToM($("#statarikh").val());
+                newD = new Date(tmp);
+                newD.setDate(newD.getDate() + inp);
+                out = GTJ(newD.getFullYear(),newD.getMonth()+1,newD.getDate());
+                $("#statarikh").val(FixNums(out));
+            }
+            $("#searchButton").click();
+        }
 </script>
 <style>
     .se_table td{
@@ -645,7 +664,35 @@
 	</tr>
 </table>
 </form>
+<div style="width: 90%;margin-left: auto;margin-right: auto;margin-top: 5px;display: none;" class="dokme" >
+    <div class="row" >
+        <div class="col-sm-6 text-right" >
+            <a class="btn btn-primary" onclick="hs_changeDate(-1)" >
+                روز قبل
+            </a>
+        </div>
+        <div class="col-sm-6 text-left" >
+            <a class="btn btn-primary" onclick="hs_changeDate(1)" >
+                روز بعد
+            </a>
+        </div>
+    </div>
+</div>
 <div id="parvaz_det_div" style="overflow:auto;paddin:5px;width: 90%;margin-left: auto;margin-right: auto;margin-top: 5px;" >
+</div>
+<div style="width: 90%;margin-left: auto;margin-right: auto;margin-top: 5px;display: none;" class="dokme" >
+    <div class="row" >
+        <div class="col-sm-6 text-right" >
+            <a class="btn btn-primary" onclick="hs_changeDate(-1)" >
+                روز قبل
+            </a>
+        </div>
+        <div class="col-sm-6 text-left" >
+            <a class="btn btn-primary" onclick="hs_changeDate(1)" >
+                روز بعد
+            </a>
+        </div>
+    </div>
 </div>
 <div id="reserve_div" class="show_div" >
 	<table style="width:100%" >

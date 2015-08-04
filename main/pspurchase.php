@@ -89,12 +89,12 @@
 			$out = '<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'"</script>';
 		}
 		else
-			$out = 'در تراکنش مالی مشکلی پیش آمده است پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، حداکثر تا سه روز کاری وجه به حساب شما بازگشت داده می شود
+			$out = ' پرداخت انجام نشد مجدد سعی نمایید درصورت کسر وجه  از حساب شما ، مبلغ کسر شده به صورت اتوماتیک از طرف بانک به حساب شما برگشت داده میشود
 			<br/>
 			<input class="inp" type="button" value="بازگشت" onclick="window.location=\'index.php\';" />';
 	}
 	else
-		$out = 'در تراکنش مالی مشکلی پیش آمده است پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، حداکثر تا سه روز کاری وجه به حساب شما بازگشت داده می شود.
+		$out = ' پرداخت انجام نشد مجدد سعی نمایید درصورت کسر وجه  از حساب شما ، مبلغ کسر شده به صورت اتوماتیک از طرف بانک به حساب شما برگشت داده میشود
 			<br/>
 			<input class="inp" type="button" value="بازگشت" onclick="window.location=\'index.php\';" />';
 ?>

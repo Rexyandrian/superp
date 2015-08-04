@@ -1,6 +1,18 @@
 <?php
-include('../kernel.php');
-require_once('../class/nusoap.php');
+    date_default_timezone_set('Asia/Tehran');
+    //$pathTmp = explode(DIRECTORY_SEPARATOR,getcwd());
+	//die($pathTmp);
+    //if($pathTmp[count($pathTmp)]=='main')
+        //unset($pathTmp[count($pathTmp)]);
+    //$path = implode(DIRECTORY_SEPARATOR,$pathTmp);
+    //$path .= DIRECTORY_SEPARATOR;
+    $path = '/home/admin/domains/superparvaz.com/public_html/flight/';
+    include($path.'class'.DIRECTORY_SEPARATOR.'conf.php');
+    include($path.'class'.DIRECTORY_SEPARATOR.'mysql_class.php');
+    include($path.'class'.DIRECTORY_SEPARATOR.'audit_class.php');
+    include($path.'inc.php');
+    include($path.'jdf.php');
+    require_once($path.'class'.DIRECTORY_SEPARATOR.'nusoap.php');
 $my = new mysql_class;
 if (!function_exists('mb_str_replace')) {
     function mb_str_replace($search, $replace, $subject, &$count = 0) {
@@ -92,11 +104,6 @@ function arabicToPersian($inp)
     $out = mb_str_replace(array("ـ"," "),"",$out);
     if($out =='خرمآباد' || $out =='خرماباد')
         $out = 'خرم‌آباد';
-    switch ($out) {
-        case 'Tehran':
-            $out ='تهران';
-            break;
-    }
     return($out);
 }
 function hs_airline($inp)
@@ -209,4 +216,4 @@ removeGran();
 //---------------------------------------------------------------------------------
 
 
-echo "ok";
+//echo "ok";
