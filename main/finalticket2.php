@@ -25,7 +25,8 @@
 		$out = "&nbsp;";
 		$inp = (int)$inp;
 		$parvaz = new parvaz_det_class($inp);
-        	$out ='<div>'. $parvaz->flnum."( ".$parvaz->strsource." -> ".$parvaz->strdest." )</div>".hamed_pdate($parvaz->tarikh);
+                $out =  var_export($parvaz,FALSE);
+        	//$out ='<div>'. $parvaz->flnum."( ".$parvaz->strsource." -> ".$parvaz->strdest." )</div>".hamed_pdate($parvaz->tarikh);
 		return($out);
 	}
 	function loadPrint($inp)
@@ -97,9 +98,9 @@
 			$xgrid->column[$gname][4]['cfunction'] = array("loadAdl");
 			$xgrid->column[$gname][5]['name'] = 'کد رهگیری';
 			$xgrid->column[$gname][5]['cfunction'] = array("rahgiri");
-                        
-			$xgrid->column[$gname][6]['name'] ='مشخصات پرواز رفت';
-			$xgrid->column[$gname][6]['cfunction'] = array("loadParvazInfo");
+                        $xgrid->column[$gname][6]['name'] ='';
+			//$xgrid->column[$gname][6]['name'] ='مشخصات پرواز رفت';
+			//$xgrid->column[$gname][6]['cfunction'] = array("loadParvazInfo");
 			
 			//$xgrid->column[$gname][7]['name'] = 'مشخصات پرواز برگشت';
                         $xgrid->column[$gname][7]['name']='';
@@ -128,6 +129,12 @@
 			$xgrid->column[$gname][17]['name'] = '';
 			$xgrid->column[$gname][18]['name'] = '';
 			$xgrid->column[$gname][19]['name'] = '';
+                        $xgrid->column[$gname][20]['name'] = '';
+                        $xgrid->column[$gname][21]['name'] = '';
+                        $xgrid->column[$gname][22]['name'] = '';
+                        $xgrid->column[$gname][23]['name'] = '';
+                        $xgrid->column[$gname][24]['name'] = '';
+                        $xgrid->column[$gname][25]['name'] = '';
 			$out1 =$xgrid->getOut($_REQUEST);
 			if($xgrid->done)
 				die($out1);
@@ -212,7 +219,7 @@
 			</div>
 			<div id="ticket_print_div" ></div>
                         <div>
-                            <a class="btn btn-primary" target="_blank" href="<?php echo "../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf"; ?>" >
+                            <a class="btn btn-primary" target="_blank" href="<?php echo "../pdf/".$moghim_info['refer'].str_replace('/','',$moghim_info['seldate']).".pdf"; ?>" >
                                 چاپ بلیت/ها 
                             </a>
                         </div>

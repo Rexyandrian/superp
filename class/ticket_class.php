@@ -47,6 +47,11 @@
 				$this->email_addr = trim($q[0]["email_addr"]);
 				$this->sites_id = (int)$q[0]["sites_id"];
                                 $this->code_melli = $q[0]["code_melli"];
+                                $this->rep = $q[0]["rep"];
+                                $this->refer = $q[0]["refer"];
+                                $this->seldate = $q[0]["seldate"];
+                                $this->rwaitlog = $q[0]["rwaitlog"];
+                                $this->parvaz_det_info = $q[0]["parvaz_det_info"];
 			}
 		}
 		public function getId()

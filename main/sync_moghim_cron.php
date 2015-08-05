@@ -165,12 +165,20 @@ $tt = $response->NewDataSet;
 $qu = "insert into parvaz_det (`id`, `parvaz_id`, `tarikh`, `saat`, `zarfiat`, `ghimat`, `flnum`, `subflid`, `strsource`, `strdest`, `alname`, `flclass`, `typ`, `saat_kh`, `en`, `customer_id`,selrate,ghimat_origin) values ";
 $tmp = '';
 $i=0;
+$j=0;
 $my->ex_sqlx("truncate table parvaz_det");
-echo "last update:".date("Y-m-d H:i:s")."\n";
 foreach($tt as $val)
 {
+
     foreach($val as $flight)
     {
+		$j++;
+		//if((string)$flight->AgencyCode=='146')
+		//{
+			//echo "anna =".(string) $flight->adlprice1."\n";
+			//echo "able:".(string)$flight->reservable." kined:".(string)$flight->reservekind."\n in_arr:";
+			//var_dump(in_array((string)$flight->AgencyCode, $activeAgency));
+		//}
         if((string)$flight->reservable=='true' && (string)$flight->reservekind=='1' && in_array((string)$flight->AgencyCode, $activeAgency))
         {    
             $i++;
@@ -180,16 +188,18 @@ foreach($tt as $val)
             $ghimat = (string) $flight->adlprice1+ (isset($upghimatArr[(string)$flight->AgencyCode])?$upghimatArr[(string)$flight->AgencyCode]:100000);
             $strsource =arabicToPersian((string)$flight->strsource);
             $strdest =arabicToPersian((string)$flight->strdest);
-            $alname =hs_airline((string)$flight->alname);
-            $tmp.=($tmp==''?'':',') .'('.(string)$flight->ID.",-1,'$tarikh','$saat',$zarfiat,$ghimat,'".(string)$flight->flnum."',".(string)$flight->subflid.",'$strsource','$strdest','$alname','".(string)$flight->flclass."',0,'00:00:00',1,'".(string)$flight->AgencyCode."',".(string)$flight->selrate.",'".(string) $flight->adlprice1."')";
+            $alname =hs_airline((string)$flight->alname);		
+            $tmp.=($tmp==''?'':',') ."('".(string)$flight->ID."',-1,'$tarikh','$saat','$zarfiat','$ghimat','".(string)$flight->flnum."','".(string)$flight->subflid."','$strsource','$strdest','$alname','".trim((string)$flight->flclass)."',0,'00:00:00',1,'".(string)$flight->AgencyCode."','".(string)$flight->selrate."','".(string) $flight->adlprice1."')";
             if($i%500==0)
             {
+				//echo "i=".$i."\n";
                 $my->ex_sqlx($qu.$tmp);
                 $tmp='';
             }    
         }
-    }    
+    }
 }
+//echo "i=".$i."\n";
 $my->ex_sqlx($qu.$tmp);
 $my->ex_sql("select strdest from parvaz_det group by strdest", $q);
 $city = array();
@@ -206,13 +216,16 @@ foreach($p as $r)
     }    
 }
 $city_qu='';
-for($i=0;$i<count($city);$i++)
+for($ii=0;$ii<count($city);$ii++)
 {
-    $city_qu .= ($city_qu==''?'':',') ."('".$city[$i]."')";
+    $city_qu .= ($city_qu==''?'':',') ."('".$city[$ii]."')";
 }
 $my->ex_sqlx("truncate table shahr");
 $my->ex_sqlx("insert into shahr (name) values $city_qu ");
 removeGran();
+///echo "last update:".date("Y-m-d H:i:s")."\n";
+//echo "can reserve count :$i \n";
+//echo "can all :$j \n";
 //echo "insert into shahr (name) values $city_qu ";
 //---------------------------------------------------------------------------------
 

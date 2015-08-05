@@ -50,7 +50,7 @@
                                         $etick = moghim_class::printEticket($reserve_tmp->rwaitlog);
                                         if(isset($etick->printEticketResult))
                                         {
-                                            file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.98.31.190/ereports/NCRLYB940514.pdf", 'r'));
+                                            file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.98.31.190/ereports/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", 'r'));
                                         }    
                                         $info = $reserve_tmp->info['info']; 
                                         $parvaz =  $reserve_tmp->info['parvaz'];
@@ -124,7 +124,7 @@
 </html>
 ';
 			$mail = new email_class($email,'ثبت بلیت به شماره ره‌گیری'.$rahgiri,$text);
-			$out ='<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'&SaleReferenceId='.$SaleReferenceId.'"</script>';
+			$out ="test";'<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'&SaleReferenceId='.$SaleReferenceId.'"</script>';
 		}
 		else
 			$out = ' پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، مبلغ از حساب شما کم نشده است
