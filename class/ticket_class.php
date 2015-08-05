@@ -201,5 +201,11 @@
 			$this->en = -1;
 			$mysql->ex_sqlx("update `ticket` set `en` = -1 where `id` = ".$this->id);
 		}
+                public static function loadBySanadRecord($sanad_record_id)
+                {
+                    $my = new mysql_class;
+                    $my->ex_sql("select  `id`,`refer`, `seldate`, `rwaitlog` from ticket where sanad_record_id=$sanad_record_id limit 1", $q);
+                    return($q[0]);
+                }        
 	}
 ?>

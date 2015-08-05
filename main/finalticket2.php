@@ -73,6 +73,7 @@
 	if(isset($_GET['rahgiri']) && isset($_GET["sanad_record_id"]) && isset($_GET["ticket_type"]))
 	{
 		$sanad_recoed_id = $_GET["sanad_record_id"];
+                $moghim_info = ticket_class::loadBySanadRecord($sanad_recoed_id);
 		if(isset($_REQUEST['SaleReferenceId']))
 			$SaleReferenceId = $_REQUEST['SaleReferenceId'];
 		else
@@ -96,14 +97,15 @@
 			$xgrid->column[$gname][4]['cfunction'] = array("loadAdl");
 			$xgrid->column[$gname][5]['name'] = 'کد رهگیری';
 			$xgrid->column[$gname][5]['cfunction'] = array("rahgiri");
+                        
 			$xgrid->column[$gname][6]['name'] ='مشخصات پرواز رفت';
 			$xgrid->column[$gname][6]['cfunction'] = array("loadParvazInfo");
-			$xgrid->column[$gname][7] = $xgrid->column[$gname][0];
-			$xgrid->column[$gname][7]['name'] = 'مشخصات پرواز برگشت';
-			$xgrid->column[$gname][7]['cfunction'] = array("loadBargasht");
+			
+			//$xgrid->column[$gname][7]['name'] = 'مشخصات پرواز برگشت';
+                        $xgrid->column[$gname][7]['name']='';
+			//$xgrid->column[$gname][7]['cfunction'] = array("loadBargasht");
 			$xgrid->column[$gname][8]['name'] = '';
-			//$xgrid->column[$gname][9]['name'] ='شماره پیگیری بلیط';
-			//-----------disable for cant print tickets
+			/*-----------disable for cant print tickets
 			
 			if($ticket_type==1)
 				$xgrid->column[$gname][9]['name']="شماره بلیت";
@@ -113,7 +115,8 @@
 				$xgrid->column[$gname][9]['name'] = 'شماره بلیت';
 				$xgrid->column[$gname][9]['cfunction'] = array("loadPrint");
 			}
-			
+                        */
+			$xgrid->column[$gname][9]['name'] = '';
 			$xgrid->column[$gname][10]['name'] = '';
 			$xgrid->column[$gname][11]['name'] = '';
 			$xgrid->column[$gname][12]['name'] = '';
@@ -208,7 +211,11 @@
 				<?php echo $SaleReferenceId; ?>
 			</div>
 			<div id="ticket_print_div" ></div>
-			<input type='button' value='چاپ تمامی بلیت‌ها' class='inp' style='width:auto;' onclick="wopen('eticket_all.php?sanad_record_id=<?php echo $sanad_recoed_id; ?>','',800,600);" > 
+                        <div>
+                            <a class="btn btn-primary" target="_blank" href="<?php echo "../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf"; ?>" >
+                                چاپ بلیت/ها 
+                            </a>
+                        </div>
 			<input type='button' value='بازگشت به صفحه اصلی' class='inp' onclick="window.location='index.php';" >
 		</div>
 		

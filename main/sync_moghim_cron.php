@@ -166,6 +166,7 @@ $qu = "insert into parvaz_det (`id`, `parvaz_id`, `tarikh`, `saat`, `zarfiat`, `
 $tmp = '';
 $i=0;
 $my->ex_sqlx("truncate table parvaz_det");
+echo "last update:".date("Y-m-d H:i:s")."\n";
 foreach($tt as $val)
 {
     foreach($val as $flight)

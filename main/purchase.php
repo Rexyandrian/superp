@@ -46,7 +46,12 @@
 //echo "moghim_rsponse<br/>";
 									//var_dump($moghim_info);
                                     if($moghim_info->reserveflResult)
-                                    {    
+                                    {   
+                                        $etick = moghim_class::printEticket($reserve_tmp->rwaitlog);
+                                        if(isset($etick->printEticketResult))
+                                        {
+                                            file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.98.31.190/ereports/NCRLYB940514.pdf", 'r'));
+                                        }    
                                         $info = $reserve_tmp->info['info']; 
                                         $parvaz =  $reserve_tmp->info['parvaz'];
                                         if($parvaz->is_shenavar)
