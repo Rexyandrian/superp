@@ -255,9 +255,11 @@
                                         (<span style="color:red" >*</span>)
                                         </th>
 					<th class="showgrid_row_td_reserve_reserve">جنسیت</th>
+                                        <th class="showgrid_row_td_reserve_reserve">قیمت- ریال</th>
 					$e_ticket
 				</tr>
 adul;
+                        $sum_ghimat =0;
 			for($i = 0;$i < $adl;$i++)
 			{
 				$khal = enToPerNums(monize(perToEnNums(umonize($adl_ghimat))-perToEnNums(umonize($poorsant))));
@@ -282,12 +284,14 @@ tmp0;
                                 <tr class="showgrid_row_even" >
                                         <td class="showgrid_row_td_reserve" >'.$radif.'</td>
                                         <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control latin zoor" placeholder="نام" /></td>
-                                        <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin zoor'.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin zoor '.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control zoor" placeholder="کد ملی یا شماره پاسپورت" /></td>
 					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >آقا</option><option value="" >خانم</option></select></td>
+                                        <td>'.monize($moghim_res->adlprice).'</td>
 					'.$e_ticket.'
                                 </tr>
 ';
+                                        $sum_ghimat+=$moghim_res->adlprice;
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
 				}
 			}
@@ -315,6 +319,7 @@ tmp1;
 					}
 					else
 					{
+                                            $hs_ghimat_chd = monize($moghim_res->chdprice);
                                                 $childs .= <<<tmp1
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
@@ -322,12 +327,14 @@ tmp1;
                                         <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp form-control slave latin zoor' placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp form-control zoor' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
                                         <td><select class='inp form-control' name='chd_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
+                                        <td>$hs_ghimat_chd</td>                
 					$e_ticket
 	
                                 </tr>
 tmp1;
 
 					}
+                                        $sum_ghimat+=$moghim_res->chdprice;
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
 				}
 			}
@@ -356,6 +363,7 @@ tmp2;
 					}
 					else
 					{
+                                            $hs_ghimat_chd = monize($moghim_res->infprice);
                                                 $infants .= <<<tmp2
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
@@ -363,14 +371,17 @@ tmp2;
                                         <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp form-control slave latin zoor' placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp form-control zoor' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
 					<td><select class='inp form-control' name='inf_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
+                                        <td>$hs_ghimat_chd</td>
 					$e_ticket
                                 </tr>
 tmp2;
 					}
+                                        $sum_ghimat+=$moghim_res->infprice;
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
 				}
 
 			}
+                        $sum_ghimat = monize($sum_ghimat);
                         if(!isset($time_out))
                             $time_out=5;
 			$out = <<<OOUT
@@ -427,20 +438,24 @@ tmp2;
 $adults
 $childs
 $infants
+                        <tr>
+                                <td class="showgrid_row_td_reserve" colspan="5" align="left" > قابل پرداخت:</td>
+                                <td class="showgrid_row_td_reserve" colspan="1" >$sum_ghimat</td>
+                        </tr>
 			<tr class="showgrid_row_even">
 				<td class="showgrid_row_td_reserve" colspan="2" >شماره تماس :</td>
-                                <td class="showgrid_row_td_reserve" colspan="6" ><input type='text' name='adl_tel_0' id='adl_tel0' class='inp form-control'  placeholder="شماره تماس" /></td>
+                                <td class="showgrid_row_td_reserve" colspan="4" ><input type='text' name='adl_tel_0' id='adl_tel0' class='inp form-control'  placeholder="شماره تماس" /></td>
 			</tr>
 			<tr class="showgrid_row_odd">
                                 <td class="showgrid_row_td_reserve" colspan="2" >نشانی ایمیل:</td>
-                                <td class="showgrid_row_td_reserve" colspan="6" ><input type='text' name='email_addr' id='email_addr' class='inp form-control'  placeholder="نشانی ایمیل" /></td>
+                                <td class="showgrid_row_td_reserve" colspan="4" ><input type='text' name='email_addr' id='email_addr' class='inp form-control'  placeholder="نشانی ایمیل" /></td>
                         </tr>
 			<tr class="showgrid_row_even">
-                                <td class="showgrid_row_td_reserve" colspan="8" ><a href="http://www.superparvaz.com/terms-of-flight-booking-system" target="_blank" >شرایط و ضوابط را قبول دارم</a>
+                                <td class="showgrid_row_td_reserve" colspan="6" ><a href="http://www.superparvaz.com/terms-of-flight-booking-system" target="_blank" >شرایط و ضوابط را قبول دارم</a>
 				<input type='checkbox' name='zavabet' id='zavabet'  /></td>
                         </tr>
 			<tr class="showgrid_row_odd">
-				<td colspan = "8" class="showgrid_row_td_reserve" >
+				<td colspan = "6" class="showgrid_row_td_reserve" >
 				<br/>
 				<button class="btn btn-default" onclick="sendTickets();">ثبت و پرداخت</button>
 	                        <button class="btn btn-default" onclick="rejectTickets();">انصراف</button>

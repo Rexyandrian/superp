@@ -491,6 +491,7 @@
 		<tr>
 			<td colspan='15' >&nbsp;</td>
 		</tr>
+                <!--
 		<tr style="background-color:#C6E2FF;" >
 			<td style="width:100px;" align="left" >
 				کمیسیون:
@@ -511,6 +512,7 @@
 				<?php echo "<input readonly='readonly' style='background:#C6E2FF;width:150px;' value='".monize($jam_pardakhti)." ریال '" ?>
 			</td>
 		</tr>
+                -->
 		<tr>
 			<td colspan='6' style='color:#000000;' >
 				<br>
