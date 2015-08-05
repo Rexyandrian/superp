@@ -569,11 +569,13 @@
                 //console.log(this);
                 if($.trim($(this).find("td:eq(6)").text())==$("#smabda").val())
                 {    
-                    $(this).css("background","hotpink");
+                    $(this).css("background","#bce8f1");
+                    $(this).find("td").css("color","#31708f");
                 }
                 else
                 {
-                    $(this).css("background","turquoise");
+                    $(this).css("background","#d6e9c6");
+                    $(this).find("td").css("color","#3c763d");
                 }    
                 //console.log($(this).find("td:eq(7)").text());
             });
