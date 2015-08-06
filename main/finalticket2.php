@@ -198,10 +198,11 @@
 			سامانه فروش پرواز بهار
 		</title>
 		<link rel="stylesheet" href="../css/xgrid.css" type="text/css">
-		<link type="text/css" href="../css/style.css" rel="stylesheet" />
-
+                <link rel="stylesheet" href="../css/bootstrap.min.css" >
+                <link rel="stylesheet" href="../css/bootstrap-rtl.min.css" >
+                <link type="text/css" href="../css/style.css" rel="stylesheet" />
 		<!-- JavaScript Includes -->
-		<script type="text/javascript" src="../js/jquery/jquery.js"></script>
+		<script src="../js/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="../js/tavanir.js"></script>
 		<script type="text/javascript" src="../js/grid.js"></script>
 	</head>
@@ -219,12 +220,14 @@
 				<?php echo $SaleReferenceId; ?>
 			</div>
 			<div id="ticket_print_div" ></div>
-                        <div>
+                        <div style="margin-top: 10px;" >
                             <a class="btn btn-primary" target="_blank" href="<?php echo "../pdf/".$moghim_info['refer'].str_replace('/','',$moghim_info['seldate']).".pdf"; ?>" >
                                 چاپ بلیت/ها 
                             </a>
+                            <a class="btn btn-primary"  href="index.php" >
+                               بازگشت به صفحه اصلی
+                            </a>
                         </div>
-			<input type='button' value='بازگشت به صفحه اصلی' class='inp' onclick="window.location='index.php';" >
 		</div>
 		
 	</body>
