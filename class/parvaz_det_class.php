@@ -32,13 +32,16 @@
                 }
 		public function __construct($id = -1)
 		{
-			$id = (int)$id;
-			$mysql = new mysql_class;
-			$mysql->ex_sql("select * from `parvaz_det` where `id` = '$id'",$q);
-			foreach($q[0] as $fi=>$val)
+                    $id = (int)$id;
+                    $mysql = new mysql_class;
+                    $mysql->ex_sql("select * from `parvaz_det` where `id` = '$id'",$q);
+                    if(count($q)>0)
+                    {    
+                        foreach($q[0] as $fi=>$val)
                         {    
                             $this->$fi=$val;
                         }
+                    }    
 		}
 		public function getId()
 		{

@@ -107,18 +107,10 @@
 	}
 	function loadTicket($id)
 	{
-		$str = '';
-		$conf = new conf;
-		$ref = '';
-		$my = new mysql_class;
-		$my->ex_sql("select `shomare`,`sanad_record_id` from `ticket` where `id`='$id' ",$q);
-		if(isset($q[0]))
-		{
-			$ref = ticket_class::rahgiriToCode($q[0]['sanad_record_id'],$conf->rahgiri);
-			$str='eticket.php?shomare='.$q[0]['shomare'].'&id='.$id;
-		}
-		return '<span class=\'msg detail_div\' style=\'font-family:tahoma;\'  onclick="wopen(\''.$str.'\',\'\',800,500)" >('.$ref.')</span>';
-	}
+            $ti = new ticket_class($id);
+            $out = '<a class="msg"  target="_blank" href="../pdf/'.($ti->refer.  str_replace('/','', $ti->seldate)).'.pdf" >چاپ</a>';
+            return($out);
+        }
 	$customer_id = (isset($_REQUEST['customer_id']))?(int)$_REQUEST['customer_id']:-1;
 	$tday = perToEnNums(jdate("Y/m/d"));
 	$tdayG = date("Y-m-d");
@@ -133,6 +125,7 @@
         $input =array($gname=>array('table'=>'ticket','div'=>'main_div_ticket_gozaresh'));
         $xgrid = new xgrid($input);
 	$xgrid->whereClause[$gname] = "`en`=1 and (date(`regtime`) >= '$aztarikh' and date(`regtime`) <= '$tatarikh') ".(($customer_id>0)?" and `customer_id` = $customer_id ":'');
+        //echo "`en`=1 and (date(`regtime`) >= '$aztarikh' and date(`regtime`) <= '$tatarikh') ".(($customer_id>0)?" and `customer_id` = $customer_id ":'');
 	$xgrid->column[$gname][0]['name'] = '';
 	$xgrid->column[$gname][1]['name'] = 'نام';
 	$xgrid->column[$gname][1]['sort'] = 'true';
@@ -144,8 +137,8 @@
 	$xgrid->column[$gname][4]['cfunction'] = array('loadAdult');
 	$xgrid->column[$gname][5]['name'] = 'شماره سند';
 	$xgrid->column[$gname][5]['sort'] = 'true';
-	$xgrid->column[$gname][6]['name'] = 'پرواز';
-	$xgrid->column[$gname][6]['cfunction'] = array('loadParvaz');
+	$xgrid->column[$gname][6]['name'] = '';
+	//$xgrid->column[$gname][6]['cfunction'] = array('loadParvaz');
 	$xgrid->column[$gname][6]['sort'] = 'true';
 	$xgrid->column[$gname][7]['name'] = 'مشتری';
 	$xgrid->column[$gname][7]['cfunction'] = array('loadCustomerName');
@@ -163,11 +156,15 @@
 	$xgrid->column[$gname][14]['name'] = 'کمیسیون';
         $xgrid->column[$gname][15]['name'] = 'جنسیت';
 	$xgrid->column[$gname][15]['cfunction'] = array('loadGender');
-        $xgrid->column[$gname][16]['name'] = 'مبلغ تور';
+        //$xgrid->column[$gname][16]['name'] = 'مبلغ تور';
+        $xgrid->column[$gname][16]['name'] = '';
 	$xgrid->column[$gname][16]['cfunction'] = array('moni');
 	$xgrid->column[$gname][17] = $xgrid->column[$gname][0];
 	$xgrid->column[$gname][17]['name'] = 'چاپ';
 	$xgrid->column[$gname][17]['cfunction'] =array('loadticket');
+        $xgrid->column[$gname][19]['name'] = '';
+        $xgrid->column[$gname][21]['name'] = '';
+        $xgrid->column[$gname][25]['name'] = '';
         $out =$xgrid->getOut($_REQUEST);
         if($xgrid->done)
                 die($out);

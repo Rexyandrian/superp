@@ -457,6 +457,7 @@
 		var werc ='';
                 var hstmp='';
 		var ser ='ser';
+                parvaz_id = {};
                 if($("#smabda").val()==='')
                 {
                     $("#parvaz_det_div").html("<div class='alert alert-danger' >لطفا مبدأ را انتخاب نمایید</div>");

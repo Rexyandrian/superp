@@ -57,10 +57,11 @@
 	}
 	function rahgiri($inp)
 	{
-		$conf = new conf;
-		$inp = (int) $inp;
-		$inp = ticket_class::rahgiriToCode($inp,$conf->rahgiri);
-		return $inp;
+		//$conf = new conf;
+		//$inp = (int) $inp;
+		//$inp = ticket_class::rahgiriToCode($inp,$conf->rahgiri);
+                $out = pardakht_class::getBracodeBySanad_record_id($inp);
+		return $out;
 	}
 	function loadGender($inp)
 	{
