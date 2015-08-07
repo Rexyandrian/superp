@@ -457,7 +457,7 @@
 		var werc ='';
                 var hstmp='';
 		var ser ='ser';
-                parvaz_id = {};
+                //parvaz_id = {};
                 if($("#smabda").val()==='')
                 {
                     $("#parvaz_det_div").html("<div class='alert alert-danger' >لطفا مبدأ را انتخاب نمایید</div>");
@@ -598,6 +598,39 @@
                 $("#statarikh").val(FixNums(out));
             }
             $("#searchButton").click();
+        }
+        function getParvazData(pid)
+        {
+            var outPP = {};
+            var startIndx = ((isAdmin())?4:2);
+            if($("#ch_"+pid).length > 0)
+            {
+                    thisTr = $("#ch_"+pid).parent().parent().parent().prop("id");
+                    rowNum = $("#ch_"+pid).parent().prop("id").split("-")[3];
+                    ghimat = trim($("#"+thisTr+" td:lt("+String(startIndx)+"):last span").html());
+                    zarfiat = trim($("#"+thisTr+" td:lt("+String(startIndx+1)+"):last span").html());
+                    shomare = trim($("#"+thisTr+" td:lt("+String(startIndx+2)+"):last span").html());
+                    //mabda = trim($("#"+thisTr+" td:lt("+String(startIndx+3)+"):last span").html());
+                    //maghsad = trim($("#"+thisTr+" td:lt("+String(startIndx+4)+"):last span").html());
+
+                    hava = trim($("#"+thisTr+" td:lt("+String(startIndx+5)+"):last span").html());
+                    mabda = trim($("#"+thisTr+" td:lt("+String(startIndx+5)+"):last span").html());
+                    tarikh = trim($("#"+thisTr+" td:lt("+String(startIndx+6)+"):last span").html());
+                    maghsad = trim($("#"+thisTr+" td:lt("+String(startIndx+6)+"):last span").html());
+                    khorooj = trim($("#"+thisTr+" td:lt("+String(startIndx+7)+"):last span").html());
+                    vorood = trim($("#"+thisTr+" td:lt("+String(startIndx+8)+"):last span").html());
+                    comision = trim($("#"+thisTr+" td:lt("+String(startIndx+9)+"):last span").html());
+                    toz = trim($("#"+thisTr+" td:lt("+String(startIndx+10)+"):last span").html());
+                    if(isAdmin())
+                    {
+                            var tmp = zarfiat.split('>');
+                            var tmp1 =tmp.length>1?tmp[1].split('<'):'';
+                            zarfiat = tmp1[0];
+                    }
+                    outPP = {'ghimat':ghimat,'zarfiat':zarfiat,'mabda':mabda,'maghsad':maghsad,'shomare':shomare,'hava':hava,'tarikh':tarikh,'khorooj':khorooj,'vorood':vorood,'comision':comision,'toz':toz};//,'rowNum':rowNum};
+            }
+            //parvaz_id[pid] = {'jids':jids,'mabda':mabda,'maghsad':maghsad};
+            return(outPP);
         }
 </script>
 <style>

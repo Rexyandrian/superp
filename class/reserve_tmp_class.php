@@ -36,6 +36,7 @@
                         $this->rwaitlog=$r['rwaitlog'];
                         if($r['info'] != '' && $r['info'] != null)
                                 $this->info=unserialize($r['info']);
+                        $this->parvaz_det_info=$r['parvaz_det_info'];
                     }
 		}
 		public function load_reserve_tmp_times_by_ids($reserve_tmp_ids)

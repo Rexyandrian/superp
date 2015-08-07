@@ -59,7 +59,7 @@
                                         foreach($info as $ticket)
                                         {
                                                 $ticket->sanad_record_id = $sanad_record_id;
-                                                if(!$ticket->add($res_tmp[0],$moghim_info,$reserve_tmp->rwaitlog,$ticket_id))
+                                                if(!$ticket->add($res_tmp[0],$moghim_info,$reserve_tmp->rwaitlog,$reserve_tmp->parvaz_det_info,$ticket_id))
                                                         $ticket_error = TRUE;
                                                 $ticket_ids[] = $ticket_id;
                                                 if((int)$ticket->adult!=2)
@@ -124,7 +124,7 @@
 </html>
 ';
 			$mail = new email_class($email,'ثبت بلیت به شماره ره‌گیری'.$rahgiri,$text);
-			$out ="test";'<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'&SaleReferenceId='.$SaleReferenceId.'"</script>';
+			$out ='<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'&SaleReferenceId='.$SaleReferenceId.'"</script>';
 		}
 		else
 			$out = ' پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، مبلغ از حساب شما کم نشده است

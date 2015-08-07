@@ -111,6 +111,17 @@
             $out = '<a class="msg"  target="_blank" href="../pdf/'.($ti->refer.  str_replace('/','', $ti->seldate)).'.pdf" >چاپ</a>';
             return($out);
         }
+        function loadParvaz_det($inp)
+        {
+            $out='---';
+            if($inp!='')
+            {
+                $parvaz_det = unserialize($inp);
+                $ag = new agency_class($parvaz_det->customer_id);
+                $out ='<span style="font-size:80%" >'. 'شماره:'.$parvaz_det->flnum.' تاریخ:'.jdate("Y/m/d",strtotime($parvaz_det->tarikh)).' آژانس:'.$ag->name.' مسیر:'.$parvaz_det->strsource.' -> '.$parvaz_det->strdest.'</span>';
+            }
+            return($out);
+        }
 	$customer_id = (isset($_REQUEST['customer_id']))?(int)$_REQUEST['customer_id']:-1;
 	$tday = perToEnNums(jdate("Y/m/d"));
 	$tdayG = date("Y-m-d");
@@ -135,7 +146,8 @@
 	$xgrid->column[$gname][4]['name'] = 'بزرگسال';
 	$xgrid->column[$gname][4]['sort'] = 'true';
 	$xgrid->column[$gname][4]['cfunction'] = array('loadAdult');
-	$xgrid->column[$gname][5]['name'] = 'شماره سند';
+	//$xgrid->column[$gname][5]['name'] = 'شماره سند';
+        $xgrid->column[$gname][5]['name'] = '';
 	$xgrid->column[$gname][5]['sort'] = 'true';
 	$xgrid->column[$gname][6]['name'] = '';
 	//$xgrid->column[$gname][6]['cfunction'] = array('loadParvaz');
@@ -153,7 +165,8 @@
 	$xgrid->column[$gname][12]['cfunction'] = array('loadPDate');
         $xgrid->column[$gname][13]['name'] = 'مبلغ';
 	$xgrid->column[$gname][13]['cfunction'] = array('moni');
-	$xgrid->column[$gname][14]['name'] = 'کمیسیون';
+	//$xgrid->column[$gname][14]['name'] = 'کمیسیون';
+        $xgrid->column[$gname][14]['name'] = '';
         $xgrid->column[$gname][15]['name'] = 'جنسیت';
 	$xgrid->column[$gname][15]['cfunction'] = array('loadGender');
         //$xgrid->column[$gname][16]['name'] = 'مبلغ تور';
@@ -162,9 +175,15 @@
 	$xgrid->column[$gname][17] = $xgrid->column[$gname][0];
 	$xgrid->column[$gname][17]['name'] = 'چاپ';
 	$xgrid->column[$gname][17]['cfunction'] =array('loadticket');
+        $xgrid->column[$gname][18]['name'] = 'ایمیل';
         $xgrid->column[$gname][19]['name'] = '';
+        $xgrid->column[$gname][20]['name'] = 'کدملی';
         $xgrid->column[$gname][21]['name'] = '';
-        $xgrid->column[$gname][25]['name'] = '';
+        $xgrid->column[$gname][22]['name'] = '';
+        $xgrid->column[$gname][23]['name'] = '';
+        $xgrid->column[$gname][24]['name'] = '';
+        $xgrid->column[$gname][25]['name'] = 'پرواز';
+        $xgrid->column[$gname][25]['cfunction'] =array('loadParvaz_det');
         $out =$xgrid->getOut($_REQUEST);
         if($xgrid->done)
                 die($out);

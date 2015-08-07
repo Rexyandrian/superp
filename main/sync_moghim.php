@@ -146,8 +146,8 @@ $cl = new SoapClient("http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?w
 $param = array(
     'fd'=>$today,
     'ld'=>$onem,//'94/05/21',
-    'cust'=>'1005',
-    'pass'=>'123'
+    'cust'=>'1010',
+    'pass'=>'123456'
 );
 $res = $cl->openTempfllist($param);
 $pattern = '/<xs:schema.*<\/xs:schema>/';
