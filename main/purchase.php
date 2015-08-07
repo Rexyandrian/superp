@@ -46,12 +46,7 @@
 //echo "moghim_rsponse<br/>";
 									//var_dump($moghim_info);
                                     if($moghim_info->reserveflResult)
-                                    {   
-                                        $etick = moghim_class::printEticket($reserve_tmp->rwaitlog);
-                                        if(isset($etick->printEticketResult))
-                                        {
-                                            file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.98.31.190/ereports/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", 'r'));
-                                        }    
+                                    {    
                                         $info = $reserve_tmp->info['info']; 
                                         $parvaz =  $reserve_tmp->info['parvaz'];
                                         if($parvaz->is_shenavar)
@@ -65,15 +60,22 @@
                                                 if((int)$ticket->adult!=2)
                                                         $tedad++;
                                         }
+                                        $etick = moghim_class::printEticket($reserve_tmp->rwaitlog);
+                                        if(isset($etick->printEticketResult))
+                                        {
+                                            file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.98.31.190/ereports/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", 'r'));
+                                        }
                                     }
                                     else
                                     {
+                                        $ticket_error = TRUE;
                                         pay_class::revers($SaleOrderId,$SaleReferenceId);
 					die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
                                     }    
 				}
 				else
 				{
+                                        $ticket_error = TRUE;
 					pay_class::revers($SaleOrderId,$SaleReferenceId);
 					die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
 				}
@@ -113,7 +115,7 @@
 <html>
 	<body dir="rtl" style="font-family:tahoma;" >
 		<h3>
-			خرید بلیت به شماره ره‌گیری '.$rahgiri.' <br/>
+			خرید بلیت به شماره ره‌گیری '.$pardakht->id.' <br/>
 		</h3>
 		<span style="font-family:tahoma" >
 			سامانه رزرواسیون پرواز بهار 

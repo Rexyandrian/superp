@@ -43,11 +43,11 @@
                                 $this->is_tmp = ((int)$r['is_tmp']==1)?TRUE:FALSE;
                         }
 		}
-                public function add($sanad_record_id,$tarikh,$mablagh)
+                public function add($sanad_record_id,$tarikh,$mablagh,$log_text)
                 {
                         $out = -1;
 			$mysql = new mysql_class;
-                        $sql = "insert into `pardakht` (`sanad_record_id`,`tarikh`,`mablagh`) values ('$sanad_record_id','$tarikh',$mablagh)";
+                        $sql = "insert into `pardakht` (`sanad_record_id`,`tarikh`,`mablagh`,`log_text`) values ('$sanad_record_id','$tarikh',$mablagh,'$log_text')";
 			$conn = $mysql->ex_sqlx($sql,FALSE);
                         $out = $mysql->insert_id($conn);
 			$mysql->close($conn);

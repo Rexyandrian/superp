@@ -729,7 +729,7 @@
             }
             $("#searchButton").click();
         }
-        function getParvazData(pid)
+		function getParvazData(pid)
         {
             var outPP = {};
             var startIndx = ((isAdmin())?4:2);

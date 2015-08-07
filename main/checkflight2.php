@@ -159,7 +159,6 @@
 		}
 		//$ticket->clearTickets();
 		$ok = TRUE;
-		$jam_ghimat1 = 0;
 		$index = 0;
 		$domasire_ast = FALSE;
 		if(count($selectedParvaz) == 2 && parvaz_det_class::check_raft_bargasht($selectedParvaz[0]->getId(),$selectedParvaz[1]->getId()))
@@ -168,6 +167,7 @@
 		$adl_last = array();
 		$chd_last = array();
 		$inf_last = array();
+                $log_text_info= array();
 		$ghimat_kharid = 0;
 		foreach($selectedParvaz as $parvaz)
 		{
@@ -341,16 +341,21 @@
                         }
 			if($kharid_typ=='etebari')
 				$mysql->ex_sqlx("delete from `reserve_tmp` where `id` = ".$tmp_id[$index]);
+                        
+                        $jam_ghimat1 = 0;
                         for($k=0;$k<count($tmp_id);$k++)
                         {
                             if(ticket_class::updateTmp($tmp_id[$k],$info_ticket))
                             {        
+                                $log_text_info[]=$info_ticket;
                                 $mysql->ex_sql("select `adlprice`,`adltedad`,`chdprice`,`chdtedad`,`infprice`,`inftedad`,`info` from reserve_tmp where id=".$tmp_id[$k], $q);
+                                //echo "select `adlprice`,`adltedad`,`chdprice`,`chdtedad`,`infprice`,`inftedad`,`info` from reserve_tmp where id=".$tmp_id[$k]."<br/>";
                                 if(count($q)>0)
                                 {    
                                     $info = unserialize($q[0]['info']);
                                     $mysql->ex_sql("select upghimat from parvaz_det left join agency on (moghim_code=customer_id) where parvaz_det.id=".$info['parvaz']->id, $p);
-                                    $upghimat = (count($p)>0)?$p[0]['upghimat']:100000;
+                                    //echo "select upghimat from parvaz_det left join agency on (moghim_code=customer_id) where parvaz_det.id=".$info['parvaz']->id."<br/>";
+                                    $upghimat = 0;//(count($p)>0)?$p[0]['upghimat']:100000;
                                     $jam_ghimat1+= ($q[0]['adlprice']+$upghimat)*$q[0]['adltedad'] + ($q[0]['chdprice']+$upghimat)*$q[0]['chdtedad'] + ($q[0]['infprice']*$q[0]['inftedad']);
                                 }
                             }
@@ -359,6 +364,7 @@
                                 $bool = FALSE;
                             }    
                         }
+                        //echo ("ghimat:".$jam_ghimat1);
 			//$jam_ghimat1 += $zarib*$tedad*$parvaz->ghimat+$zarib*$inf*$parvaz->ghimat/10;
                         //echo "ghimat=".$jam_ghimat1."<br>";
 			$index ++;
@@ -377,7 +383,7 @@
 			if($bool)
 			{
                                 $mysql = new mysql_class;   
-				$pardakht_id =  pardakht_class::add(implode(',',$tmp_id),$tarikh_now,$jam_ghimat1);
+				$pardakht_id =  pardakht_class::add(implode(',',$tmp_id),$tarikh_now,$jam_ghimat1, json_encode($log_text_info));
 				$pardakht = new pardakht_class($pardakht_id);
 				$rahgiri = $pardakht->getBarcode();
 				if($conf->ps === TRUE)
@@ -388,7 +394,9 @@
 					$mysql->ex_sqlx("update `pardakht` set `bank_out` = '$pay_code' where `id` = $pardakht_id");
 				}
 				else
+                                {
 					$pay_code = pay_class::pay($pardakht_id,$jam_ghimat1);
+                                }        
                                 //var_dump($pay_code);
 				$tmpo = explode(',',$pay_code);
 				if(count($tmpo)==2 && $tmpo[0]==0 && $conf->ps !== 'TRUE')

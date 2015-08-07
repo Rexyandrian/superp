@@ -4,6 +4,7 @@
 	register_shutdown_function('session_write_close');
 	session_start();
 	$msg = '';
+        /*
 	if(isset($_POST['rahgiri']) && trim($_POST['rahgiri'])!='')
 	{
 		$rahgiri = trim($_POST['rahgiri']);
@@ -16,6 +17,8 @@
 			$msg .= "کد رهگیری  $rahgiri رزرو شما با موفقیت انجام شده است جهت مشاهده بلیت های خود <a href='finalticket2.php?rahgiri=$rahgiri&ticket_type=0&sanad_record_id=".($par->sanad_record_id)."&'>اینجا</a> کلیک کنید";
 		$msg .= '</td></tr></table>';
 	}
+         * 
+         */
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -204,6 +204,9 @@
 			$adl_ghimat = 0;
 			$chd_ghimat = 0;
 			$inf_ghimat = 0;
+                        $hs_adl_ghimat = 0;
+			$hs_chd_ghimat = 0;
+			$hs_inf_ghimat = 0;
 			$poorsant = 0;
 			$radif = '۱';
 			$k = 0;
@@ -213,9 +216,7 @@
 				$timeout = 5;
 				if($kharid_typ=='naghdi')
 					$timeout = 15;
-				
                                 $moghim_res =  moghim_class::checkselection((int)$tmp->subflid, (int)$tmp->customer_id, $adl, $chd, $inf);
-                                //echo "$tmp->subflid, $tmp->customer_id, $adl, $chd, $inf";
                                 //var_dump($moghim_res);
                                 if($moghim_res->checkselectionResult)
                                 {    
@@ -225,6 +226,10 @@
                                     $adl_ghimat += $moghim_res->adlprice;
                                     $chd_ghimat += $moghim_res->chdprice;
                                     $inf_ghimat += $moghim_res->infprice;
+                                    
+                                    $hs_adl_ghimat += $moghim_res->adlprice;
+                                    $hs_chd_ghimat += $moghim_res->chdprice;
+                                    $hs_inf_ghimat += $moghim_res->infprice;
                                     //$poorsant += $tmp->ghimat * ($customer->getPoorsant($tmp->getId())/100);
                                     $poorsant=0;
                                     $k++;
@@ -233,7 +238,7 @@
                         if(isset($alaki))
                         {    
                             $res_tmp = new reserve_tmp_class($alaki);
-                            $time_out = strtotime($res_tmp->tarikh .' + 5 minute ') - strtotime(date("Y-m-d H:i:s"));
+                            $time_out = strtotime($res_tmp->tarikh .' + 6 minute ') - strtotime(date("Y-m-d H:i:s"));
                             $time_out = 5;//audit_class::secondToMinute($time_out);
                             $adl_ghimat = enToPerNums(monize($adl_ghimat));
                             $chd_ghimat = enToPerNums(monize($chd_ghimat));
@@ -287,11 +292,11 @@ tmp0;
                                         <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin zoor '.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control zoor" placeholder="کد ملی یا شماره پاسپورت" /></td>
 					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >آقا</option><option value="" >خانم</option></select></td>
-                                        <td>'.monize($moghim_res->adlprice).'</td>
+                                        <td>'.monize($hs_adl_ghimat).'</td>
 					'.$e_ticket.'
                                 </tr>
 ';
-                                        $sum_ghimat+=$moghim_res->adlprice;
+                                        $sum_ghimat+=$hs_adl_ghimat;
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
 				}
 			}
@@ -319,7 +324,7 @@ tmp1;
 					}
 					else
 					{
-                                            $hs_ghimat_chd = monize($moghim_res->chdprice);
+                                            $hs_ghimat_chd = monize($hs_chd_ghimat);
                                                 $childs .= <<<tmp1
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
@@ -334,7 +339,7 @@ tmp1;
 tmp1;
 
 					}
-                                        $sum_ghimat+=$moghim_res->chdprice;
+                                        $sum_ghimat+=$hs_chd_ghimat;
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
 				}
 			}
@@ -363,7 +368,7 @@ tmp2;
 					}
 					else
 					{
-                                            $hs_ghimat_chd = monize($moghim_res->infprice);
+                                            $hs_ghimat_chd = monize($hs_inf_ghimat);
                                                 $infants .= <<<tmp2
                                 <tr class="showgrid_row_even">
                                         <td class="showgrid_row_td_reserve" >$radif</td>
@@ -376,7 +381,7 @@ tmp2;
                                 </tr>
 tmp2;
 					}
-                                        $sum_ghimat+=$moghim_res->infprice;
+                                        $sum_ghimat+=$hs_inf_ghimat;
 	                                $radif = enToPerNums(perToEnNums($radif)+1);
 				}
 
