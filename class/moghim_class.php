@@ -5,7 +5,7 @@
  * @author hamed
  */
 class moghim_class {
-    public static function checkselection($subflid,$customer_id,$adl,$chd,$inf)
+    public static function checkselection1($subflid,$customer_id,$adl,$chd,$inf)
     {
         $conf = new conf;
         $cl = new SoapClient($conf->moghim_wsdl);
@@ -28,6 +28,36 @@ class moghim_class {
         );
         return($cl->checkselection($param));
     }
+    public static function checkselection($subflid,$customer_id,$adl,$chd,$inf)
+    {
+        $conf = new conf;
+        $cl = new SoapClient($conf->moghim_wsdl);
+        $param = array(
+            'rep'=>&$rep,
+            'netlog'=>&$netlog,
+            'rwaitlog'=>&$rwaitlog,
+            'totalprice'=>&$totalprice,
+            'adlprice'=>&$adlprice,
+            'chdprice'=>&$chdprice,
+            'infprice'=>&$infprice,
+            'selrate'=>&$selrate,
+            'subflid'=>$subflid,
+            'AgencyCode'=>$customer_id,
+            'adl'=>$adl,
+            'chd'=>$chd,
+            'inf'=>$inf,
+            'cust'=>$conf->moghim_cust,
+            'pass'=>$conf->moghim_pass
+        );
+        $out = new stdClass();
+        $out->checkselectionResult = TRUE;
+        $out->netlog = '';
+        $out->rwaitlog = '';
+        $out->adlprice = '2000000';
+        $out->chdprice = '2000000';
+        $out->infprice = '680000';
+        return($out);
+    }
     public static function Flightlastdata($subflid,$customer_id)
     {
         $conf = new conf;
@@ -43,6 +73,30 @@ class moghim_class {
         $xml = preg_replace($pattern, '', $res->FlightlastdataResult->any);
         $response = simplexml_load_string($xml);
         return($response->NewDataSet->publicselectsp);
+    }
+    public static function reservefl1($reserve_tmp)
+    {
+        $conf = new conf;
+        $moghim_out = moghim_class::loadReserveParam($reserve_tmp);
+        $cl = new SoapClient($conf->moghim_wsdl);
+        $param = array(
+            'rep'=>&$rep,
+            'refer'=>&$refer,
+            'seldate'=>&$seldate,
+            'netlog'=>$reserve_tmp->netlog,
+            'rwaitlog'=>$reserve_tmp->rwaitlog,
+            'sexkind'=>$moghim_out['sexkind'],
+            'fname'=>$moghim_out['fname'],
+            'lname'=>$moghim_out['lname'],
+            'passkind'=>$moghim_out['passkind'],
+            'mellicode'=>$moghim_out['mellicode'],
+            'passport'=>$moghim_out['passport'],
+            'remark'=>'',
+            'mobile'=>$moghim_out['mobile'],
+            'cust'=>$conf->moghim_cust,
+            'pass'=>$conf->moghim_pass
+        );
+        return($cl->reservefl($param));
     }
     public static function reservefl($reserve_tmp)
     {
@@ -66,7 +120,13 @@ class moghim_class {
             'cust'=>$conf->moghim_cust,
             'pass'=>$conf->moghim_pass
         );
-        return($cl->reservefl($param));
+        $out = new stdClass();
+        $out->reserveflResult = TRUE;
+        $out->refer = 'NYGUFD';
+        $out->seldate = '94/05/28';
+        $out->rep = '';
+        return($out);
+        //return($cl->reservefl($param));
     }
     public static function loadReserveParam($reserve_tmp)
     {

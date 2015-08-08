@@ -171,7 +171,7 @@
 		$ghimat_kharid = 0;
 		foreach($selectedParvaz as $parvaz)
 		{
-			$zarib = (100 - $customer->getPoorsant($parvaz->getId()))/100;
+			$zarib =1;// (100 - $customer->getPoorsant($parvaz->getId()))/100;
 			for($i = 0;$i < $adl;$i++)
 			{
 				$ticket = new ticket_class;
