@@ -218,9 +218,9 @@
 			$conf = new conf;
 			//$tmp_id= (int)$tmp_id;
 			$out = FALSE;
-			$mysql->ex_sql("select `id` from `ticket` where `fname`='".$tick->fname."' and `lname`='".$tick->lname."' and `tel`='".$tick->tel."' and `parvaz_det_id`='".$tick->parvaz_det_id."' and `en`='".$tick->en."' and `mablagh` = '".$tick->mablagh."' and `poorsant` = '".$tick->poorsant."' and `shomare` = '".$tick->shomare."' and `gender` = ".$tick->gender." and email_addr = '".$tick->email_addr."' and sites_id='".$tick->sites_id."' and code_melli='".$tick->code_melli."'",$q);
-			if(count($q)==0 && $tick->lname!="")
-			{
+			//$mysql->ex_sql("select `id` from `ticket` where `fname`='".$tick->fname."' and `lname`='".$tick->lname."' and `tel`='".$tick->tel."' and `parvaz_det_id`='".$tick->parvaz_det_id."' and `en`='".$tick->en."' and `mablagh` = '".$tick->mablagh."' and `poorsant` = '".$tick->poorsant."' and `shomare` = '".$tick->shomare."' and `gender` = ".$tick->gender." and email_addr = '".$tick->email_addr."' and sites_id='".$tick->sites_id."' and code_melli='".$tick->code_melli."'",$q);
+			//if(count($q)==0 && $tick->lname!="")
+			//{
 				$mablagh = $tick->mablagh;
 				if($tick->adult == 2)
 					$mablagh = (int)$mablagh /10;
@@ -231,7 +231,7 @@
 				$arg["typ"]=3;
 		                log_class::add($arg);
 				$hala = date("Y-m-d H:i:s");
-				$con = $mysql->ex_sqlx("insert into ticket (`fname`,`lname`,`tel`,`adult`,`sanad_record_id`,`parvaz_det_id`,`customer_id`,`user_id`,`shomare`,`typ`,`en`,`mablagh`,`poorsant`,`gender`,`regtime`,email_addr,sites_id,code_melli,rep,refer,seldate,rwaitlog,parvaz_det_info) values ('".$tick->fname."','".$tick->lname."','".$tick->tel."','".$tick->adult."','".$tick->sanad_record_id."','".$tick->parvaz_det_id."','".$tick->customer_id."','".$tick->user_id."','".$tick->shomare."','".$tick->typ."','".$tick->en."','$mablagh','".$tick->poorsant."',".$tick->gender.",'$hala','".$tick->email_addr."','".$tick->sites_id."','".$tick->code_melli."','".$moghim_info->rep."','".$moghim_info->refer."','".$moghim_info->seldate."','$rwaitlog','$parvaz_det_info')",FALSE);
+				$con = $mysql->ex_sqlx("insert into ticket (`fname`,`lname`,`tel`,`adult`,`sanad_record_id`,`parvaz_det_id`,`customer_id`,`user_id`,`shomare`,`typ`,`en`,`mablagh`,`poorsant`,`gender`,`regtime`,email_addr,sites_id,code_melli,rep,refer,seldate,rwaitlog,parvaz_det_info) values ('".$tick->fname."','".$tick->lname."','".$tick->tel."','".$tick->adult."','".$tick->sanad_record_id."','".$tick->parvaz_det_id."','".$tick->customer_id."','".$tick->user_id."','".$tick->shomare."','".$tick->typ."','".$tick->en."','$mablagh','".$tick->poorsant."',".(int)$tick->gender.",'$hala','".$tick->email_addr."','".$tick->sites_id."','".$tick->code_melli."','".$moghim_info->rep."','".$moghim_info->refer."','".$moghim_info->seldate."','$rwaitlog','$parvaz_det_info')",FALSE);
 				$ticket_id = $mysql->insert_id($con);
 				$mysql->close($con);
 				$out = TRUE;
@@ -248,7 +248,7 @@
 				//---------------------------------
 				//$out =(($ok=="ok")?TRUE:FALSE);
 				
-			}
+			//}
 			return $out;
 		}
 	}

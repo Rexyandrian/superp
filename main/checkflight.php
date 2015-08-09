@@ -291,7 +291,7 @@ tmp0;
                                         <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control latin zoor" placeholder="نام" /></td>
                                         <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin zoor '.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
                                         <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control zoor" placeholder="کد ملی یا شماره پاسپورت" /></td>
-					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >آقا</option><option value="" >خانم</option></select></td>
+					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >آقا</option><option value="0" >خانم</option></select></td>
                                         <td>'.monize($hs_adl_ghimat).'</td>
 					'.$e_ticket.'
                                 </tr>

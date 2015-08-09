@@ -5,7 +5,7 @@
  * @author hamed
  */
 class moghim_class {
-    public static function checkselection1($subflid,$customer_id,$adl,$chd,$inf)
+    public static function checkselection($subflid,$customer_id,$adl,$chd,$inf)
     {
         $conf = new conf;
         $cl = new SoapClient($conf->moghim_wsdl);
@@ -28,8 +28,10 @@ class moghim_class {
         );
         return($cl->checkselection($param));
     }
-    public static function checkselection($subflid,$customer_id,$adl,$chd,$inf)
+
+    public static function checkselection1($subflid,$customer_id,$adl,$chd,$inf)
     {
+        /*
         $conf = new conf;
         $cl = new SoapClient($conf->moghim_wsdl);
         $param = array(
@@ -49,6 +51,8 @@ class moghim_class {
             'cust'=>$conf->moghim_cust,
             'pass'=>$conf->moghim_pass
         );
+         * 
+         */
         $out = new stdClass();
         $out->checkselectionResult = TRUE;
         $out->netlog = '222500';
@@ -58,6 +62,7 @@ class moghim_class {
         $out->infprice = '100';
         return($out);
     }
+
     public static function Flightlastdata($subflid,$customer_id)
     {
         $conf = new conf;
@@ -74,6 +79,7 @@ class moghim_class {
         $response = simplexml_load_string($xml);
         return($response->NewDataSet->publicselectsp);
     }
+
     public static function reservefl1($reserve_tmp)
     {
         $conf = new conf;
@@ -98,6 +104,7 @@ class moghim_class {
         );
         return($cl->reservefl($param));
     }
+
     public static function reservefl($pardakht)
     {
         $conf = new conf;
@@ -121,13 +128,15 @@ class moghim_class {
             'cust'=>$conf->moghim_cust,
             'pass'=>$conf->moghim_pass
         );
+/*
         $out = new stdClass();
         $out->reserveflResult = TRUE;
         $out->refer = 'PDYPIQ';
         $out->seldate = '94/05/27';
         $out->rep = '';
         return($out);
-        //return($cl->reservefl($param));
+*/
+        return($cl->reservefl($param));
     }
     public static function loadReserveParam($info)
     {
@@ -145,7 +154,7 @@ class moghim_class {
 
             $fnames.= (($fnames=='')?'':'|').$r->fname;
             $lnames.= (($lnames=='')?'':'|').$r->lname;
-            $sexkind.= (($sexkind=='')?'':'|'). ($r->gender==0?'MR':'MRS');
+            $sexkind.= (($sexkind=='')?'':'|'). ((int)$r->gender==1?'MR':'MRS');
             switch ($r->adult) {
                 case 0:
                     $tmp_passkind = 'ADL';

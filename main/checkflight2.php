@@ -134,6 +134,17 @@
 	foreach($tmp as $parvaz_id)
         {
         	$tmp_parvaz = new parvaz_det_class((int)$parvaz_id);
+                if($tmp_parvaz->id==-1)
+                {
+                    $my = new mysql_class;
+                    $my->ex_sql("select parvaz_det_info from reserve_tmp where parvaz_det_id=$parvaz_id order by id desc limit 1", $hsp);
+                    if(count($hsp)>0)
+                    {
+                        $tmp_parvaz = $hsp[0]['parvaz_det_info']!=''?  unserialize($hsp[0]['parvaz_det_info']):$tmp_parvaz;
+                    }    
+                }
+                if($tmp_parvaz->id==-1)
+                    die('خطا در رزرو پرواز لطفا مجددا تلاش نمایید');
                 $selectedParvaz[] = $tmp_parvaz;
         }
 	$customer = new customer_class((int)$_SESSION[$conf->app."_customer_id"]);

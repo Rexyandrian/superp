@@ -1,5 +1,6 @@
 <?php
-        include_once("../kernel.php");
+    include_once("../kernel.php");
+	include_once("../simplejson.php");
 	$SESSION = new session_class;
 	register_shutdown_function('session_write_close');
 	session_start();
@@ -23,11 +24,11 @@
 			$sanad_record_id = sanad_class::getLastSanad_record_id();
 			$sanad_record_id_ticket = $sanad_record_id;
 			//-------------ticket ----------
-			if(!($pardakht->is_tmp && !$pardakht->is_hotel))
-			{
-				pay_class::revers($SaleOrderId,$SaleReferenceId);
-				die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است <br/><a href="index.php" >بازگشت</a></center></body></html>');
-			}
+			//if(!($pardakht->is_tmp && !$pardakht->is_hotel))
+			//{
+			//	pay_class::revers($SaleOrderId,$SaleReferenceId);
+			//	die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است <br/><a href="index.php" >بازگشت</a></center></body></html>');
+			//}
 			$res_tmp =explode(',',$pardakht->sanad_record_id);
 			$ghimat_kharid = 0;
 			$ticket_ids = array();
@@ -50,7 +51,7 @@
                                 foreach($info as $ticket)
                                 {
                                         $ticket->sanad_record_id = $sanad_record_id;
-                                        if(!ticket_class::add_new($ticket, $moghim_info, $tt->rwaitlog,  json_encode($tt->parvaz), $ticket_id))
+                                        if(!ticket_class::add_new($ticket, $moghim_info, $tt->rwaitlog,toJSON($tt->parvaz), $ticket_id))
                                                 $ticket_error = TRUE;
                                         $ticket_ids[] = $ticket_id;
                                         if((int)$ticket->adult!=2)
@@ -60,12 +61,18 @@
                                 $etick = moghim_class::printEticket($tt->rwaitlog);
                                 if(isset($etick->printEticketResult))
                                 {
-                                    file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.98.31.190/ereports/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", 'r'));
+                                    file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.99.96.86/ereports/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", 'r'));
                                 }
                             }
                             else
                             {
                                 $ticket_error = TRUE;
+								$arg["toz"]='عملیات revers '.$SaleOrderId.' '.date('Y-m-d H:i:s');
+                                $arg["user_id"]=(isset($_SESSION)?$_SESSION[$conf->app."_user_id"]:-1);
+                                $arg["host"]=$_SERVER["REMOTE_ADDR"];
+                                $arg["page_address"]=$_SERVER["SCRIPT_NAME"];
+                                $arg["typ"]=3;
+                                log_class::add($arg);
                                 pay_class::revers($SaleOrderId,$SaleReferenceId);
                                 die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
                             }    
@@ -73,6 +80,12 @@
                         else
                         {
                                 $ticket_error = TRUE;
+								$arg["toz"]='عملیات revers :'.$SaleOrderId.' '.date('Y-m-d H:i:s');
+                                $arg["user_id"]=(isset($_SESSION)?$_SESSION[$conf->app."_user_id"]:-1);
+                                $arg["host"]=$_SERVER["REMOTE_ADDR"];
+                                $arg["page_address"]=$_SERVER["SCRIPT_NAME"];
+                                $arg["typ"]=3;
+                                log_class::add($arg);
                                 pay_class::revers($SaleOrderId,$SaleReferenceId);
                                 die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
                         }
@@ -84,6 +97,12 @@
 					mysql_class::ex_sqlx("delet from `ticket` where `id`= ".$ticket_ids[$i]);
 				*/
 				ticket_class::clearTickets();
+				$arg["toz"]='عملیات revers ::'.$SaleOrderId.' '.date('Y-m-d H:i:s');
+                $arg["user_id"]=(isset($_SESSION)?$_SESSION[$conf->app."_user_id"]:-1);
+                $arg["host"]=$_SERVER["REMOTE_ADDR"];
+                $arg["page_address"]=$_SERVER["SCRIPT_NAME"];
+                $arg["typ"]=3;
+                log_class::add($arg);
 				pay_class::revers($SaleOrderId,$SaleReferenceId);
 				die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است !<br/><a href="index.php" >بازگشت</a></center></body></html>');
 			}
