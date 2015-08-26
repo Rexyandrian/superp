@@ -101,13 +101,25 @@
                 {
                     $out = '---';
                     $mysql = new mysql_class;
-                    $mysql->ex_sql("select id from pardakht where is_tmp=0 and sanad_record_id=".$sanad_record_id,$q);
+                    $mysql->ex_sql("select id from pardakht where sanad_record_id=".$sanad_record_id,$q);
 
                     if(isset($q[0]))
                     {
                         $out = pardakht_class::getBarcode($q[0]['id']);
                     }
                     return($out);
-                }        
+                }
+                public static function getBracode_Id_BySanad_record_id($sanad_record_id)
+                {
+                    $out = '---';
+                    $mysql = new mysql_class;
+                    $mysql->ex_sql("select id from pardakht where sanad_record_id=".$sanad_record_id,$q);
+
+                    if(isset($q[0]))
+                    {
+                        $out = pardakht_class::getBarcode($q[0]['id']);
+                    }
+                    return($out.' - '.$q[0]['id']);
+                }
 	}
 ?>
