@@ -9,7 +9,8 @@
                 public $date_off = "0:00";
 		public $access_deny = "error";
 		public $enableSms = FALSE;
-		public $moghim_wsdl = "http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl";
+                public $moghim_ip = '91.99.96.86';
+		public $moghim_wsdl = "http://91.99.96.86/Moghim24Scripts/Moghim24Services.svc?wsdl";
                 public $moghim_cust = 1010;
                 public $moghim_pass = 123456;
                 /*

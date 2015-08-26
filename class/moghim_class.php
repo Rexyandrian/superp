@@ -28,10 +28,9 @@ class moghim_class {
         );
         return($cl->checkselection($param));
     }
-
-    public static function checkselection1($subflid,$customer_id,$adl,$chd,$inf)
+/*
+    public static function checkselection2($subflid,$customer_id,$adl,$chd,$inf)
     {
-        /*
         $conf = new conf;
         $cl = new SoapClient($conf->moghim_wsdl);
         $param = array(
@@ -51,8 +50,6 @@ class moghim_class {
             'cust'=>$conf->moghim_cust,
             'pass'=>$conf->moghim_pass
         );
-         * 
-         */
         $out = new stdClass();
         $out->checkselectionResult = TRUE;
         $out->netlog = '222500';
@@ -62,7 +59,7 @@ class moghim_class {
         $out->infprice = '100';
         return($out);
     }
-
+*/
     public static function Flightlastdata($subflid,$customer_id)
     {
         $conf = new conf;
@@ -79,7 +76,7 @@ class moghim_class {
         $response = simplexml_load_string($xml);
         return($response->NewDataSet->publicselectsp);
     }
-
+/*
     public static function reservefl1($reserve_tmp)
     {
         $conf = new conf;
@@ -104,7 +101,7 @@ class moghim_class {
         );
         return($cl->reservefl($param));
     }
-
+*/
     public static function reservefl($pardakht)
     {
         $conf = new conf;
@@ -169,14 +166,17 @@ class moghim_class {
                     break;
             }
             $passkind.= (($passkind=='')?'':'|').$tmp_passkind;
-            $mellicode.= (($mellicode=='')?'':'|').$r->code_melli;
-            $passport.= (($passport=='')?'':'|').$r->code_melli;
+            $mellicode.= (strlen($r->code_melli)==10?$r->code_melli:'').'|';
+            $passport.= (strlen($r->code_melli)!=10?$r->code_melli:'').'|';
+            
             if($i==0)
             {    
                 $mobile =$r->tel;
             }    
             $i++;
-        }    
+        }
+        $mellicode = substr($mellicode, 0, -1);
+        $passport = substr($passport, 0, -1);
         $out = array('fname'=>$fnames,'lname'=>$lnames,'sexkind'=>$sexkind,'passkind'=>$passkind,'mellicode'=>$mellicode,'passport'=>$passport,'mobile'=>$mobile);
         return($out);
     }
