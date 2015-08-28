@@ -125,6 +125,11 @@
             }
             return($out);
         }
+        function getRahgiri($inp)
+        {
+            $ou = pardakht_class::getBracode_Id_BySanad_record_id($inp);
+            return $ou;
+        }
 	$customer_id = (isset($_REQUEST['customer_id']))?(int)$_REQUEST['customer_id']:-1;
 	$tday = perToEnNums(jdate("Y/m/d"));
 	$tdayG = date("Y-m-d");
@@ -149,8 +154,8 @@
 	$xgrid->column[$gname][4]['name'] = 'بزرگسال';
 	$xgrid->column[$gname][4]['sort'] = 'true';
 	$xgrid->column[$gname][4]['cfunction'] = array('loadAdult');
-	//$xgrid->column[$gname][5]['name'] = 'شماره سند';
-        $xgrid->column[$gname][5]['name'] = '';
+	$xgrid->column[$gname][5]['name'] = 'رهگیری';
+        $xgrid->column[$gname][5]['cfunction'] = array('getRahgiri');
 	$xgrid->column[$gname][5]['sort'] = 'true';
 	$xgrid->column[$gname][6]['name'] = '';
 	//$xgrid->column[$gname][6]['cfunction'] = array('loadParvaz');

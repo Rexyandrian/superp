@@ -179,8 +179,11 @@
         foreach($tmp as $parvaz_id)
         {
 	        $tmp_parvaz = new parvaz_det_class((int)$parvaz_id);
-                if(flightZarfiat($tmp_parvaz) < $tedad)
-        	        $tedad_ok = FALSE;
+                //if(flightZarfiat($tmp_parvaz) < $tedad)
+                if($tmp_parvaz->zarfiat<$tedad)
+                {    
+                    $tedad_ok = FALSE;
+                }        
                 $jam_ghimat += ($tedad * $tmp_parvaz->ghimat);
                 $jam_ghimat += $inf * 200000;//($inf * $tmp_parvaz->ghimat)/10;
         }

@@ -149,7 +149,8 @@
 	        $tmp_parvaz = new parvaz_det_class((int)$parvaz_id);
 		if($sites_id<0)
 			$sites_id = sites_class::loadByParvaz_det_id($tmp_parvaz->id);
-                if(flightZarfiat($tmp_parvaz) < $tedad)
+                //if(flightZarfiat($tmp_parvaz) < $tedad)
+                if($tmp_parvaz->zarfiat<$tedad)
         	        $tedad_ok = FALSE;
 
 /*		if($tmp_parvaz->getZarfiat($customer->getId())<$tedad)
@@ -290,7 +291,7 @@ tmp0;
                                         <td class="showgrid_row_td_reserve" >'.$radif.'</td>
                                         <td style="width:auto;"><input type="text" name="adl_fname_'.$i.'" id="adl_fname_'.$i.'" class="inp form-control latin zoor" placeholder="نام" /></td>
                                         <td style="width:auto;"><input type="text" name="adl_lname_'.$i.'" id="adl_lname_'.$i.'" class="inp form-control latin zoor '.($i==0?'master':'slave').'" placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control zoor" placeholder="کد ملی یا شماره پاسپورت" /></td>
+                                        <td style="width:auto;"><input type="text" name="adl_codemelli_'.$i.'" id="adl_codemelli_'.$i.'" class="inp form-control zoor codeMelli" placeholder="کد ملی یا شماره پاسپورت" /></td>
 					<td><select class="inp form-control" name="adl_gender_'.$i.'" ><option value="1" >آقا</option><option value="0" >خانم</option></select></td>
                                         <td>'.monize($hs_adl_ghimat).'</td>
 					'.$e_ticket.'
@@ -330,7 +331,7 @@ tmp1;
                                         <td class="showgrid_row_td_reserve" >$radif</td>
                                         <td style="width:auto;"><input type='text' name='chd_fname_$i' id='chd_fname_$i' class='inp form-control latin zoor' placeholder="نام" /></td>
                                         <td style="width:auto;"><input type='text' name='chd_lname_$i' id='chd_lname_$i' class='inp form-control slave latin zoor' placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp form-control zoor' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
+                                        <td style="width:auto;"><input type='text' name='chd_codemelli_$i' id='chd_codemelli_$i' class='inp form-control zoor codeMelli' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
                                         <td><select class='inp form-control' name='chd_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
                                         <td>$hs_ghimat_chd</td>                
 					$e_ticket
@@ -374,7 +375,7 @@ tmp2;
                                         <td class="showgrid_row_td_reserve" >$radif</td>
                                         <td style="width:auto;"><input type='text' name='inf_fname_$i' id='inf_fname_$i' class='inp form-control latin zoor' placeholder="نام" /></td>
                                         <td style="width:auto;"><input type='text' name='inf_lname_$i' id='inf_lname_$i' class='inp form-control slave latin zoor' placeholder="نام خانوادگی" /></td>
-                                        <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp form-control zoor' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
+                                        <td style="width:auto;"><input type='text' name='inf_codemelli_$i' id='inf_codemelli_$i' class='inp form-control zoor codeMelli' placeholder="کد ملی یا شماره پاسپورت" /></td>                                                       
 					<td><select class='inp form-control' name='inf_gender_$i' ><option value='1' >آقا</option><option value='0' >خانم</option></select></td>
                                         <td>$hs_ghimat_chd</td>
 					$e_ticket
@@ -475,8 +476,8 @@ OOUT;
 	{
 		$tmp_id = explode(",",$_REQUEST["tmp_id"]);
                	$alaki = ticket_class::removeTmp($tmp_id);
-		foreach($selectedParvaz as $tmp)
-	                $tmp->resetZarfiat($tedad);
+		//foreach($selectedParvaz as $tmp)
+	                //$tmp->resetZarfiat($tedad);
 		die("<html><body><script language=\"javascript\"> window.location='index.php'; </script></body></html>");
 	
 	}
@@ -517,6 +518,13 @@ var mod;
             });
             $(".master").blur(function(event){
                 $(".slave").val($(".master").val());
+            });
+            $(".codeMelli").blur(function(event){
+                if(!CheckNationalCode($(this).val()))
+                {
+                    $(this).val('');
+                    alert('لطفا کد ملی را صحیح وارد نمایید');
+                }    
             });
         });
 	function sendTickets()
@@ -580,4 +588,46 @@ var mod;
 	{
 		closeDialog();
 	}
+        function CheckNationalCode(nationalCode)
+        {
+            try
+            {
+                if(nationalCode.length!=10)
+                {
+                    return false;
+                }
+                var sum=0;
+                var mm=0;
+                var lastnum=0;
+                var code = new Array();
+                if (nationalCode == "1111111111" || nationalCode == "2222222222" ||
+                              nationalCode == "3333333333" || nationalCode == "4444444444" ||
+                              nationalCode == "5555555555" || nationalCode == "6666666666" ||
+                              nationalCode == "7777777777" || nationalCode == "8888888888" ||
+                              nationalCode == "9999999999" || nationalCode == "0000000000")
+                    return false;
+                sum=0;                        
+                for(var i=0;i<9;i++)
+                {
+                    sum += parseInt( nationalCode.charAt(i))*(10-i);
+                }
+                lastnum=parseInt( nationalCode.charAt(9));
+                mm = (sum % 11);
+                if (mm < 2)
+                {
+                    if (lastnum == mm)
+                        return true;
+                }
+                else if (mm >= 2)
+                {
+                    if ((11 - mm) == lastnum)
+                        return true;
+                }
+                return false;
+            }
+            catch(ex)
+            {
+                return false;
+            }
+        }
 </script>
