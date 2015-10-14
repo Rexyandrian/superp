@@ -6,6 +6,14 @@
 	$pass=((isset($_REQUEST['pass']))?$_REQUEST['pass']:"");
 	$user=((isset($_REQUEST['user']))?$_REQUEST['user']:"");
 	$kelid = ((isset($_REQUEST['kelid']))?$_REQUEST['kelid']:-1);
+        if(!isset($_REQUEST['user']))
+        {    
+            $_REQUEST['user']='test';
+        }
+        if(!isset($_REQUEST['pass']))
+        {    
+            $_REQUEST['pass']='test';
+        }
 	if(!security_class::firstVisit($_SESSION,$_REQUEST))
 		die("<script>window.location = 'login.php?stat=wrong_userk1&';</script>");
 	if(isset($_SESSION[$conf->app.'_user_id']))

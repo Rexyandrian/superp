@@ -277,6 +277,7 @@
                 $xgrid->column[$gname][22]['name'] = '';
                 $xgrid->column[$gname][23]['name'] = '';
                 $xgrid->column[$gname][24]['name'] = '';
+                $xgrid->column[$gname][25]['name'] = '';
 		$out =$xgrid->getOut($_REQUEST);
 		if($xgrid->done)
 			die($out);

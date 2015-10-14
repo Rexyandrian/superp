@@ -222,15 +222,18 @@
                                 if($moghim_res->checkselectionResult)
                                 {    
                                     $alaki = ticket_class::addTmp($tmp->getId(),$tedad,$timeout,$moghim_res->netlog,$moghim_res->rwaitlog,$moghim_res->adlprice,$moghim_res->chdprice,$moghim_res->infprice,$adl,$chd,$inf);
+                                    $mysql = new mysql_class;
+                                    $mysql->ex_sql("select upghimat from parvaz_det left join agency on (moghim_code=customer_id) where parvaz_det.id=".$tmp->getId(), $p);
+                                    $upghimat = (count($p)>0)?$p[0]['upghimat']:100000;
                                     $tmp->setZarfiat($tedad);
                                     $tmp_id[] = $alaki;
-                                    $adl_ghimat += $moghim_res->adlprice;
-                                    $chd_ghimat += $moghim_res->chdprice;
-                                    $inf_ghimat += $moghim_res->infprice;
+                                    $adl_ghimat += $moghim_res->adlprice + $upghimat;
+                                    $chd_ghimat += $moghim_res->chdprice + $upghimat;
+                                    $inf_ghimat += $moghim_res->infprice+$upghimat;
                                     
-                                    $hs_adl_ghimat += $moghim_res->adlprice;
-                                    $hs_chd_ghimat += $moghim_res->chdprice;
-                                    $hs_inf_ghimat += $moghim_res->infprice;
+                                    $hs_adl_ghimat += $moghim_res->adlprice + $upghimat;
+                                    $hs_chd_ghimat += $moghim_res->chdprice + $upghimat;
+                                    $hs_inf_ghimat += $moghim_res->infprice + $upghimat;
                                     //$poorsant += $tmp->ghimat * ($customer->getPoorsant($tmp->getId())/100);
                                     $poorsant=0;
                                     $k++;
@@ -450,7 +453,7 @@ $infants
                         </tr>
 			<tr class="showgrid_row_even">
 				<td class="showgrid_row_td_reserve" colspan="2" >شماره تماس :</td>
-                                <td class="showgrid_row_td_reserve" colspan="4" ><input type='text' name='adl_tel_0' id='adl_tel0' class='inp form-control'  placeholder="شماره تماس" /></td>
+                                <td class="showgrid_row_td_reserve" colspan="4" ><input type='text' name='adl_tel_0' id='adl_tel0' class='inp form-control zoor'  placeholder="شماره تماس" /></td>
 			</tr>
 			<tr class="showgrid_row_odd">
                                 <td class="showgrid_row_td_reserve" colspan="2" >نشانی ایمیل:</td>

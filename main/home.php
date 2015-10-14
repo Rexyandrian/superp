@@ -412,6 +412,7 @@
                     dir: "rtl"
                 });
                 changeColor();
+                $(".menuDiv").remove();
 	});
 	function afterLoadGrid()
 	{

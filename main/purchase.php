@@ -24,11 +24,7 @@
 			$sanad_record_id = sanad_class::getLastSanad_record_id();
 			$sanad_record_id_ticket = $sanad_record_id;
 			//-------------ticket ----------
-			//if(!($pardakht->is_tmp && !$pardakht->is_hotel))
-			//{
-			//	pay_class::revers($SaleOrderId,$SaleReferenceId);
-			//	die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است <br/><a href="index.php" >بازگشت</a></center></body></html>');
-			//}
+			
 			$res_tmp =explode(',',$pardakht->sanad_record_id);
 			$ghimat_kharid = 0;
 			$ticket_ids = array();
@@ -63,11 +59,58 @@
                                 {
                                     file_put_contents("../pdf/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", fopen("http://91.99.96.86/ereports/".$moghim_info->refer.str_replace('/','',$moghim_info->seldate).".pdf", 'r'));
                                 }
+								
+								$customer = new customer_class($info[0]->customer_id);
+								$customer->buyTicket($sanad_record_id,$pardakht->mablagh,FALSE);
+								$pardakht->update($sanad_record_id);
+								//-------------- shenavar sanad------------
+								$sanad_record_id = sanad_class::getLastSanad_record_id();
+								$user_id = (isset($_SESSION[$conf->app.'_user_id']))?(int)$_SESSION[$conf->app.'_user_id']:-1;
+								foreach($shenavar as $par)
+									parvaz_det_class::sanad_shenavar_kharid($par,$tedad,$sanad_record_id,$user_id);			
+								//Sabte sanade pardakht parvaz.------------	
+								$sanad_record_id = sanad_class::getLastSanad_record_id();
+								$tozihat = ' بابت خرید نقدی بلیت به شماره سند '.$sanad_record_id_ticket;
+								customer_class::pardakht($sanad_record_id,$info[0]->customer_id,$pardakht->mablagh,$tozihat,$user_id);
+
+								$mysql = new mysql_class;
+								foreach($res_tmp as $tmpid)
+									$mysql->ex_sqlx("delete from `reserve_tmp` where `id` = ".$tmpid);
+								$rev = pay_class::settle($SaleOrderId,$SaleReferenceId);
+								$rahgiri = pardakht_class::getBarcode($pardakht->id);
+								$email ='armaniha@gmail.com';
+								$text ='
+							<html>
+								<body dir="rtl" style="font-family:tahoma;" >
+									<h3>
+										خرید بلیت به شماره ره‌گیری '.$pardakht->id.' <br/>
+									</h3>
+									<span style="font-family:tahoma" >
+										سامانه رزرواسیون پرواز بهار 
+										<br/>
+										www.gcom.ir
+									</span>
+								</body>
+							</html>
+							';
+										$mail = new email_class($email,'ثبت بلیت به شماره ره‌گیری'.$rahgiri,$text);
+										$out ='<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'&SaleReferenceId='.$SaleReferenceId.'"</script>';
+									}
+									else
+										$out = ' پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، مبلغ از حساب شما کم نشده است
+												<br/>
+												<input class="inp" type="button" value="بازگشت" onclick="window.location=\'index.php\';" />';
+								}
+								else
+									$out = 'در تراکنش مالی مشکلی پیش آمده است پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، مبلغ از حساب شما کم نشده است
+										<br/>
+										<input class="inp" type="button" value="بازگشت" onclick="window.location=\'index.php\';" />';
                             }
                             else
                             {
                                 $ticket_error = TRUE;
-								$arg["toz"]='عملیات revers '.$SaleOrderId.' '.date('Y-m-d H:i:s');
+								$toz = 'از سیستم مقیم اطلاعات صحیح باز گشت داده نشده '.$moghim_info->rep." \n ";
+								$arg["toz"]= $toz.'عملیات revers '.$SaleOrderId.' '.date('Y-m-d H:i:s');
                                 $arg["user_id"]=(isset($_SESSION)?$_SESSION[$conf->app."_user_id"]:-1);
                                 $arg["host"]=$_SERVER["REMOTE_ADDR"];
                                 $arg["page_address"]=$_SERVER["SCRIPT_NAME"];
@@ -80,22 +123,24 @@
                         else
                         {
                                 $ticket_error = TRUE;
-								$arg["toz"]='عملیات revers :'.$SaleOrderId.' '.date('Y-m-d H:i:s');
+								$toz  = ' قرار بود ریورس بزنیم که فعلا غیر فعالش کردم '." \n ";
+								$arg["toz"]=$toz.'عملیات revers :'.$SaleOrderId.' '.date('Y-m-d H:i:s');
                                 $arg["user_id"]=(isset($_SESSION)?$_SESSION[$conf->app."_user_id"]:-1);
                                 $arg["host"]=$_SERVER["REMOTE_ADDR"];
                                 $arg["page_address"]=$_SERVER["SCRIPT_NAME"];
                                 $arg["typ"]=3;
                                 log_class::add($arg);
-                                pay_class::revers($SaleOrderId,$SaleReferenceId);
+                                //pay_class::revers($SaleOrderId,$SaleReferenceId);
                                 die('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><center>در پردازش مشکلی پیش آمده است مجدد تلاش نمایید در صورت پرداخت وجه مبلغی از حساب شما کم نشده است!!! <br/><a href="index.php" >بازگشت</a></center></body></html>');
                         }
 			//}
+/*
 			if($ticket_error)
 			{
 				/*
 				for($i=0;$i<count($ticket_ids);$i++)
 					mysql_class::ex_sqlx("delet from `ticket` where `id`= ".$ticket_ids[$i]);
-				*/
+				
 				ticket_class::clearTickets();
 				$arg["toz"]='عملیات revers ::'.$SaleOrderId.' '.date('Y-m-d H:i:s');
                 $arg["user_id"]=(isset($_SESSION)?$_SESSION[$conf->app."_user_id"]:-1);
@@ -108,51 +153,10 @@
 			}
 			else
 			{
-				$customer = new customer_class($info[0]->customer_id);
-				$customer->buyTicket($sanad_record_id,$pardakht->mablagh,FALSE);
-				$pardakht->update($sanad_record_id);
-				//-------------- shenavar sanad------------
-				$sanad_record_id = sanad_class::getLastSanad_record_id();
-				$user_id = (isset($_SESSION[$conf->app.'_user_id']))?(int)$_SESSION[$conf->app.'_user_id']:-1;
-				foreach($shenavar as $par)
-					parvaz_det_class::sanad_shenavar_kharid($par,$tedad,$sanad_record_id,$user_id);			
-				//Sabte sanade pardakht parvaz.------------	
-				$sanad_record_id = sanad_class::getLastSanad_record_id();
-				$tozihat = ' بابت خرید نقدی بلیت به شماره سند '.$sanad_record_id_ticket;
-				customer_class::pardakht($sanad_record_id,$info[0]->customer_id,$pardakht->mablagh,$tozihat,$user_id);
+				
 			}
-			$mysql = new mysql_class;
-			foreach($res_tmp as $tmpid)
-				$mysql->ex_sqlx("delete from `reserve_tmp` where `id` = ".$tmpid);
-			$rev = pay_class::settle($SaleOrderId,$SaleReferenceId);
-			$rahgiri = pardakht_class::getBarcode($pardakht->id);
-			$email ='armaniha@gmail.com';
-			$text ='
-<html>
-	<body dir="rtl" style="font-family:tahoma;" >
-		<h3>
-			خرید بلیت به شماره ره‌گیری '.$pardakht->id.' <br/>
-		</h3>
-		<span style="font-family:tahoma" >
-			سامانه رزرواسیون پرواز بهار 
-			<br/>
-			www.gcom.ir
-		</span>
-	</body>
-</html>
-';
-			$mail = new email_class($email,'ثبت بلیت به شماره ره‌گیری'.$rahgiri,$text);
-			$out ='<script langauge="javascript" >window.location = "finalticket2.php?ticket_type=0&sanad_record_id='.$sanad_record_id_ticket.'&rahgiri='.$rahgiri.'&SaleReferenceId='.$SaleReferenceId.'"</script>';
-		}
-		else
-			$out = ' پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، مبلغ از حساب شما کم نشده است
-					<br/>
-					<input class="inp" type="button" value="بازگشت" onclick="window.location=\'index.php\';" />';
-	}
-	else
-		$out = 'در تراکنش مالی مشکلی پیش آمده است پرداخت انجام نشد مجدد سعی نمایید درصورت پرداخت وجه ، مبلغ از حساب شما کم نشده است
-			<br/>
-			<input class="inp" type="button" value="بازگشت" onclick="window.location=\'index.php\';" />';
+*/
+			
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -365,7 +365,7 @@
                             {    
                                 $info = unserialize($q[0]['info']);
                                 $mysql->ex_sql("select upghimat from parvaz_det left join agency on (moghim_code=customer_id) where parvaz_det.id=".$info['parvaz']->id, $p);
-                                $upghimat = 0;//(count($p)>0)?$p[0]['upghimat']:100000;
+                                $upghimat = (count($p)>0)?$p[0]['upghimat']:100000;
                                 $jam_ghimat1+= ($q[0]['adlprice']+$upghimat)*$q[0]['adltedad'] + ($q[0]['chdprice']+$upghimat)*$q[0]['chdtedad'] + ($q[0]['infprice']*$q[0]['inftedad']);
                             }
                         }

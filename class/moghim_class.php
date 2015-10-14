@@ -121,7 +121,7 @@ class moghim_class {
             'mellicode'=>$moghim_out['mellicode'],
             'passport'=>$moghim_out['passport'],
             'remark'=>'',
-            'mobile'=>$moghim_out['mobile'],
+            'mobile'=>'09125245831',
             'cust'=>$conf->moghim_cust,
             'pass'=>$conf->moghim_pass
         );

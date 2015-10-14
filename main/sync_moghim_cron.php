@@ -6,7 +6,7 @@
         //unset($pathTmp[count($pathTmp)]);
     //$path = implode(DIRECTORY_SEPARATOR,$pathTmp);
     //$path .= DIRECTORY_SEPARATOR;
-    $path = '/home/admin/domains/superparvaz.com/public_html/flight/';
+    $path = '/home/superpar/public_html/flight/';
     include($path.'class'.DIRECTORY_SEPARATOR.'conf.php');
     include($path.'class'.DIRECTORY_SEPARATOR.'mysql_class.php');
     include($path.'class'.DIRECTORY_SEPARATOR.'audit_class.php');
@@ -104,6 +104,16 @@ function arabicToPersian($inp)
     $out = mb_str_replace(array("ـ"," "),"",$out);
     if($out =='خرمآباد' || $out =='خرماباد')
         $out = 'خرم‌آباد';
+	switch ($out) {
+        case 'امامخمینی':
+            $out ='تهران';
+            break;
+        case 'DUBAI':
+            $out ='دبی';
+		case 'IMAMKHOMEINI':
+            $out ='تهران';
+            break;
+    }
     return($out);
 }
 function hs_airline($inp)
@@ -149,12 +159,12 @@ $upghimatArr = loadghimatArr();
 $activeAgency = loadActiveAgency();
 $today =substr(perToEnNums(jdate('Y/m/d',strtotime(date("Y-m-d H:i:s")))),2);// 
 $onem =substr(perToEnNums(jdate('Y/m/d',strtotime(date("Y-m-d H:i:s",time()+ 30*24*60*60)))),2);// date("Y-m-d H:i:s",time()+ 30*24*60*60);
-$cl = new SoapClient("http://91.98.31.190/Moghim24Scripts/Moghim24Services.svc?wsdl");
+$cl = new SoapClient("http://91.99.96.86/Moghim24Scripts/Moghim24Services.svc?wsdl");
 $param = array(
     'fd'=>$today,
     'ld'=>$onem,//'94/05/21',
-    'cust'=>'1005',
-    'pass'=>'123'
+    'cust'=>'1010',
+    'pass'=>'123456'
 );
 $res = $cl->openTempfllist($param);
 $pattern = '/<xs:schema.*<\/xs:schema>/';
@@ -162,7 +172,7 @@ $xml = preg_replace($pattern, '', $res->openTempfllistResult->any);
 
 $response = simplexml_load_string($xml);
 $tt = $response->NewDataSet;
-$qu = "insert into parvaz_det (`id`, `parvaz_id`, `tarikh`, `saat`, `zarfiat`, `ghimat`, `flnum`, `subflid`, `strsource`, `strdest`, `alname`, `flclass`, `typ`, `saat_kh`, `en`, `customer_id`,selrate,ghimat_origin) values ";
+$qu = "insert into parvaz_det (`id`, `parvaz_id`, `tarikh`, `saat`, `zarfiat`, `ghimat`, `flnum`, `subflid`, `strsource`, `strdest`, `alname`, `flclass`, `typ`, `saat_kh`, `en`, `customer_id`,selrate,ghimat_origin,tarikh_fa) values ";
 $tmp = '';
 $i=0;
 $j=0;
@@ -174,12 +184,13 @@ foreach($tt as $val)
     {
 		$j++;
 		//if((string)$flight->AgencyCode=='146')
-		//{
-			//echo "anna =".(string) $flight->adlprice1."\n";
-			//echo "able:".(string)$flight->reservable." kined:".(string)$flight->reservekind."\n in_arr:";
+	//	{
+	//		echo "anna =".(string) $flight->adlprice1."\n";
+	//		echo "able:".(string)$flight->reservable." kined:".(string)$flight->reservekind."\n in_arr:";
 			//var_dump(in_array((string)$flight->AgencyCode, $activeAgency));
-		//}
+	//	}
         if((string)$flight->reservable=='true' && (string)$flight->reservekind=='1' && in_array((string)$flight->AgencyCode, $activeAgency))
+		//if( (string)$flight->reservekind=='1' && in_array((string)$flight->AgencyCode, $activeAgency))
         {    
             $i++;
             $tarikh =hamed_pdateBack((string)$flight->fldate);
@@ -189,7 +200,7 @@ foreach($tt as $val)
             $strsource =arabicToPersian((string)$flight->strsource);
             $strdest =arabicToPersian((string)$flight->strdest);
             $alname =hs_airline((string)$flight->alname);		
-            $tmp.=($tmp==''?'':',') ."('".(string)$flight->ID."',-1,'$tarikh','$saat','$zarfiat','$ghimat','".(string)$flight->flnum."','".(string)$flight->subflid."','$strsource','$strdest','$alname','".trim((string)$flight->flclass)."',0,'00:00:00',1,'".(string)$flight->AgencyCode."','".(string)$flight->selrate."','".(string) $flight->adlprice1."')";
+            $tmp.=($tmp==''?'':',') ."('".(string)$flight->ID."',-1,'$tarikh','$saat','$zarfiat','$ghimat','".(string)$flight->flnum."','".(string)$flight->subflid."','$strsource','$strdest','$alname','".trim((string)$flight->flclass)."',0,'00:00:00',1,'".(string)$flight->AgencyCode."','".(string)$flight->selrate."','".(string) $flight->adlprice1."','".(string)$flight->fldate."')";
             if($i%500==0)
             {
 				//echo "i=".$i."\n";
